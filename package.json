@@ -1,0 +1,9 @@
+{
+    "name": "seapedia",
+    "version": "1.0.0",
+    "private": true,
+    "description": "SEAPEDIA marketplace monorepo",
+    "scripts": {
+        "dev": "echo \"We will configure this later\""
+    }
+}
