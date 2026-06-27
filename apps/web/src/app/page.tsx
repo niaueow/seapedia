@@ -83,24 +83,6 @@ export default async function HomePage() {
 
   return (
     <main>
-      {/* ── Navigation ── */}
-      <nav className="nav">
-        <div className="container nav-inner">
-          <div className="wordmark">
-            <span className="wordmark-sea">SEA</span>
-            <span className="wordmark-pedia">PEDIA</span>
-          </div>
-          <div className="nav-actions">
-            <Link href="/products" className="btn btn-ghost btn-sm">
-              Jelajahi produk
-            </Link>
-            <Link href="/login" className="btn btn-primary btn-sm">
-              Masuk
-            </Link>
-          </div>
-        </div>
-      </nav>
-
       {/* ── Hero Section ── */}
       <section className="container hero">
         <h1 className="hero-title">
@@ -202,14 +184,6 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* ── Footer ── */}
-      <footer className="container footer">
-        <div>&copy; {new Date().getFullYear()} Seapedia. Belanja dengan tenang.</div>
-        <div className="footer-links">
-          <Link href="/terms" className="footer-link">Syarat &amp; Ketentuan</Link>
-          <Link href="/privacy" className="footer-link">Privasi</Link>
-        </div>
-      </footer>
     </main>
   );
 }
