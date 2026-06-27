@@ -69,14 +69,20 @@ src/
 │  ├─ page.tsx          # Public landing (hero + product tiles, server-fetched)
 │  ├─ login/page.tsx    # Login (+ role-selector modal on multi-role)
 │  └─ register/page.tsx # Register (role multi-select)
-│  └─ … (remaining pages: products, cart, wallet, addresses, checkout, orders, seller/*)
+│  └─ dashboard/, products/, products/[id]/, cart/, wallet/, addresses/,
+│     checkout/, orders/, orders/[id]/, seller/{store,products,orders,orders/[id]}/
 ├─ auth/
 │  ├─ auth-context.tsx  # AuthProvider + useAuth() — user, login, selectRole, logout
+│  ├─ useRequireRole.tsx# client route guard (waits for loading, redirects by active role)
 │  └─ RoleSelectorModal.tsx
 ├─ components/
-│  └─ Navbar.tsx        # role-aware top nav, active-link highlight, logout
+│  ├─ Navbar.tsx        # role-aware top nav, active-link highlight, role switch, logout
+│  ├─ Footer.tsx
+│  ├─ OrderDetail.tsx   # shared order view (buyer + seller)
+│  └─ ReviewsSection.tsx
 └─ lib/
-   └─ api.ts            # fetch wrapper: base URL + Bearer token + error handling
+   ├─ api.ts            # fetch wrapper: base URL + Bearer token + error handling
+   └─ format.ts         # money / date / role / status / delivery label helpers
 ```
 
 ---
@@ -140,31 +146,30 @@ Seeded by `cd apps/api && pnpm prisma db seed`:
 
 ## Pages
 
-Built:
+All Level 1–3 pages are built:
 
 | Route | Access | Purpose |
 |---|---|---|
-| `/` | public | Landing — hero + featured product tiles |
-| `/login` | public | Login + role-selector modal for multi-role users |
+| `/` | public | Landing — hero + featured tiles + **reviews** (average rating + submit form) |
+| `/login` | public | Login + role-selector modal for multi-role users (honors `?next=`) |
 | `/register` | public | Register with role multi-select |
-
-To build (see `CLAUDE.md` §9 for details):
-
-| Route | Access | Purpose |
-|---|---|---|
-| `/` (reviews section) | public | Testimonials list + average rating + submit form |
+| `/dashboard` | logged-in | Role/active-role summary, role switcher, role-aware quick links & financial entry point |
 | `/products` | public | Catalog: search, store filter, paginated tile grid |
-| `/products/[id]` | public | Product detail + store block + add-to-cart |
+| `/products/[id]` | public | Product detail + store block + add-to-cart (handles `DIFFERENT_STORE`) |
 | `/wallet` | BUYER | Balance, top-up modal, transaction history |
 | `/addresses` | BUYER | Address CRUD with single default |
-| `/cart` | BUYER | Single-store cart, quantities, proceed to checkout |
+| `/cart` | BUYER | Single-store cart, quantity steppers, proceed to checkout |
 | `/checkout` | BUYER | Address + delivery method, totals (subtotal + PPN 12% + ongkir), place order |
-| `/orders` | BUYER | Order history with status chips |
-| `/orders/[id]` | BUYER | Order detail + status timeline |
+| `/orders` | BUYER | Order history with status chips + status filter |
+| `/orders/[id]` | BUYER | Order detail + money breakdown + status timeline |
 | `/seller/store` | SELLER | Create/edit store (unique name) |
 | `/seller/products` | SELLER | Product CRUD (soft delete) |
 | `/seller/orders` | SELLER | Incoming orders for the store |
 | `/seller/orders/[id]` | SELLER | Order detail (read-only) |
+
+Shared building blocks: `components/Navbar.tsx` (role-aware, live cart badge), `components/Footer.tsx`,
+`components/OrderDetail.tsx` (used by buyer + seller detail), `components/ReviewsSection.tsx`,
+`auth/useRequireRole.tsx` (client route guard), `lib/format.ts` (money/date/label helpers).
 
 ---
 

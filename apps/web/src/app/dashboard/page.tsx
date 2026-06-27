@@ -179,7 +179,7 @@ function DashboardInner() {
                         </div>
                         <div className="panel">
                             <p className="panel-title">Aksi cepat</p>
-                            <div className="nav-links" style={{ flexDirection: "column", alignItems: "stretch", display: "flex" }}>
+                            <div style={{ display: "flex", flexDirection: "column" }}>
                                 <Link href="/products" className="nav-link">Jelajahi produk</Link>
                                 <Link href="/cart" className="nav-link">Keranjang</Link>
                                 <Link href="/addresses" className="nav-link">Alamat pengiriman</Link>

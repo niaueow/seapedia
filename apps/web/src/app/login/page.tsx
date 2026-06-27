@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { Suspense, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { useAuth } from "../../auth/auth-context";
 import { RoleSelectorModal } from "../../auth/RoleSelectorModal";
@@ -9,7 +9,18 @@ import { RoleSelectorModal } from "../../auth/RoleSelectorModal";
 type RoleName = "ADMIN" | "SELLER" | "BUYER" | "DRIVER";
 
 export default function LoginPage() {
+    return (
+        <Suspense fallback={null}>
+            <LoginInner />
+        </Suspense>
+    );
+}
+
+function LoginInner() {
     const router = useRouter();
+    const params = useSearchParams();
+    const next = params.get("next");
+    const dest = next && next.startsWith("/") ? next : "/dashboard";
     const { login, selectRole } = useAuth();
 
     const [username, setUsername] = useState("");
@@ -30,7 +41,7 @@ export default function LoginPage() {
                 setRoles(result.roles);
                 setNeedsRole(true); // show the modal
             } else {
-                router.push("/"); // single-role: go home
+                router.push(dest); // single-role: go to intended page
             }
         } catch (e: any) {
             setError(e?.message ?? "Gagal masuk.");
@@ -42,7 +53,7 @@ export default function LoginPage() {
     async function handleRoleChosen(role: RoleName) {
         await selectRole(role);
         setNeedsRole(false);
-        router.push("/");
+        router.push(dest);
     }
 
     return (
