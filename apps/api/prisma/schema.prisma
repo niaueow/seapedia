@@ -11,3 +11,218 @@ generator client {
 datasource db {
   provider = "postgresql"
 }
+
+enum RoleName {
+  ADMIN
+  SELLER
+  BUYER
+  DRIVER
+}
+
+enum DeliveryMethod {
+  INSTANT
+  NEXT_DAY
+  REGULAR
+}
+
+enum OrderStatus {
+  SEDANG_DIKEMAS
+  MENUNGGU_PENGIRIM
+  SEDANG_DIKIRIM
+  PESANAN_SELESAI
+  DIKEMBALIKAN
+}
+
+enum WalletTxnType {
+  TOPUP
+  CHECKOUT_DEBIT
+}
+
+model User {
+  id           String   @id @default(cuid())
+  username     String   @unique
+  email        String   @unique
+  passwordHash String
+  name         String?
+  phone        String?
+  tokenVersion Int      @default(0)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  roles     UserRole[]
+  store     Store?
+  wallet    Wallet?
+  cart      Cart?
+  addresses Address[]
+  orders    Order[]
+  reviews   Review[]
+}
+
+model Role {
+  id   String   @id @default(cuid())
+  name RoleName @unique
+
+  users UserRole[]
+}
+
+model UserRole {
+  id        String   @id @default(cuid())
+  userId    String
+  roleId    String
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  role Role @relation(fields: [roleId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, roleId])
+}
+
+model Store {
+  id          String   @id @default(cuid())
+  ownerId     String   @unique
+  name        String   @unique
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  owner    User      @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  products Product[]
+  orders   Order[]
+}
+
+model Product {
+  id          String   @id @default(cuid())
+  storeId     String
+  name        String
+  description String?
+  price       Int
+  stock       Int      @default(0)
+  imageUrl    String?
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  store      Store       @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  cartItems  CartItem[]
+  orderItems OrderItem[]
+}
+
+model Review {
+  id           String   @id @default(cuid())
+  userId       String?
+  reviewerName String
+  rating       Int
+  comment      String
+  createdAt    DateTime @default(now())
+
+  user User? @relation(fields: [userId], references: [id], onDelete: SetNull)
+}
+
+model Wallet {
+  id        String   @id @default(cuid())
+  userId    String   @unique
+  balance   Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user         User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+  transactions WalletTransaction[]
+}
+
+model WalletTransaction {
+  id           String        @id @default(cuid())
+  walletId     String
+  type         WalletTxnType
+  amount       Int
+  balanceAfter Int
+  referenceId  String?
+  description  String?
+  createdAt    DateTime      @default(now())
+
+  wallet Wallet @relation(fields: [walletId], references: [id], onDelete: Cascade)
+}
+
+model Address {
+  id            String   @id @default(cuid())
+  userId        String
+  label         String?
+  recipientName String
+  phone         String
+  fullAddress   String
+  city          String?
+  postalCode    String?
+  isDefault     Boolean  @default(false)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Cart {
+  id        String   @id @default(cuid())
+  userId    String   @unique
+  storeId   String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user  User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  items CartItem[]
+}
+
+model CartItem {
+  id        String   @id @default(cuid())
+  cartId    String
+  productId String
+  quantity  Int
+  createdAt DateTime @default(now())
+
+  cart    Cart    @relation(fields: [cartId], references: [id], onDelete: Cascade)
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@unique([cartId, productId])
+}
+
+model Order {
+  id              String         @id @default(cuid())
+  buyerId         String
+  storeId         String
+  deliveryMethod  DeliveryMethod
+  recipientName   String
+  recipientPhone  String
+  shippingAddress String
+  subtotal        Int
+  deliveryFee     Int
+  ppnAmount       Int
+  total           Int
+  status          OrderStatus    @default(SEDANG_DIKEMAS)
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+
+  buyer         User                 @relation(fields: [buyerId], references: [id])
+  store         Store                @relation(fields: [storeId], references: [id])
+  items         OrderItem[]
+  statusHistory OrderStatusHistory[]
+}
+
+model OrderItem {
+  id          String @id @default(cuid())
+  orderId     String
+  productId   String
+  productName String
+  unitPrice   Int
+  quantity    Int
+  lineTotal   Int
+
+  order   Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  product Product @relation(fields: [productId], references: [id])
+}
+
+model OrderStatusHistory {
+  id        String      @id @default(cuid())
+  orderId   String
+  status    OrderStatus
+  note      String?
+  createdAt DateTime    @default(now())
+
+  order Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
+}
