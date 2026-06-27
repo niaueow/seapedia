@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { ReviewsSection } from "../components/ReviewsSection";
 
 // ── Static Assets (Hoisted SVG icons for better rendering performance & no flickering) ──
 const StoreIcon = () => (
@@ -165,6 +166,9 @@ export default async function HomePage() {
           </div>
         )}
       </section>
+
+      {/* ── Public application reviews ── */}
+      <ReviewsSection />
 
       {/* ── Closing CTA ── */}
       <section className="container">

@@ -1478,3 +1478,59 @@
   text-transform: uppercase;
   color: var(--sub);
 }
+
+/* ── Reviews ── */
+.rating-banner {
+  display: inline-flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 22px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  box-shadow: var(--sh-sm);
+  margin-bottom: 26px;
+}
+
+.rating-number {
+  font-size: 2.4rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: var(--brand-dark);
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+
+.review-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 14px;
+}
+
+.review-card {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 18px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  box-shadow: var(--sh-sm);
+}
+
+.review-comment {
+  font-size: 0.92rem;
+  line-height: 1.55;
+  color: var(--ink);
+  overflow-wrap: anywhere;
+}
+
+.review-meta {
+  font-size: 0.82rem;
+  color: var(--sub);
+  margin-top: auto;
+}
+
+.review-meta strong {
+  color: var(--ink);
+}
