@@ -149,4 +149,14 @@ export class AuthService {
 
         return { accessToken, activeRole: role };
     }
+    // ---------- LOGOUT ----------
+    async logout(userId: string) {
+        // Bump tokenVersion so every previously issued token becomes invalid.
+        await this.prisma.user.update({
+            where: { id: userId },
+            data: { tokenVersion: { increment: 1 } },
+        });
+        return { success: true };
+    }
 }
+

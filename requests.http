@@ -24,3 +24,29 @@ Content-Type: application/json
   "username": "buyer",
   "password": "wrong-password"
 }
+
+### Profile WITH a token (should succeed)
+GET http://localhost:3000/auth/profile
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbXF2dGI2M3IwMDA4OHdtYnZyNjljdm5sIiwidXNlcm5hbWUiOiJidXllciIsInJvbGVzIjpbIkJVWUVSIl0sImFjdGl2ZVJvbGUiOiJCVVlFUiIsInRva2VuVmVyc2lvbiI6MCwiaWF0IjoxNzgyNTM3NzE3LCJleHAiOjE3ODI1Mzg2MTd9.EkmK3Z4cpghgDVFo7KxQppmFz0GWHhuhiCMN3HLoCVM
+
+### Select SELLER role for the multi-role user
+POST http://localhost:3000/auth/select-role
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbXF2dGI3N3YwMDBrOHdtYnFneW1vOGpuIiwidXNlcm5hbWUiOiJtdWx0aSIsInJvbGVzIjpbIkJVWUVSIiwiU0VMTEVSIl0sImFjdGl2ZVJvbGUiOm51bGwsInRva2VuVmVyc2lvbiI6MCwiaWF0IjoxNzgyNTM4MzEzLCJleHAiOjE3ODI1MzkyMTN9.R4dWHeZbt3Vb1mpoaPzRxnBF0ciP17K_5DWs2ow6BmA
+
+{
+  "role": "SELLER"
+}
+
+### Try selecting a role the multi user does NOT have (should fail 400)
+POST http://localhost:3000/auth/select-role
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbXF2dGI3N3YwMDBrOHdtYnFneW1vOGpuIiwidXNlcm5hbWUiOiJtdWx0aSIsInJvbGVzIjpbIkJVWUVSIiwiU0VMTEVSIl0sImFjdGl2ZVJvbGUiOiJTRUxMRVIiLCJ0b2tlblZlcnNpb24iOjAsImlhdCI6MTc4MjUzODM1NSwiZXhwIjoxNzgyNTM5MjU1fQ.sK-7qo6ZOmRVwjkWSDW2j63O4woIXx7_4tMtZlKbF6w
+
+{
+  "role": "DRIVER"
+}
+
+### Logout (invalidates current tokens)
+POST http://localhost:3000/auth/logout
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbXF2dGI2M3IwMDA4OHdtYnZyNjljdm5sIiwidXNlcm5hbWUiOiJidXllciIsInJvbGVzIjpbIkJVWUVSIl0sImFjdGl2ZVJvbGUiOiJCVVlFUiIsInRva2VuVmVyc2lvbiI6MCwiaWF0IjoxNzgyNTM4NDcxLCJleHAiOjE3ODI1MzkzNzF9.rlm7BgUU7oMwkEPkEE5EYZaQsTeqAUG3EL8OffugssE
