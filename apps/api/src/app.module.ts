@@ -11,6 +11,7 @@ import { WalletModule } from './wallet/wallet.module';
 import { AddressModule } from './address/address.module';
 import { CartModule } from './cart/cart.module';
 import { CheckoutModule } from './checkout/checkout.module';
+import { OrdersModule } from './orders/orders.module';
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
@@ -23,6 +24,7 @@ import { CheckoutModule } from './checkout/checkout.module';
     AddressModule,
     CartModule,
     CheckoutModule,
+    OrdersModule,
   ],
   controllers: [AppController],
   providers: [AppService],
