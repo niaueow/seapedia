@@ -262,9 +262,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbXF2eWpnY
 ### Add first address
 POST http://localhost:3000/addresses
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbXF2dGI2M3IwMDA4OHdtYnZyNjljdm5sIiwidXNlcm5hbWUiOiJidXllciIsInJvbGVzIjpbIkJVWUVSIl0sImFjdGl2ZVJvbGUiOiJCVVlFUiIsInRva2VuVmVyc2lvbiI6MSwiaWF0IjoxNzgyNTUyNzg1LCJleHAiOjE3ODI1NTM2ODV9.1gFtolZtMr1OU2sE4lN1IrA_4FGHp4SEz3hRMGV77_M
-
-
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbXF2dGI2M3IwMDA4OHdtYnZyNjljdm5sIiwidXNlcm5hbWUiOiJidXllciIsInJvbGVzIjpbIkJVWUVSIl0sImFjdGl2ZVJvbGUiOiJCVVlFUiIsInRva2VuVmVyc2lvbiI6MSwiaWF0IjoxNzgyNTU0MjIxLCJleHAiOjE3ODI1NTUxMjF9.fzd245ZDRUbM2XHn83Cif7Kv1HTRXz15PQGLgIgo91Y
 {
   "label": "Home",
   "recipientName": "Demo Buyer",
@@ -277,7 +275,8 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbXF2dGI2M
 ### Add second address (no isDefault)
 POST http://localhost:3000/addresses
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbXF2dGI2M3IwMDA4OHdtYnZyNjljdm5sIiwidXNlcm5hbWUiOiJidXllciIsInJvbGVzIjpbIkJVWUVSIl0sImFjdGl2ZVJvbGUiOiJCVVlFUiIsInRva2VuVmVyc2lvbiI6MSwiaWF0IjoxNzgyNTUyNzg1LCJleHAiOjE3ODI1NTM2ODV9.1gFtolZtMr1OU2sE4lN1IrA_4FGHp4SEz3hRMGV77_M
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbXF2dGI2M3IwMDA4OHdtYnZyNjljdm5sIiwidXNlcm5hbWUiOiJidXllciIsInJvbGVzIjpbIkJVWUVSIl0sImFjdGl2ZVJvbGUiOiJCVVlFUiIsInRva2VuVmVyc2lvbiI6MSwiaWF0IjoxNzgyNTU0MjIxLCJleHAiOjE3ODI1NTUxMjF9.fzd245ZDRUbM2XHn83Cif7Kv1HTRXz15PQGLgIgo91Y
+
 
 
 {
@@ -292,6 +291,8 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbXF2dGI2M
 ### List my addresses
 GET http://localhost:3000/addresses
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbXF2dGI2M3IwMDA4OHdtYnZyNjljdm5sIiwidXNlcm5hbWUiOiJidXllciIsInJvbGVzIjpbIkJVWUVSIl0sImFjdGl2ZVJvbGUiOiJCVVlFUiIsInRva2VuVmVyc2lvbiI6MSwiaWF0IjoxNzgyNTUyNzg1LCJleHAiOjE3ODI1NTM2ODV9.1gFtolZtMr1OU2sE4lN1IrA_4FGHp4SEz3hRMGV77_M
+
+
 
 ### Make the Office address the default
 PATCH http://localhost:3000/addresses/cmqw6dbkb0001g4mbs42lqbuo
@@ -356,7 +357,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbXF2dGI2M
 }
 
 ### Update quantity to 1
-PATCH http://localhost:3000/cart/items/PASTE_CART_ITEM_ID
+PATCH http://localhost:3000/cart/items/cmqw6sv6u000048mbpxlvlme6
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbXF2dGI2M3IwMDA4OHdtYnZyNjljdm5sIiwidXNlcm5hbWUiOiJidXllciIsInJvbGVzIjpbIkJVWUVSIl0sImFjdGl2ZVJvbGUiOiJCVVlFUiIsInRva2VuVmVyc2lvbiI6MSwiaWF0IjoxNzgyNTU0MjIxLCJleHAiOjE3ODI1NTUxMjF9.fzd245ZDRUbM2XHn83Cif7Kv1HTRXz15PQGLgIgo91Y
 
@@ -366,10 +367,106 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbXF2dGI2M
 }
 
 ### Try to set an absurd quantity beyond stock (should fail 400)
-PATCH http://localhost:3000/cart/items/PASTE_CART_ITEM_ID
+PATCH http://localhost:3000/cart/items/cmqw6sv6u000048mbpxlvlme6
 Content-Type: application/json
-Authorization: Bearer PASTE_BUYER_TOKEN_HERE
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbXF2dGI2M3IwMDA4OHdtYnZyNjljdm5sIiwidXNlcm5hbWUiOiJidXllciIsInJvbGVzIjpbIkJVWUVSIl0sImFjdGl2ZVJvbGUiOiJCVVlFUiIsInRva2VuVmVyc2lvbiI6MSwiaWF0IjoxNzgyNTU0MjIxLCJleHAiOjE3ODI1NTUxMjF9.fzd245ZDRUbM2XHn83Cif7Kv1HTRXz15PQGLgIgo91Y
 
 {
   "quantity": 999999
+}
+
+### Remove the item (set quantity 0 OR use DELETE)
+DELETE http://localhost:3000/cart/items/cmqw6sv6u000048mbpxlvlme6
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbXF2dGI2M3IwMDA4OHdtYnZyNjljdm5sIiwidXNlcm5hbWUiOiJidXllciIsInJvbGVzIjpbIkJVWUVSIl0sImFjdGl2ZVJvbGUiOiJCVVlFUiIsInRva2VuVmVyc2lvbiI6MSwiaWF0IjoxNzgyNTU0MjIxLCJleHAiOjE3ODI1NTUxMjF9.fzd245ZDRUbM2XHn83Cif7Kv1HTRXz15PQGLgIgo91Y
+
+### Confirm buyer has an address
+GET http://localhost:3000/addresses
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbXF2dGI2M3IwMDA4OHdtYnZyNjljdm5sIiwidXNlcm5hbWUiOiJidXllciIsInJvbGVzIjpbIkJVWUVSIl0sImFjdGl2ZVJvbGUiOiJCVVlFUiIsInRva2VuVmVyc2lvbiI6MSwiaWF0IjoxNzgyNTU0MjIxLCJleHAiOjE3ODI1NTUxMjF9.fzd245ZDRUbM2XHn83Cif7Kv1HTRXz15PQGLgIgo91Y
+
+### Check balance
+GET http://localhost:3000/wallet
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbXF2dGI2M3IwMDA4OHdtYnZyNjljdm5sIiwidXNlcm5hbWUiOiJidXllciIsInJvbGVzIjpbIkJVWUVSIl0sImFjdGl2ZVJvbGUiOiJCVVlFUiIsInRva2VuVmVyc2lvbiI6MSwiaWF0IjoxNzgyNTU0MjIxLCJleHAiOjE3ODI1NTUxMjF9.fzd245ZDRUbM2XHn83Cif7Kv1HTRXz15PQGLgIgo91Y
+
+### (If low) top up
+POST http://localhost:3000/wallet/topup
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbXF2dGI2M3IwMDA4OHdtYnZyNjljdm5sIiwidXNlcm5hbWUiOiJidXllciIsInJvbGVzIjpbIkJVWUVSIl0sImFjdGl2ZVJvbGUiOiJCVVlFUiIsInRva2VuVmVyc2lvbiI6MSwiaWF0IjoxNzgyNTU0MjIxLCJleHAiOjE3ODI1NTUxMjF9.fzd245ZDRUbM2XHn83Cif7Kv1HTRXz15PQGLgIgo91Y
+
+{
+  "amount": 500000
+}
+
+### Add a product to the cart
+POST http://localhost:3000/cart/items
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbXF2dGI2M3IwMDA4OHdtYnZyNjljdm5sIiwidXNlcm5hbWUiOiJidXllciIsInJvbGVzIjpbIkJVWUVSIl0sImFjdGl2ZVJvbGUiOiJCVVlFUiIsInRva2VuVmVyc2lvbiI6MSwiaWF0IjoxNzgyNTU0MjIxLCJleHAiOjE3ODI1NTUxMjF9.fzd245ZDRUbM2XHn83Cif7Kv1HTRXz15PQGLgIgo91Y
+
+{
+  "productId": "cmqw5dcvk0002ccmbglcfaz6r",
+  "quantity": 2
+}
+
+### View cart
+GET http://localhost:3000/cart
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbXF2dGI2M3IwMDA4OHdtYnZyNjljdm5sIiwidXNlcm5hbWUiOiJidXllciIsInJvbGVzIjpbIkJVWUVSIl0sImFjdGl2ZVJvbGUiOiJCVVlFUiIsInRva2VuVmVyc2lvbiI6MSwiaWF0IjoxNzgyNTU0MjIxLCJleHAiOjE3ODI1NTUxMjF9.fzd245ZDRUbM2XHn83Cif7Kv1HTRXz15PQGLgIgo91Y
+
+### Checkout!
+POST http://localhost:3000/checkout
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbXF2dGI2M3IwMDA4OHdtYnZyNjljdm5sIiwidXNlcm5hbWUiOiJidXllciIsInJvbGVzIjpbIkJVWUVSIl0sImFjdGl2ZVJvbGUiOiJCVVlFUiIsInRva2VuVmVyc2lvbiI6MSwiaWF0IjoxNzgyNTU0MjIxLCJleHAiOjE3ODI1NTUxMjF9.fzd245ZDRUbM2XHn83Cif7Kv1HTRXz15PQGLgIgo91Y
+
+{
+  "addressId": "cmqw6dbkb0001g4mbs42lqbuo",
+  "deliveryMethod": "REGULAR"
+}
+
+### Register a broke buyer
+POST http://localhost:3000/auth/register
+Content-Type: application/json
+
+{
+  "username": "brokebuyer",
+  "email": "broke@example.com",
+  "password": "password123",
+  "roles": ["BUYER"]
+}
+
+### Login as brokebuyer
+POST http://localhost:3000/auth/login
+Content-Type: application/json
+
+{
+  "username": "brokebuyer",
+  "password": "password123"
+}
+
+### brokebuyer adds an address
+POST http://localhost:3000/addresses
+Content-Type: application/json
+Authorization: Bearer PASTE_BROKE_TOKEN
+
+{
+  "recipientName": "Broke Buyer",
+  "phone": "081200000000",
+  "fullAddress": "Somewhere"
+}
+
+### brokebuyer adds a product
+POST http://localhost:3000/cart/items
+Content-Type: application/json
+Authorization: Bearer PASTE_BROKE_TOKEN
+
+{
+  "productId": "PASTE_A_PRODUCT_ID",
+  "quantity": 1
+}
+
+### brokebuyer tries to checkout (should fail 422 INSUFFICIENT_BALANCE)
+POST http://localhost:3000/checkout
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbXF3N2hrNWgwMDAzcHNtYm1sZWU4YjFtIiwidXNlcm5hbWUiOiJicm9rZWJ1eWVyIiwicm9sZXMiOlsiQlVZRVIiXSwiYWN0aXZlUm9sZSI6IkJVWUVSIiwidG9rZW5WZXJzaW9uIjowLCJpYXQiOjE3ODI1NTU0NjAsImV4cCI6MTc4MjU1NjM2MH0.HXFEJZeoE4WArdNB5juDuMxLU1OXtLsgO6ZWWrtgk_k
+
+{
+  "addressId": "PASTE_BROKE_ADDRESS_ID",
+  "deliveryMethod": "REGULAR"
 }
