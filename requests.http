@@ -302,3 +302,74 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbXF2dGI2M
 {
   "isDefault": true
 }
+
+### Different buyer tries to edit someone else's address (should fail 403)
+PATCH http://localhost:3000/addresses/cmqw6dbkb0001g4mbs42lqbuo
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbXF2dGI2M3IwMDA4OHdtYnZyNjljdm5sIiwidXNlcm5hbWUiOiJidXllciIsInJvbGVzIjpbIkJVWUVSIl0sImFjdGl2ZVJvbGUiOiJCVVlFUiIsInRva2VuVmVyc2lvbiI6MSwiaWF0IjoxNzgyNTUyNzg1LCJleHAiOjE3ODI1NTM2ODV9.1gFtolZtMr1OU2sE4lN1IrA_4FGHp4SEz3hRMGV77_M
+
+
+{
+  "label": "Hacked"
+}
+
+### Delete the default address
+DELETE http://localhost:3000/addresses/cmqw6dbkb0001g4mbs42lqbuo
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbXF2dGI2M3IwMDA4OHdtYnZyNjljdm5sIiwidXNlcm5hbWUiOiJidXllciIsInJvbGVzIjpbIkJVWUVSIl0sImFjdGl2ZVJvbGUiOiJCVVlFUiIsInRva2VuVmVyc2lvbiI6MSwiaWF0IjoxNzgyNTUyNzg1LCJleHAiOjE3ODI1NTM2ODV9.1gFtolZtMr1OU2sE4lN1IrA_4FGHp4SEz3hRMGV77_M
+
+### List catalog to find product ids and their stores
+GET http://localhost:3000/catalog/products
+
+### View cart (empty)
+GET http://localhost:3000/cart
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbXF2dGI2M3IwMDA4OHdtYnZyNjljdm5sIiwidXNlcm5hbWUiOiJidXllciIsInJvbGVzIjpbIkJVWUVSIl0sImFjdGl2ZVJvbGUiOiJCVVlFUiIsInRva2VuVmVyc2lvbiI6MSwiaWF0IjoxNzgyNTU0MjIxLCJleHAiOjE3ODI1NTUxMjF9.fzd245ZDRUbM2XHn83Cif7Kv1HTRXz15PQGLgIgo91Y
+
+### Add Product A to the cart
+POST http://localhost:3000/cart/items
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbXF2dGI2M3IwMDA4OHdtYnZyNjljdm5sIiwidXNlcm5hbWUiOiJidXllciIsInJvbGVzIjpbIkJVWUVSIl0sImFjdGl2ZVJvbGUiOiJCVVlFUiIsInRva2VuVmVyc2lvbiI6MSwiaWF0IjoxNzgyNTU0MjIxLCJleHAiOjE3ODI1NTUxMjF9.fzd245ZDRUbM2XHn83Cif7Kv1HTRXz15PQGLgIgo91Y
+
+{
+  "productId": "cmqw5dcvk0002ccmbglcfaz6r",
+  "quantity": 2
+}
+
+### Try to add Product B from a DIFFERENT store (should fail 409)
+POST http://localhost:3000/cart/items
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbXF2dGI2M3IwMDA4OHdtYnZyNjljdm5sIiwidXNlcm5hbWUiOiJidXllciIsInJvbGVzIjpbIkJVWUVSIl0sImFjdGl2ZVJvbGUiOiJCVVlFUiIsInRva2VuVmVyc2lvbiI6MSwiaWF0IjoxNzgyNTU0MjIxLCJleHAiOjE3ODI1NTUxMjF9.fzd245ZDRUbM2XHn83Cif7Kv1HTRXz15PQGLgIgo91Y
+
+{
+  "productId": "cmqvtb7q6000q8wmbttypfei0",
+  "quantity": 1
+}
+
+### Add Product A again (quantity should increase, not duplicate)
+POST http://localhost:3000/cart/items
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbXF2dGI2M3IwMDA4OHdtYnZyNjljdm5sIiwidXNlcm5hbWUiOiJidXllciIsInJvbGVzIjpbIkJVWUVSIl0sImFjdGl2ZVJvbGUiOiJCVVlFUiIsInRva2VuVmVyc2lvbiI6MSwiaWF0IjoxNzgyNTU0MjIxLCJleHAiOjE3ODI1NTUxMjF9.fzd245ZDRUbM2XHn83Cif7Kv1HTRXz15PQGLgIgo91Y
+
+
+{
+  "productId": "cmqw5dcvk0002ccmbglcfaz6r",
+  "quantity": 1
+}
+
+### Update quantity to 1
+PATCH http://localhost:3000/cart/items/PASTE_CART_ITEM_ID
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbXF2dGI2M3IwMDA4OHdtYnZyNjljdm5sIiwidXNlcm5hbWUiOiJidXllciIsInJvbGVzIjpbIkJVWUVSIl0sImFjdGl2ZVJvbGUiOiJCVVlFUiIsInRva2VuVmVyc2lvbiI6MSwiaWF0IjoxNzgyNTU0MjIxLCJleHAiOjE3ODI1NTUxMjF9.fzd245ZDRUbM2XHn83Cif7Kv1HTRXz15PQGLgIgo91Y
+
+
+{
+  "quantity": 1
+}
+
+### Try to set an absurd quantity beyond stock (should fail 400)
+PATCH http://localhost:3000/cart/items/PASTE_CART_ITEM_ID
+Content-Type: application/json
+Authorization: Bearer PASTE_BUYER_TOKEN_HERE
+
+{
+  "quantity": 999999
+}

@@ -9,6 +9,7 @@ import { ProductsModule } from './products/products.module';
 import { CatalogModule } from './catalog/catalog.module';
 import { WalletModule } from './wallet/wallet.module';
 import { AddressModule } from './address/address.module';
+import { CartModule } from './cart/cart.module';
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
@@ -19,6 +20,7 @@ import { AddressModule } from './address/address.module';
     CatalogModule,
     WalletModule,
     AddressModule,
+    CartModule,
   ],
   controllers: [AppController],
   providers: [AppService],
