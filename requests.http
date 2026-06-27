@@ -257,3 +257,48 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbXF2dGI2M
 ### Seller tries to access wallet (should fail 403)
 GET http://localhost:3000/wallet
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbXF2eWpnYjEwMDAwNjhtYmtmcTE0ODFpIiwidXNlcm5hbWUiOiJzZWxsZXIyIiwicm9sZXMiOlsiU0VMTEVSIl0sImFjdGl2ZVJvbGUiOiJTRUxMRVIiLCJ0b2tlblZlcnNpb24iOjAsImlhdCI6MTc4MjU1MTc3NSwiZXhwIjoxNzgyNTUyNjc1fQ.6TvCenuMpTIA_7Pbo1b_6Y56ZKCuuZ7XhPaNkSz_1FM
+
+
+### Add first address
+POST http://localhost:3000/addresses
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbXF2dGI2M3IwMDA4OHdtYnZyNjljdm5sIiwidXNlcm5hbWUiOiJidXllciIsInJvbGVzIjpbIkJVWUVSIl0sImFjdGl2ZVJvbGUiOiJCVVlFUiIsInRva2VuVmVyc2lvbiI6MSwiaWF0IjoxNzgyNTUyNzg1LCJleHAiOjE3ODI1NTM2ODV9.1gFtolZtMr1OU2sE4lN1IrA_4FGHp4SEz3hRMGV77_M
+
+
+{
+  "label": "Home",
+  "recipientName": "Demo Buyer",
+  "phone": "081234567890",
+  "fullAddress": "Jl. Merdeka No. 1, RT 01 RW 02",
+  "city": "Jakarta",
+  "postalCode": "10110"
+}
+
+### Add second address (no isDefault)
+POST http://localhost:3000/addresses
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbXF2dGI2M3IwMDA4OHdtYnZyNjljdm5sIiwidXNlcm5hbWUiOiJidXllciIsInJvbGVzIjpbIkJVWUVSIl0sImFjdGl2ZVJvbGUiOiJCVVlFUiIsInRva2VuVmVyc2lvbiI6MSwiaWF0IjoxNzgyNTUyNzg1LCJleHAiOjE3ODI1NTM2ODV9.1gFtolZtMr1OU2sE4lN1IrA_4FGHp4SEz3hRMGV77_M
+
+
+{
+  "label": "Office",
+  "recipientName": "Demo Buyer",
+  "phone": "081234567891",
+  "fullAddress": "Jl. Sudirman No. 99, Lantai 10",
+  "city": "Jakarta",
+  "postalCode": "10220"
+}
+
+### List my addresses
+GET http://localhost:3000/addresses
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbXF2dGI2M3IwMDA4OHdtYnZyNjljdm5sIiwidXNlcm5hbWUiOiJidXllciIsInJvbGVzIjpbIkJVWUVSIl0sImFjdGl2ZVJvbGUiOiJCVVlFUiIsInRva2VuVmVyc2lvbiI6MSwiaWF0IjoxNzgyNTUyNzg1LCJleHAiOjE3ODI1NTM2ODV9.1gFtolZtMr1OU2sE4lN1IrA_4FGHp4SEz3hRMGV77_M
+
+### Make the Office address the default
+PATCH http://localhost:3000/addresses/cmqw6dbkb0001g4mbs42lqbuo
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbXF2dGI2M3IwMDA4OHdtYnZyNjljdm5sIiwidXNlcm5hbWUiOiJidXllciIsInJvbGVzIjpbIkJVWUVSIl0sImFjdGl2ZVJvbGUiOiJCVVlFUiIsInRva2VuVmVyc2lvbiI6MSwiaWF0IjoxNzgyNTUyNzg1LCJleHAiOjE3ODI1NTM2ODV9.1gFtolZtMr1OU2sE4lN1IrA_4FGHp4SEz3hRMGV77_M
+
+
+{
+  "isDefault": true
+}
