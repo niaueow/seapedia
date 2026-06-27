@@ -50,3 +50,82 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbXF2dGI3N
 ### Logout (invalidates current tokens)
 POST http://localhost:3000/auth/logout
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbXF2dGI2M3IwMDA4OHdtYnZyNjljdm5sIiwidXNlcm5hbWUiOiJidXllciIsInJvbGVzIjpbIkJVWUVSIl0sImFjdGl2ZVJvbGUiOiJCVVlFUiIsInRva2VuVmVyc2lvbiI6MCwiaWF0IjoxNzgyNTM4NDcxLCJleHAiOjE3ODI1MzkzNzF9.rlm7BgUU7oMwkEPkEE5EYZaQsTeqAUG3EL8OffugssE
+
+### Buyer tries to create a store (should fail 403)
+POST http://localhost:3000/stores
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbXF2dGI2M3IwMDA4OHdtYnZyNjljdm5sIiwidXNlcm5hbWUiOiJidXllciIsInJvbGVzIjpbIkJVWUVSIl0sImFjdGl2ZVJvbGUiOiJCVVlFUiIsInRva2VuVmVyc2lvbiI6MSwiaWF0IjoxNzgyNTQwMzU0LCJleHAiOjE3ODI1NDEyNTR9.COJ_TquFOiGH6nxJRs4JMo5Z81ORz0kBoah5HjzHz48
+
+{
+  "name": "Buyer's Illegal Shop",
+  "description": "should be blocked"
+}
+
+### Create store with no token (should fail 401)
+POST http://localhost:3000/stores
+Content-Type: application/json
+
+{
+  "name": "No Auth Shop"
+}
+
+### Register a fresh seller
+POST http://localhost:3000/auth/register
+Content-Type: application/json
+
+{
+  "username": "seller2",
+  "email": "seller2@example.com",
+  "password": "password123",
+  "name": "Second Seller",
+  "roles": ["SELLER"]
+}
+
+### Login as seller2
+POST http://localhost:3000/auth/login
+Content-Type: application/json
+
+{
+  "username": "seller2",
+  "password": "password123"
+}
+
+### seller2 creates a store (should succeed 201)
+POST http://localhost:3000/stores
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbXF2eWpnYjEwMDAwNjhtYmtmcTE0ODFpIiwidXNlcm5hbWUiOiJzZWxsZXIyIiwicm9sZXMiOlsiU0VMTEVSIl0sImFjdGl2ZVJvbGUiOiJTRUxMRVIiLCJ0b2tlblZlcnNpb24iOjAsImlhdCI6MTc4MjU0MDQ3OCwiZXhwIjoxNzgyNTQxMzc4fQ.9-AVWaK9QeM1h0FrmEaFbrzkgbH81RBkM2ZArE3U7mY
+
+{
+  "name": "Seller Two Store",
+  "description": "My first store!"
+}
+
+### Duplicate store name (should fail 409)
+POST http://localhost:3000/stores
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbXF2dGI3N3YwMDBrOHdtYnFneW1vOGpuIiwidXNlcm5hbWUiOiJtdWx0aSIsInJvbGVzIjpbIkJVWUVSIiwiU0VMTEVSIl0sImFjdGl2ZVJvbGUiOm51bGwsInRva2VuVmVyc2lvbiI6MCwiaWF0IjoxNzgyNTQwNTU3LCJleHAiOjE3ODI1NDE0NTd9.FM9uguZlf-eZEvQ7xePuLaK8InIemLu3kqxgok9Wp0g
+
+{
+  "name": "Seller Two Store"
+}
+
+### seller2 tries to make a SECOND store (should fail 409)
+POST http://localhost:3000/stores
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbXF2eWpnYjEwMDAwNjhtYmtmcTE0ODFpIiwidXNlcm5hbWUiOiJzZWxsZXIyIiwicm9sZXMiOlsiU0VMTEVSIl0sImFjdGl2ZVJvbGUiOiJTRUxMRVIiLCJ0b2tlblZlcnNpb24iOjAsImlhdCI6MTc4MjU0MDYzMCwiZXhwIjoxNzgyNTQxNTMwfQ.f7_kPTecDcUVxAOQAd7eN1pvP-GZ__zV9nhXyoNsRa4
+
+{
+  "name": "Seller Two's Second Store"
+}
+
+### Get my own store
+GET http://localhost:3000/stores/mine
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbXF2eWpnYjEwMDAwNjhtYmtmcTE0ODFpIiwidXNlcm5hbWUiOiJzZWxsZXIyIiwicm9sZXMiOlsiU0VMTEVSIl0sImFjdGl2ZVJvbGUiOiJTRUxMRVIiLCJ0b2tlblZlcnNpb24iOjAsImlhdCI6MTc4MjU0MDYzMCwiZXhwIjoxNzgyNTQxNTMwfQ.f7_kPTecDcUVxAOQAd7eN1pvP-GZ__zV9nhXyoNsRa4
+
+### Update my store's description
+PATCH http://localhost:3000/stores/cmqvyjgb1000068mbkfq1481i
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbXF2eWpnYjEwMDAwNjhtYmtmcTE0ODFpIiwidXNlcm5hbWUiOiJzZWxsZXIyIiwicm9sZXMiOlsiU0VMTEVSIl0sImFjdGl2ZVJvbGUiOiJTRUxMRVIiLCJ0b2tlblZlcnNpb24iOjAsImlhdCI6MTc4MjU0MDYzMCwiZXhwIjoxNzgyNTQxNTMwfQ.f7_kPTecDcUVxAOQAd7eN1pvP-GZ__zV9nhXyoNsRa4
+{
+  "description": "Updated description!"
+}
