@@ -1,0 +1,32 @@
+### Duplicate username (should fail with 409)
+POST http://localhost:3000/auth/register
+Content-Type: application/json
+
+{
+  "username": "alice",
+  "email": "different@example.com",
+  "password": "password123",
+  "roles": ["BUYER"]
+}
+
+### Invalid email + short password (should fail with 400)
+POST http://localhost:3000/auth/register
+Content-Type: application/json
+
+{
+  "username": "bob",
+  "email": "not-an-email",
+  "password": "123",
+  "roles": ["BUYER"]
+}
+
+### Trying to register as ADMIN (should fail with 400)
+POST http://localhost:3000/auth/register
+Content-Type: application/json
+
+{
+  "username": "sneaky",
+  "email": "sneaky@example.com",
+  "password": "password123",
+  "roles": ["ADMIN"]
+}
