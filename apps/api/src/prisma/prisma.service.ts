@@ -3,27 +3,21 @@ import { PrismaClient } from '../generated/prisma/client.js';
 import { PrismaPg } from '@prisma/adapter-pg';
 
 @Injectable()
-export class PrismaService implements OnModuleInit, OnModuleDestroy {
-    private _client: InstanceType<typeof PrismaClient>;
-
+export class PrismaService
+    extends PrismaClient
+    implements OnModuleInit, OnModuleDestroy {
     constructor() {
-        const adapter = new PrismaPg({ connectionString: process.env['DATABASE_URL']! });
-        this._client = new PrismaClient({ adapter });
-    }
-
-    /** Expose the underlying Prisma client for direct model access. */
-    get client(): InstanceType<typeof PrismaClient> {
-        return this._client;
+        const adapter = new PrismaPg({
+            connectionString: process.env.DATABASE_URL,
+        });
+        super({ adapter });
     }
 
     async onModuleInit() {
-        // Open the connection to the database when the app starts.
-        await this._client.$connect();
+        await this.$connect();
     }
 
     async onModuleDestroy() {
-        // Close the connection cleanly when the app shuts down.
-        await this._client.$disconnect();
+        await this.$disconnect();
     }
 }
-
