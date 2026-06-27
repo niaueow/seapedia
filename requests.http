@@ -123,9 +123,82 @@ GET http://localhost:3000/stores/mine
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbXF2eWpnYjEwMDAwNjhtYmtmcTE0ODFpIiwidXNlcm5hbWUiOiJzZWxsZXIyIiwicm9sZXMiOlsiU0VMTEVSIl0sImFjdGl2ZVJvbGUiOiJTRUxMRVIiLCJ0b2tlblZlcnNpb24iOjAsImlhdCI6MTc4MjU0MDYzMCwiZXhwIjoxNzgyNTQxNTMwfQ.f7_kPTecDcUVxAOQAd7eN1pvP-GZ__zV9nhXyoNsRa4
 
 ### Update my store's description
-PATCH http://localhost:3000/stores/cmqvyjgb1000068mbkfq1481i
+PATCH http://localhost:3000/stores/cmqw5c0or0000ccmbkagd3h1g
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbXF2eWpnYjEwMDAwNjhtYmtmcTE0ODFpIiwidXNlcm5hbWUiOiJzZWxsZXIyIiwicm9sZXMiOlsiU0VMTEVSIl0sImFjdGl2ZVJvbGUiOiJTRUxMRVIiLCJ0b2tlblZlcnNpb24iOjAsImlhdCI6MTc4MjU0MDYzMCwiZXhwIjoxNzgyNTQxNTMwfQ.f7_kPTecDcUVxAOQAd7eN1pvP-GZ__zV9nhXyoNsRa4
 {
   "description": "Updated description!"
 }
+
+### seller2 creates a product (should succeed 201)
+POST http://localhost:3000/products
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbXF2eWpnYjEwMDAwNjhtYmtmcTE0ODFpIiwidXNlcm5hbWUiOiJzZWxsZXIyIiwicm9sZXMiOlsiU0VMTEVSIl0sImFjdGl2ZVJvbGUiOiJTRUxMRVIiLCJ0b2tlblZlcnNpb24iOjAsImlhdCI6MTc4MjU1MTc3NSwiZXhwIjoxNzgyNTUyNjc1fQ.6TvCenuMpTIA_7Pbo1b_6Y56ZKCuuZ7XhPaNkSz_1FM
+
+{
+  "name": "Sepatu Lari",
+  "description": "Comfortable running shoes",
+  "price": 250000,
+  "stock": 10,
+  "imageUrl": "https://example.com/shoes.jpg"
+}
+
+### seller2 creates a second product
+POST http://localhost:3000/products
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbXF2eWpnYjEwMDAwNjhtYmtmcTE0ODFpIiwidXNlcm5hbWUiOiJzZWxsZXIyIiwicm9sZXMiOlsiU0VMTEVSIl0sImFjdGl2ZVJvbGUiOiJTRUxMRVIiLCJ0b2tlblZlcnNpb24iOjAsImlhdCI6MTc4MjU1MTc3NSwiZXhwIjoxNzgyNTUyNjc1fQ.6TvCenuMpTIA_7Pbo1b_6Y56ZKCuuZ7XhPaNkSz_1FM
+
+{
+  "name": "Kaos Olahraga",
+  "price": 90000,
+  "stock": 25
+}
+
+### Negative price (should fail 400)
+POST http://localhost:3000/products
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbXF2eWpnYjEwMDAwNjhtYmtmcTE0ODFpIiwidXNlcm5hbWUiOiJzZWxsZXIyIiwicm9sZXMiOlsiU0VMTEVSIl0sImFjdGl2ZVJvbGUiOiJTRUxMRVIiLCJ0b2tlblZlcnNpb24iOjAsImlhdCI6MTc4MjU1MTc3NSwiZXhwIjoxNzgyNTUyNjc1fQ.6TvCenuMpTIA_7Pbo1b_6Y56ZKCuuZ7XhPaNkSz_1FM
+
+{
+  "name": "Bad Product",
+  "price": -5000,
+  "stock": 10
+}
+
+### Decimal price (should fail 400 — must be integer)
+POST http://localhost:3000/products
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbXF2eWpnYjEwMDAwNjhtYmtmcTE0ODFpIiwidXNlcm5hbWUiOiJzZWxsZXIyIiwicm9sZXMiOlsiU0VMTEVSIl0sImFjdGl2ZVJvbGUiOiJTRUxMRVIiLCJ0b2tlblZlcnNpb24iOjAsImlhdCI6MTc4MjU1MTc3NSwiZXhwIjoxNzgyNTUyNjc1fQ.6TvCenuMpTIA_7Pbo1b_6Y56ZKCuuZ7XhPaNkSz_1FM
+
+{
+  "name": "Decimal Product",
+  "price": 99.99,
+  "stock": 10
+}
+
+### seller2 lists their own products
+GET http://localhost:3000/products/mine
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbXF2eWpnYjEwMDAwNjhtYmtmcTE0ODFpIiwidXNlcm5hbWUiOiJzZWxsZXIyIiwicm9sZXMiOlsiU0VMTEVSIl0sImFjdGl2ZVJvbGUiOiJTRUxMRVIiLCJ0b2tlblZlcnNpb24iOjAsImlhdCI6MTc4MjU1MTc3NSwiZXhwIjoxNzgyNTUyNjc1fQ.6TvCenuMpTIA_7Pbo1b_6Y56ZKCuuZ7XhPaNkSz_1FM
+
+### Update product price and stock
+PATCH http://localhost:3000/products/cmqw5c0or0000ccmbkagd3h1g
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbXF2eWpnYjEwMDAwNjhtYmtmcTE0ODFpIiwidXNlcm5hbWUiOiJzZWxsZXIyIiwicm9sZXMiOlsiU0VMTEVSIl0sImFjdGl2ZVJvbGUiOiJTRUxMRVIiLCJ0b2tlblZlcnNpb24iOjAsImlhdCI6MTc4MjU1MTc3NSwiZXhwIjoxNzgyNTUyNjc1fQ.6TvCenuMpTIA_7Pbo1b_6Y56ZKCuuZ7XhPaNkSz_1FM
+
+{
+  "price": 230000,
+  "stock": 8
+}
+
+### Different seller tries to edit seller2's product (should fail 403)
+PATCH http://localhost:3000/products/PASTE_SELLER2_PRODUCT_ID_HERE
+Content-Type: application/json
+Authorization: Bearer PASTE_SEED_SELLER_TOKEN_HERE
+
+{
+  "price": 1
+}
+
+### Soft-delete a product
+DELETE http://localhost:3000/products/cmqw5c0or0000ccmbkagd3h1g
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbXF2eWpnYjEwMDAwNjhtYmtmcTE0ODFpIiwidXNlcm5hbWUiOiJzZWxsZXIyIiwicm9sZXMiOlsiU0VMTEVSIl0sImFjdGl2ZVJvbGUiOiJTRUxMRVIiLCJ0b2tlblZlcnNpb24iOjAsImlhdCI6MTc4MjU1MTc3NSwiZXhwIjoxNzgyNTUyNjc1fQ.6TvCenuMpTIA_7Pbo1b_6Y56ZKCuuZ7XhPaNkSz_1FM
