@@ -37,7 +37,7 @@ export type OrderFull = {
     createdAt: string;
     items: OrderItem[];
     statusHistory: OrderStatusEntry[];
-    store: { id: string; name: string };
+    store?: { id: string; name: string };
 };
 
 export function StatusChip({ status }: { status: string }) {
@@ -65,7 +65,8 @@ export function OrderDetail({ order }: { order: OrderFull }) {
                                 #{order.id.slice(-8).toUpperCase()}
                             </p>
                             <p className="muted" style={{ fontSize: "0.84rem" }}>
-                                {formatDateTime(order.createdAt)} · {order.store.name}
+                                {formatDateTime(order.createdAt)}
+                                {order.store ? ` · ${order.store.name}` : ""}
                             </p>
                         </div>
                         <StatusChip status={order.status} />
