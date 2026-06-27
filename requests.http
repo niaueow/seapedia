@@ -1,32 +1,26 @@
-### Duplicate username (should fail with 409)
-POST http://localhost:3000/auth/register
+### Login as the seeded single-role buyer
+POST http://localhost:3000/auth/login
 Content-Type: application/json
 
 {
-  "username": "alice",
-  "email": "different@example.com",
-  "password": "password123",
-  "roles": ["BUYER"]
+  "username": "buyer",
+  "password": "Buyer#123"
 }
 
-### Invalid email + short password (should fail with 400)
-POST http://localhost:3000/auth/register
+### Login as the seeded MULTI-role user (Buyer + Seller)
+POST http://localhost:3000/auth/login
 Content-Type: application/json
 
 {
-  "username": "bob",
-  "email": "not-an-email",
-  "password": "123",
-  "roles": ["BUYER"]
+  "username": "multi",
+  "password": "Multi#123"
 }
 
-### Trying to register as ADMIN (should fail with 400)
-POST http://localhost:3000/auth/register
+### Wrong password (should fail with 401)
+POST http://localhost:3000/auth/login
 Content-Type: application/json
 
 {
-  "username": "sneaky",
-  "email": "sneaky@example.com",
-  "password": "password123",
-  "roles": ["ADMIN"]
+  "username": "buyer",
+  "password": "wrong-password"
 }
