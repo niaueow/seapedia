@@ -4,6 +4,8 @@
     "private": true,
     "description": "SEAPEDIA marketplace monorepo",
     "scripts": {
-        "dev": "echo \"We will configure this later\""
+        "dev": "pnpm --filter api --filter web --parallel run dev",
+        "dev:api": "pnpm --filter api run start:dev",
+        "dev:web": "pnpm --filter web run dev"
     }
 }

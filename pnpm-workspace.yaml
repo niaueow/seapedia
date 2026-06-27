@@ -1,9 +1,11 @@
 packages:
   - "apps/*"
   - "packages/*"
+
 allowBuilds:
-  '@prisma/engines': false
-  argon2: false
-  esbuild: false
-  prisma: false
-  unrs-resolver: false
+  "@prisma/engines": true
+  argon2: true
+  esbuild: true
+  prisma: true
+  sharp: true
+  unrs-resolver: true

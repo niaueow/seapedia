@@ -6,6 +6,7 @@ import {
     UnprocessableEntityException,
 } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
+import { Prisma } from '../generated/prisma/client';
 import { CheckoutDto } from './dto/checkout.dto';
 import { DELIVERY_FEES, PPN_RATE } from './delivery';
 
@@ -16,7 +17,7 @@ export class CheckoutService {
     async checkout(userId: string, dto: CheckoutDto) {
         // Everything happens inside ONE interactive transaction.
         // If anything throws, ALL changes roll back automatically.
-        return this.prisma.$transaction(async (tx) => {
+        return this.prisma.$transaction(async (tx: Prisma.TransactionClient) => {
             // ---- 1) Load the cart and its items (with product data) ----
             const cart = await tx.cart.findUnique({ where: { userId } });
             if (!cart) {

@@ -5,11 +5,17 @@ import { AppModule } from './app.module';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
+  // Allow the Next.js web app (port 3001) to call this API from the browser.
+  app.enableCors({
+    origin: 'http://localhost:3001',
+    credentials: true,
+  });
+
   app.useGlobalPipes(
     new ValidationPipe({
-      whitelist: true,         // strip out any fields we didn't ask for
-      forbidNonWhitelisted: true, // reject requests that include unexpected fields
-      transform: true,         // auto-convert JSON into our DTO classes
+      whitelist: true,
+      forbidNonWhitelisted: true,
+      transform: true,
     }),
   );
 
