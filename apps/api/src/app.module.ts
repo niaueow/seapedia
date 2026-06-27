@@ -7,6 +7,7 @@ import { AuthModule } from './auth/auth.module';
 import { StoresModule } from './stores/stores.module';
 import { ProductsModule } from './products/products.module';
 import { CatalogModule } from './catalog/catalog.module';
+import { WalletModule } from './wallet/wallet.module';
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
@@ -15,6 +16,7 @@ import { CatalogModule } from './catalog/catalog.module';
     StoresModule,
     ProductsModule,
     CatalogModule,
+    WalletModule,
   ],
   controllers: [AppController],
   providers: [AppService],

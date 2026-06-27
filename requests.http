@@ -202,3 +202,58 @@ Authorization: Bearer PASTE_SEED_SELLER_TOKEN_HERE
 ### Soft-delete a product
 DELETE http://localhost:3000/products/cmqw5c0or0000ccmbkagd3h1g
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbXF2eWpnYjEwMDAwNjhtYmtmcTE0ODFpIiwidXNlcm5hbWUiOiJzZWxsZXIyIiwicm9sZXMiOlsiU0VMTEVSIl0sImFjdGl2ZVJvbGUiOiJTRUxMRVIiLCJ0b2tlblZlcnNpb24iOjAsImlhdCI6MTc4MjU1MTc3NSwiZXhwIjoxNzgyNTUyNjc1fQ.6TvCenuMpTIA_7Pbo1b_6Y56ZKCuuZ7XhPaNkSz_1FM
+
+### Public catalog list (no token needed!)
+GET http://localhost:3000/catalog/products
+
+### Search the catalog for "kaos"
+GET http://localhost:3000/catalog/products?q=kaos
+
+### First page, 1 item per page
+GET http://localhost:3000/catalog/products?page=1&limit=1
+
+### Product detail (public)
+GET http://localhost:3000/catalog/products/cmqw5dcvk0002ccmbglcfaz6r
+
+### Soft-deleted / nonexistent product (should be 404)
+GET http://localhost:3000/catalog/products/fisdjvcksc
+
+### Only products from one specific store
+GET http://localhost:3000/catalog/products?storeId=cmqvyl17t000468mb86c3cyw4
+
+### Check wallet balance
+GET http://localhost:3000/wallet/history
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbXF2dGI2M3IwMDA4OHdtYnZyNjljdm5sIiwidXNlcm5hbWUiOiJidXllciIsInJvbGVzIjpbIkJVWUVSIl0sImFjdGl2ZVJvbGUiOiJCVVlFUiIsInRva2VuVmVyc2lvbiI6MSwiaWF0IjoxNzgyNTUyNzg1LCJleHAiOjE3ODI1NTM2ODV9.1gFtolZtMr1OU2sE4lN1IrA_4FGHp4SEz3hRMGV77_M
+
+### Top up 100000 Rupiah
+POST http://localhost:3000/wallet/topup
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbXF2dGI2M3IwMDA4OHdtYnZyNjljdm5sIiwidXNlcm5hbWUiOiJidXllciIsInJvbGVzIjpbIkJVWUVSIl0sImFjdGl2ZVJvbGUiOiJCVVlFUiIsInRva2VuVmVyc2lvbiI6MSwiaWF0IjoxNzgyNTUyNzg1LCJleHAiOjE3ODI1NTM2ODV9.1gFtolZtMr1OU2sE4lN1IrA_4FGHp4SEz3hRMGV77_M
+
+{
+  "amount": 100000
+}
+
+### Zero amount (should fail 400)
+POST http://localhost:3000/wallet/topup
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbXF2dGI2M3IwMDA4OHdtYnZyNjljdm5sIiwidXNlcm5hbWUiOiJidXllciIsInJvbGVzIjpbIkJVWUVSIl0sImFjdGl2ZVJvbGUiOiJCVVlFUiIsInRva2VuVmVyc2lvbiI6MSwiaWF0IjoxNzgyNTUyNzg1LCJleHAiOjE3ODI1NTM2ODV9.1gFtolZtMr1OU2sE4lN1IrA_4FGHp4SEz3hRMGV77_M
+
+
+{
+  "amount": 0
+}
+
+### Negative amount (should fail 400)
+POST http://localhost:3000/wallet/topup
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbXF2dGI2M3IwMDA4OHdtYnZyNjljdm5sIiwidXNlcm5hbWUiOiJidXllciIsInJvbGVzIjpbIkJVWUVSIl0sImFjdGl2ZVJvbGUiOiJCVVlFUiIsInRva2VuVmVyc2lvbiI6MSwiaWF0IjoxNzgyNTUyNzg1LCJleHAiOjE3ODI1NTM2ODV9.1gFtolZtMr1OU2sE4lN1IrA_4FGHp4SEz3hRMGV77_M
+
+
+{
+  "amount": -5000
+}
+
+### Seller tries to access wallet (should fail 403)
+GET http://localhost:3000/wallet
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbXF2eWpnYjEwMDAwNjhtYmtmcTE0ODFpIiwidXNlcm5hbWUiOiJzZWxsZXIyIiwicm9sZXMiOlsiU0VMTEVSIl0sImFjdGl2ZVJvbGUiOiJTRUxMRVIiLCJ0b2tlblZlcnNpb24iOjAsImlhdCI6MTc4MjU1MTc3NSwiZXhwIjoxNzgyNTUyNjc1fQ.6TvCenuMpTIA_7Pbo1b_6Y56ZKCuuZ7XhPaNkSz_1FM
