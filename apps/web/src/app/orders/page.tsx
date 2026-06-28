@@ -66,7 +66,6 @@ export default function OrdersPage() {
             <div className="container">
                 <div className="page-head">
                     <div>
-                        <p className="eyebrow">Pesanan</p>
                         <h1 className="page-title">Riwayat pesanan</h1>
                         <p className="page-sub">Lacak status dan rincian pesananmu.</p>
                     </div>

@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { api, ApiError } from "../../lib/api";
 import { useRequireRole, GuardGate } from "../../auth/useRequireRole";
 import { formatIDR, DELIVERY_FEES, DELIVERY_LABELS } from "../../lib/format";
+import { useToast } from "../../components/toast";
 
 type Cart = {
     storeId: string | null;
@@ -32,6 +33,7 @@ const METHODS: DeliveryMethod[] = ["INSTANT", "NEXT_DAY", "REGULAR"];
 export default function CheckoutPage() {
     const guard = useRequireRole("BUYER");
     const router = useRouter();
+    const toast = useToast();
 
     const [cart, setCart] = useState<Cart | null>(null);
     const [addresses, setAddresses] = useState<Address[]>([]);
@@ -82,6 +84,7 @@ export default function CheckoutPage() {
         setPlaceError(null);
         if (!addressId) {
             setPlaceError("Pilih alamat pengiriman terlebih dahulu.");
+            toast.warning("Pilih alamat pengiriman terlebih dahulu.");
             return;
         }
         setPlacing(true);
@@ -91,21 +94,21 @@ export default function CheckoutPage() {
                 body: { addressId, deliveryMethod: method },
             });
             window.dispatchEvent(new Event("cart:changed"));
+            toast.success("Pesanan berhasil dibuat.");
             router.push(`/orders/${order.id}`);
         } catch (e) {
             const err = e as ApiError;
             const code = err.body?.code;
+            let msg: string;
             if (code === "INSUFFICIENT_BALANCE") {
-                setPlaceError(
-                    "Saldo tidak cukup. Isi saldo dompet dulu lalu coba lagi.",
-                );
+                msg = "Saldo tidak cukup. Isi saldo dompet dulu lalu coba lagi.";
             } else if (code === "INSUFFICIENT_STOCK") {
-                setPlaceError(
-                    "Stok salah satu produk tidak mencukupi. Periksa kembali keranjangmu.",
-                );
+                msg = "Stok salah satu produk tidak mencukupi. Periksa kembali keranjangmu.";
             } else {
-                setPlaceError(err.message || "Gagal membuat pesanan.");
+                msg = err.message || "Gagal membuat pesanan.";
             }
+            setPlaceError(msg);
+            toast.error(msg);
             setPlacing(false);
         }
     }
@@ -115,7 +118,6 @@ export default function CheckoutPage() {
             <div className="container">
                 <div className="page-head">
                     <div>
-                        <p className="eyebrow">Checkout</p>
                         <h1 className="page-title">Selesaikan pesanan</h1>
                         <p className="page-sub">
                             Periksa alamat, pilih pengiriman, lalu bayar dengan saldo dompet.
@@ -189,7 +191,7 @@ export default function CheckoutPage() {
                                                         </span>
                                                         <br />
                                                         <span className="muted" style={{ fontSize: "0.85rem" }}>
-                                                            {a.phone} — {a.fullAddress}
+                                                            {a.phone} · {a.fullAddress}
                                                             {a.city ? `, ${a.city}` : ""}
                                                             {a.postalCode ? ` ${a.postalCode}` : ""}
                                                         </span>

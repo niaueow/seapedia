@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 import { api, ApiError } from "../../lib/api";
 import { useRequireRole, GuardGate } from "../../auth/useRequireRole";
 import { formatIDR, formatDateTime, WALLET_TXN_LABELS } from "../../lib/format";
+import { useToast } from "../../components/toast";
 
 type Txn = {
     id: string;
@@ -26,6 +27,7 @@ const QUICK = [50000, 100000, 500000, 1000000];
 
 export default function WalletPage() {
     const guard = useRequireRole("BUYER");
+    const toast = useToast();
 
     const [balance, setBalance] = useState<number | null>(null);
     const [history, setHistory] = useState<History | null>(null);
@@ -79,9 +81,12 @@ export default function WalletPage() {
             setModalOpen(false);
             setAmount("");
             setPage(1);
+            toast.success(`Saldo bertambah ${formatIDR(val)}.`);
             await loadAll();
         } catch (e) {
-            setFormError((e as ApiError).message || "Gagal mengisi saldo.");
+            const msg = (e as ApiError).message || "Gagal mengisi saldo.";
+            setFormError(msg);
+            toast.error(msg);
         } finally {
             setSubmitting(false);
         }
@@ -94,7 +99,6 @@ export default function WalletPage() {
             <div className="container">
                 <div className="page-head">
                     <div>
-                        <p className="eyebrow">Dompet</p>
                         <h1 className="page-title">Dompet saya</h1>
                         <p className="page-sub">
                             Isi saldo untuk membayar pesanan. Top-up bersifat simulasi.
@@ -104,11 +108,11 @@ export default function WalletPage() {
 
                 {error && <div className="notice notice-danger">{error}</div>}
 
-                {/* Balance card */}
-                <div className="panel" style={{ background: "linear-gradient(130deg, var(--brand-dark), var(--brand-deeper))", border: "none" }}>
-                    <p className="eyebrow" style={{ color: "rgba(255,255,255,.8)" }}>Saldo aktif</p>
+                {/* Balance card — flat brand color block */}
+                <div className="panel" style={{ background: "var(--brand-deeper)", border: "none" }}>
+                    <p style={{ color: "rgba(255,255,255,.78)", fontSize: "0.82rem", fontWeight: 600 }}>Saldo aktif</p>
                     <div style={{ fontSize: "2.4rem", fontWeight: 800, letterSpacing: "-0.03em", color: "#fff", marginTop: 6, fontVariantNumeric: "tabular-nums" }}>
-                        {balance === null ? "—" : formatIDR(balance)}
+                        {balance === null ? "Rp0" : formatIDR(balance)}
                     </div>
                     <button
                         className="btn btn-on-brand btn-md"
@@ -150,7 +154,7 @@ export default function WalletPage() {
                                                 {WALLET_TXN_LABELS[t.type] ?? t.type}
                                             </span>
                                             <span className="list-row-meta">
-                                                {t.description || "—"} · {formatDateTime(t.createdAt)}
+                                                {t.description || "Transaksi dompet"} · {formatDateTime(t.createdAt)}
                                             </span>
                                         </div>
                                         <div style={{ textAlign: "right" }}>
@@ -187,8 +191,7 @@ export default function WalletPage() {
             {modalOpen && (
                 <div className="modal-overlay" onClick={() => !submitting && setModalOpen(false)}>
                     <form className="modal-card" onClick={(e) => e.stopPropagation()} onSubmit={handleTopup}>
-                        <p className="eyebrow">Top-up</p>
-                        <h2 className="display" style={{ fontSize: "1.4rem", marginTop: 6 }}>
+                        <h2 className="display" style={{ fontSize: "1.4rem" }}>
                             Isi saldo dompet
                         </h2>
 

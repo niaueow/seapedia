@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { api, ApiError } from "../../lib/api";
 import { useRequireRole, GuardGate } from "../../auth/useRequireRole";
+import { useToast } from "../../components/toast";
 
 type Address = {
     id: string;
@@ -37,6 +38,7 @@ const EMPTY: FormState = {
 
 export default function AddressesPage() {
     const guard = useRequireRole("BUYER");
+    const toast = useToast();
 
     const [items, setItems] = useState<Address[]>([]);
     const [loading, setLoading] = useState(true);
@@ -117,9 +119,12 @@ export default function AddressesPage() {
                 await api("/addresses", { method: "POST", body });
             }
             setModalOpen(false);
+            toast.success(editId ? "Alamat diperbarui." : "Alamat ditambahkan.");
             await load();
         } catch (e) {
-            setFormError((e as ApiError).message || "Gagal menyimpan alamat.");
+            const msg = (e as ApiError).message || "Gagal menyimpan alamat.";
+            setFormError(msg);
+            toast.error(msg);
         } finally {
             setSubmitting(false);
         }
@@ -129,9 +134,10 @@ export default function AddressesPage() {
         setBusyId(a.id);
         try {
             await api(`/addresses/${a.id}`, { method: "PATCH", body: { isDefault: true } });
+            toast.success("Alamat utama diperbarui.");
             await load();
         } catch {
-            setError("Gagal mengatur alamat utama.");
+            toast.error("Gagal mengatur alamat utama.");
         } finally {
             setBusyId(null);
         }
@@ -142,9 +148,10 @@ export default function AddressesPage() {
         setBusyId(a.id);
         try {
             await api(`/addresses/${a.id}`, { method: "DELETE" });
+            toast.success("Alamat dihapus.");
             await load();
         } catch {
-            setError("Gagal menghapus alamat.");
+            toast.error("Gagal menghapus alamat.");
         } finally {
             setBusyId(null);
         }
@@ -155,7 +162,6 @@ export default function AddressesPage() {
             <div className="container">
                 <div className="page-head">
                     <div>
-                        <p className="eyebrow">Alamat</p>
                         <h1 className="page-title">Alamat pengiriman</h1>
                         <p className="page-sub">
                             Kelola alamat untuk pengiriman pesananmu.
@@ -242,8 +248,7 @@ export default function AddressesPage() {
                         onSubmit={handleSubmit}
                         style={{ maxWidth: 480, maxHeight: "90vh", overflowY: "auto" }}
                     >
-                        <p className="eyebrow">{editId ? "Edit" : "Baru"}</p>
-                        <h2 className="display" style={{ fontSize: "1.4rem", marginTop: 6 }}>
+                        <h2 className="display" style={{ fontSize: "1.4rem" }}>
                             {editId ? "Edit alamat" : "Tambah alamat"}
                         </h2>
 

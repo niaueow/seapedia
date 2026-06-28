@@ -66,7 +66,6 @@ export default function SellerOrdersPage() {
             <div className="container">
                 <div className="page-head">
                     <div>
-                        <p className="eyebrow">Pesanan masuk</p>
                         <h1 className="page-title">Pesanan toko</h1>
                         <p className="page-sub">
                             Pesanan yang masuk untuk produk tokomu.

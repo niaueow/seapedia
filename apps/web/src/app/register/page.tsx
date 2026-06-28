@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { api } from "../../lib/api";
+import { useToast } from "../../components/toast";
 
 type RoleName = "BUYER" | "SELLER" | "DRIVER";
 
@@ -15,6 +16,7 @@ const SELECTABLE_ROLES: { value: RoleName; label: string }[] = [
 
 export default function RegisterPage() {
     const router = useRouter();
+    const toast = useToast();
 
     const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
@@ -34,6 +36,7 @@ export default function RegisterPage() {
         setError(null);
         if (roles.length === 0) {
             setError("Pilih minimal satu peran.");
+            toast.warning("Pilih minimal satu peran.");
             return;
         }
         setLoading(true);
@@ -44,9 +47,12 @@ export default function RegisterPage() {
                 body: { username, email, name: name || undefined, password, roles },
             });
             // Registered! Send them to login.
+            toast.success("Akun berhasil dibuat. Silakan masuk.");
             router.push("/login");
         } catch (e: any) {
-            setError(e?.message ?? "Gagal mendaftar.");
+            const msg = e?.message ?? "Gagal mendaftar.";
+            setError(msg);
+            toast.error(msg);
         } finally {
             setLoading(false);
         }
@@ -139,7 +145,7 @@ export default function RegisterPage() {
                 {error && <div className="form-error">{error}</div>}
 
                 <button
-                    className="btn btn-primary btn-full"
+                    className="btn btn-primary btn-lg btn-full"
                     onClick={handleSubmit}
                     disabled={loading}
                 >

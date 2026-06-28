@@ -5,6 +5,7 @@ import Link from "next/link";
 import { api, ApiError } from "../../../lib/api";
 import { useRequireRole, GuardGate } from "../../../auth/useRequireRole";
 import { formatIDR } from "../../../lib/format";
+import { useToast } from "../../../components/toast";
 
 type Product = {
     id: string;
@@ -45,6 +46,7 @@ const LIMIT = 10;
 
 export default function SellerProductsPage() {
     const guard = useRequireRole("SELLER");
+    const toast = useToast();
 
     const [list, setList] = useState<ProductList | null>(null);
     const [hasStore, setHasStore] = useState<boolean | null>(null);
@@ -151,9 +153,12 @@ export default function SellerProductsPage() {
                 });
             }
             setModalOpen(false);
+            toast.success(editId ? "Produk diperbarui." : "Produk ditambahkan.");
             await load();
         } catch (e) {
-            setFormError((e as ApiError).message || "Gagal menyimpan produk.");
+            const msg = (e as ApiError).message || "Gagal menyimpan produk.";
+            setFormError(msg);
+            toast.error(msg);
         } finally {
             setSaving(false);
         }
@@ -164,9 +169,10 @@ export default function SellerProductsPage() {
         setBusyId(p.id);
         try {
             await api(`/products/${p.id}`, { method: "DELETE" });
+            toast.success(`"${p.name}" dinonaktifkan.`);
             await load();
         } catch {
-            setError("Gagal menghapus produk.");
+            toast.error("Gagal menghapus produk.");
         } finally {
             setBusyId(null);
         }
@@ -176,9 +182,10 @@ export default function SellerProductsPage() {
         setBusyId(p.id);
         try {
             await api(`/products/${p.id}`, { method: "PATCH", body: { isActive: true } });
+            toast.success(`"${p.name}" diaktifkan kembali.`);
             await load();
         } catch {
-            setError("Gagal mengaktifkan produk.");
+            toast.error("Gagal mengaktifkan produk.");
         } finally {
             setBusyId(null);
         }
@@ -191,7 +198,6 @@ export default function SellerProductsPage() {
             <div className="container">
                 <div className="page-head">
                     <div>
-                        <p className="eyebrow">Produk</p>
                         <h1 className="page-title">Produk saya</h1>
                         <p className="page-sub">Kelola produk yang dijual di tokomu.</p>
                     </div>
@@ -300,8 +306,7 @@ export default function SellerProductsPage() {
                         onSubmit={handleSubmit}
                         style={{ maxWidth: 480, maxHeight: "90vh", overflowY: "auto" }}
                     >
-                        <p className="eyebrow">{editId ? "Edit" : "Baru"}</p>
-                        <h2 className="display" style={{ fontSize: "1.4rem", marginTop: 6 }}>
+                        <h2 className="display" style={{ fontSize: "1.4rem" }}>
                             {editId ? "Edit produk" : "Tambah produk"}
                         </h2>
 

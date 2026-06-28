@@ -6,6 +6,7 @@ import { useParams, useRouter } from "next/navigation";
 import { api, ApiError } from "../../../lib/api";
 import { useAuth } from "../../../auth/auth-context";
 import { formatIDR } from "../../../lib/format";
+import { useToast } from "../../../components/toast";
 
 type ProductDetail = {
     id: string;
@@ -22,6 +23,7 @@ export default function ProductDetailPage() {
     const { id } = useParams<{ id: string }>();
     const router = useRouter();
     const { user, loading: authLoading } = useAuth();
+    const toast = useToast();
 
     const [product, setProduct] = useState<ProductDetail | null>(null);
     const [loading, setLoading] = useState(true);
@@ -29,10 +31,6 @@ export default function ProductDetailPage() {
 
     const [qty, setQty] = useState(1);
     const [adding, setAdding] = useState(false);
-    const [msg, setMsg] = useState<
-        | { kind: "success" | "danger" | "info"; text: string }
-        | null
-    >(null);
     const [conflict, setConflict] = useState(false);
 
     useEffect(() => {
@@ -59,7 +57,6 @@ export default function ProductDetailPage() {
     async function doAdd(clearFirst: boolean) {
         if (!product) return;
         setAdding(true);
-        setMsg(null);
         try {
             if (clearFirst) await api("/cart", { method: "DELETE" });
             await api("/cart/items", {
@@ -67,20 +64,19 @@ export default function ProductDetailPage() {
                 body: { productId: product.id, quantity: qty },
             });
             setConflict(false);
-            setMsg({ kind: "success", text: "Produk ditambahkan ke keranjang." });
+            toast.success("Produk ditambahkan ke keranjang.");
             window.dispatchEvent(new Event("cart:changed"));
         } catch (e) {
             const err = e as ApiError;
             if (err.status === 409 && err.body?.code === "DIFFERENT_STORE") {
                 setConflict(true);
-                setMsg({
-                    kind: "info",
-                    text: "Keranjangmu berisi produk dari toko lain. Satu keranjang hanya untuk satu toko.",
-                });
+                toast.warning(
+                    "Keranjangmu berisi produk dari toko lain. Satu keranjang hanya untuk satu toko.",
+                );
             } else if (err.status === 400) {
-                setMsg({ kind: "danger", text: err.message || "Jumlah melebihi stok." });
+                toast.error(err.message || "Jumlah melebihi stok.");
             } else {
-                setMsg({ kind: "danger", text: err.message || "Gagal menambahkan ke keranjang." });
+                toast.error(err.message || "Gagal menambahkan ke keranjang.");
             }
         } finally {
             setAdding(false);
@@ -88,17 +84,13 @@ export default function ProductDetailPage() {
     }
 
     function handleAddClick() {
-        setMsg(null);
         if (authLoading) return;
         if (!user) {
             router.push(`/login?next=${encodeURIComponent(`/products/${id}`)}`);
             return;
         }
         if (!isBuyer) {
-            setMsg({
-                kind: "info",
-                text: "Beralih ke peran Pembeli untuk menambahkan produk ke keranjang.",
-            });
+            toast.warning("Beralih ke peran Pembeli untuk menambahkan produk ke keranjang.");
             return;
         }
         doAdd(false);
@@ -233,35 +225,24 @@ export default function ProductDetailPage() {
                                 </p>
                             )}
 
-                            {msg && (
-                                <div className={`notice notice-${msg.kind === "info" ? "warn" : msg.kind}`}>
-                                    {msg.text}
-                                    {msg.kind === "success" && (
-                                        <>
-                                            {" "}
-                                            <Link href="/cart" style={{ fontWeight: 700, color: "inherit", textDecoration: "underline" }}>
-                                                Lihat keranjang
-                                            </Link>
-                                        </>
-                                    )}
-                                </div>
-                            )}
-
                             {conflict && (
-                                <button
-                                    className="btn btn-outline btn-full"
-                                    style={{ marginTop: 10 }}
-                                    onClick={() => doAdd(true)}
-                                    disabled={adding}
-                                >
-                                    Kosongkan keranjang &amp; tambah ini
-                                </button>
+                                <div className="notice notice-warn" style={{ marginBottom: 0 }}>
+                                    Keranjangmu masih berisi produk dari toko lain.
+                                    <button
+                                        className="btn btn-outline btn-full"
+                                        style={{ marginTop: 12 }}
+                                        onClick={() => doAdd(true)}
+                                        disabled={adding}
+                                    >
+                                        Kosongkan keranjang &amp; tambah ini
+                                    </button>
+                                </div>
                             )}
                         </div>
 
                         {/* Store block */}
                         <div className="panel">
-                            <p className="eyebrow">Toko</p>
+                            <p className="field-label">Dijual oleh</p>
                             <div className="display" style={{ fontSize: "1.15rem", marginTop: 4 }}>
                                 {product.store.name}
                             </div>

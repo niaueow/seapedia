@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { api, ApiError } from "../../../lib/api";
 import { useRequireRole, GuardGate } from "../../../auth/useRequireRole";
+import { useToast } from "../../../components/toast";
 
 type Store = {
     id: string;
@@ -13,6 +14,7 @@ type Store = {
 
 export default function SellerStorePage() {
     const guard = useRequireRole("SELLER");
+    const toast = useToast();
 
     const [store, setStore] = useState<Store | null>(null);
     const [loading, setLoading] = useState(true);
@@ -68,22 +70,25 @@ export default function SellerStorePage() {
                 });
                 setStore(updated);
                 setSuccess("Perubahan toko tersimpan.");
+                toast.success("Perubahan toko tersimpan.");
             } else {
                 const created = await api<Store>("/stores", { method: "POST", body });
                 setStore(created);
                 setSuccess("Toko berhasil dibuat!");
+                toast.success("Toko berhasil dibuat.");
             }
         } catch (e) {
             const err = e as ApiError;
+            let msg: string;
             if (err.status === 409) {
-                setFormError(
-                    err.message?.toLowerCase().includes("already")
-                        ? err.message
-                        : "Nama toko sudah dipakai. Pilih nama lain.",
-                );
+                msg = err.message?.toLowerCase().includes("already")
+                    ? err.message
+                    : "Nama toko sudah dipakai. Pilih nama lain.";
             } else {
-                setFormError(err.message || "Gagal menyimpan toko.");
+                msg = err.message || "Gagal menyimpan toko.";
             }
+            setFormError(msg);
+            toast.error(msg);
         } finally {
             setSaving(false);
         }
@@ -94,7 +99,6 @@ export default function SellerStorePage() {
             <div className="container">
                 <div className="page-head">
                     <div>
-                        <p className="eyebrow">Toko</p>
                         <h1 className="page-title">
                             {store ? "Profil toko" : "Buat toko"}
                         </h1>

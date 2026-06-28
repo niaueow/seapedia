@@ -5,6 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { useAuth } from "../../auth/auth-context";
 import { RoleSelectorModal } from "../../auth/RoleSelectorModal";
+import { useToast } from "../../components/toast";
 
 type RoleName = "ADMIN" | "SELLER" | "BUYER" | "DRIVER";
 
@@ -22,6 +23,7 @@ function LoginInner() {
     const next = params.get("next");
     const dest = next && next.startsWith("/") ? next : "/dashboard";
     const { login, selectRole } = useAuth();
+    const toast = useToast();
 
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
@@ -44,7 +46,9 @@ function LoginInner() {
                 router.push(dest); // single-role: go to intended page
             }
         } catch (e: any) {
-            setError(e?.message ?? "Gagal masuk.");
+            const msg = e?.message ?? "Gagal masuk.";
+            setError(msg);
+            toast.error(msg);
         } finally {
             setLoading(false);
         }
@@ -97,7 +101,7 @@ function LoginInner() {
                 {error && <div className="form-error">{error}</div>}
 
                 <button
-                    className="btn btn-primary btn-full"
+                    className="btn btn-primary btn-lg btn-full"
                     onClick={handleSubmit}
                     disabled={loading}
                 >

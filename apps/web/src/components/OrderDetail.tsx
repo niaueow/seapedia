@@ -60,7 +60,7 @@ export function OrderDetail({ order }: { order: OrderFull }) {
                 <div className="panel">
                     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 10 }}>
                         <div>
-                            <p className="eyebrow">Pesanan</p>
+                            <p className="field-label">Nomor pesanan</p>
                             <p className="panel-title" style={{ margin: 0 }}>
                                 #{order.id.slice(-8).toUpperCase()}
                             </p>

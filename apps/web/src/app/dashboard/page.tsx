@@ -95,7 +95,6 @@ function DashboardInner() {
             <div className="container">
                 <div className="page-head">
                     <div>
-                        <p className="eyebrow">Dasbor</p>
                         <h1 className="page-title">Halo, {user.username}</h1>
                         <p className="page-sub">
                             Kelola aktivitasmu di Seapedia sesuai peran yang sedang aktif.
@@ -161,9 +160,9 @@ function DashboardInner() {
                 {activeRole === "BUYER" && (
                     <div className="grid-2" style={{ marginTop: 18 }}>
                         <div className="panel">
-                            <p className="eyebrow">Dompet</p>
+                            <p className="field-label">Saldo dompet</p>
                             <div className="price" style={{ fontSize: "2rem", marginTop: 6 }}>
-                                {balance === null ? "—" : formatIDR(balance)}
+                                {balance === null ? "Rp0" : formatIDR(balance)}
                             </div>
                             <p className="muted" style={{ fontSize: "0.88rem", marginTop: 6 }}>
                                 Saldo dompet untuk membayar pesanan.
@@ -192,7 +191,7 @@ function DashboardInner() {
                 {activeRole === "SELLER" && (
                     <div className="grid-2" style={{ marginTop: 18 }}>
                         <div className="panel">
-                            <p className="eyebrow">Toko</p>
+                            <p className="field-label">Toko kamu</p>
                             {!storeLoaded ? (
                                 <div className="loading-row" style={{ padding: 16 }}>
                                     <span className="spinner" aria-hidden /> Memuat…

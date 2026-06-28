@@ -11,8 +11,8 @@ export function Footer() {
         <footer className="site-footer">
             <div className="container site-footer-inner">
                 <div>
-                    &copy; {new Date().getFullYear()} Seapedia — marketplace banyak
-                    toko. Belanja dengan tenang.
+                    &copy; {new Date().getFullYear()} Seapedia. Marketplace banyak
+                    toko untuk belanja dengan tenang.
                 </div>
                 <div className="footer-links">
                     <Link href="/products" className="footer-link">

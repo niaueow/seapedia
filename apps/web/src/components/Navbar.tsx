@@ -6,6 +6,8 @@ import { usePathname, useRouter } from "next/navigation";
 import { useAuth } from "../auth/auth-context";
 import { api } from "../lib/api";
 import { ROLE_LABELS, type RoleName } from "../lib/format";
+import { ThemeToggle } from "./ThemeToggle";
+import { useToast } from "./toast";
 
 type NavLink = { href: string; label: string };
 
@@ -36,6 +38,7 @@ export function Navbar() {
     const pathname = usePathname();
     const router = useRouter();
     const { user, loading, logout, selectRole } = useAuth();
+    const toast = useToast();
     const [menuOpen, setMenuOpen] = useState(false);
     const [cartCount, setCartCount] = useState(0);
     const menuRef = useRef<HTMLDivElement>(null);
@@ -86,15 +89,17 @@ export function Navbar() {
         setMenuOpen(false);
         try {
             await selectRole(role);
+            toast.success(`Sekarang bertindak sebagai ${ROLE_LABELS[role]}.`);
             router.push("/dashboard");
         } catch {
-            /* surfaced on dashboard if needed */
+            toast.error("Gagal mengganti peran. Coba lagi.");
         }
     }
 
     async function handleLogout() {
         setMenuOpen(false);
         await logout();
+        toast.info("Kamu telah keluar.");
         router.push("/");
     }
 
@@ -134,6 +139,7 @@ export function Navbar() {
                 </div>
 
                 <div className="nav-actions">
+                    <ThemeToggle />
                     {loading ? (
                         <span className="spinner" aria-hidden />
                     ) : user ? (

@@ -35,8 +35,7 @@ export function RoleSelectorModal({
     return (
         <div className="modal-overlay">
             <div className="modal-card">
-                <p className="eyebrow">Pilih peran</p>
-                <h2 className="display" style={{ fontSize: "1.5rem", marginTop: 8 }}>
+                <h2 className="display" style={{ fontSize: "1.5rem" }}>
                     Masuk sebagai
                 </h2>
                 <p className="muted" style={{ marginTop: 8, fontSize: "0.92rem" }}>

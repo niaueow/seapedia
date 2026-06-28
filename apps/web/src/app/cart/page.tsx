@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { api } from "../../lib/api";
 import { useRequireRole, GuardGate } from "../../auth/useRequireRole";
 import { formatIDR } from "../../lib/format";
+import { useToast } from "../../components/toast";
 
 type CartItem = {
     id: string;
@@ -32,6 +33,7 @@ type Cart = {
 export default function CartPage() {
     const guard = useRequireRole("BUYER");
     const router = useRouter();
+    const toast = useToast();
 
     const [cart, setCart] = useState<Cart | null>(null);
     const [loading, setLoading] = useState(true);
@@ -71,7 +73,9 @@ export default function CartPage() {
             setCart(updated);
             notifyChange();
         } catch (e: any) {
-            setError(e?.message || "Gagal memperbarui jumlah.");
+            const msg = e?.message || "Gagal memperbarui jumlah.";
+            setError(msg);
+            toast.error(msg);
         } finally {
             setBusyId(null);
         }
@@ -83,8 +87,9 @@ export default function CartPage() {
             const updated = await api<Cart>(`/cart/items/${item.id}`, { method: "DELETE" });
             setCart(updated);
             notifyChange();
+            toast.success("Item dihapus dari keranjang.");
         } catch {
-            setError("Gagal menghapus item.");
+            toast.error("Gagal menghapus item.");
         } finally {
             setBusyId(null);
         }
@@ -97,8 +102,9 @@ export default function CartPage() {
             const updated = await api<Cart>("/cart", { method: "DELETE" });
             setCart(updated);
             notifyChange();
+            toast.success("Keranjang dikosongkan.");
         } catch {
-            setError("Gagal mengosongkan keranjang.");
+            toast.error("Gagal mengosongkan keranjang.");
         } finally {
             setBusyId(null);
         }
@@ -111,7 +117,6 @@ export default function CartPage() {
             <div className="container">
                 <div className="page-head">
                     <div>
-                        <p className="eyebrow">Keranjang</p>
                         <h1 className="page-title">Keranjang belanja</h1>
                         <p className="page-sub">
                             Satu keranjang hanya berisi produk dari satu toko.

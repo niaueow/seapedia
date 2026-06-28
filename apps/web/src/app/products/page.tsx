@@ -82,7 +82,6 @@ function CatalogInner() {
             <div className="container">
                 <div className="page-head">
                     <div>
-                        <p className="eyebrow">Katalog</p>
                         <h1 className="page-title">Jelajahi produk</h1>
                         <p className="page-sub">
                             Produk dari berbagai toko di Seapedia. Satu keranjang hanya bisa
