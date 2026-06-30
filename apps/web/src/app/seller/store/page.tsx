@@ -30,7 +30,7 @@ export default function SellerStorePage() {
       const s = await api<Store | null>("/stores/mine");
       setStore(s);
       if (s) { setName(s.name); setDescription(s.description ?? ""); }
-    } catch { setLoadError("Gagal memuat data toko."); }
+    } catch { setLoadError("Hmm, data tokonya belum kebuka. Coba muat ulang ya."); }
     finally { setLoading(false); }
   }
 
@@ -41,24 +41,24 @@ export default function SellerStorePage() {
     e.preventDefault();
     setFormError(null);
     setSuccess(null);
-    if (!name.trim()) { setFormError("Nama toko wajib diisi."); return; }
+    if (!name.trim()) { setFormError("Isi dulu nama tokonya ya."); return; }
     setSaving(true);
     const body = { name: name.trim(), description: description.trim() || undefined };
     try {
       if (store) {
         const updated = await api<Store>(`/stores/${store.id}`, { method: "PATCH", body });
         setStore(updated);
-        setSuccess("Perubahan toko tersimpan.");
-        toast.success("Perubahan toko tersimpan.");
+        setSuccess("Perubahan tokomu sudah kesimpan.");
+        toast.success("Perubahan tokomu sudah kesimpan.");
       } else {
         const created = await api<Store>("/stores", { method: "POST", body });
         setStore(created);
-        setSuccess("Toko berhasil dibuat!");
-        toast.success("Toko berhasil dibuat.");
+        setSuccess("Tokomu sudah jadi! Yuk, isi produk pertamamu.");
+        toast.success("Tokomu sudah jadi!");
       }
     } catch (e) {
       const err = e as ApiError;
-      const msg = err.status === 409 ? "Nama toko sudah dipakai. Pilih nama lain." : (err.message || "Gagal menyimpan toko.");
+      const msg = err.status === 409 ? "Nama toko ini sudah dipakai. Coba nama lain yang khas tokomu ya." : (err.message || "Yah, tokonya belum kesimpan. Coba lagi sebentar ya.");
       setFormError(msg);
       toast.error(msg);
     } finally {
@@ -69,9 +69,9 @@ export default function SellerStorePage() {
   return (
     <main className="mx-auto max-w-[1280px] px-6 py-10">
       <div className="mb-8">
-        <h1 className="t-display-lg">{store ? "Profil toko" : "Buat toko"}</h1>
+        <h1 className="t-display-lg">{store ? "Profil toko" : "Buka toko"}</h1>
         <p className="t-body-lg mt-2 text-foreground/65">
-          {store ? "Perbarui identitas tokomu di Seapedia." : "Buat toko untuk mulai berjualan. Nama toko harus unik."}
+          {store ? "Perbarui identitas tokomu kapan aja." : "Buka tokomu dan mulai jualan ke pembeli sekitar. Nama toko harus unik ya."}
         </p>
       </div>
 
@@ -81,7 +81,7 @@ export default function SellerStorePage() {
 
       {loading ? (
         <div className="mt-20 flex items-center justify-center gap-3 text-foreground/50">
-          <span className="spinner" aria-hidden /> Memuat…
+          <span className="spinner" aria-hidden /> Sebentar ya…
         </div>
       ) : (
         <div className="grid gap-8 lg:grid-cols-[480px_1fr]">
@@ -101,7 +101,7 @@ export default function SellerStorePage() {
                   <TextArea
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
-                    placeholder="Ceritakan tentang tokomu…"
+                    placeholder="Ceritakan soal tokomu, biar pembeli makin kenal."
                     rows={4}
                     maxLength={500}
                   />
@@ -115,7 +115,7 @@ export default function SellerStorePage() {
                 )}
 
                 <Pill type="submit" disabled={saving} className="w-full">
-                  {saving ? "Menyimpan…" : store ? "Simpan perubahan" : "Buat toko"}
+                  {saving ? "Sebentar ya…" : store ? "Simpan perubahan" : "Buka toko"}
                 </Pill>
               </div>
             </Card>
@@ -125,13 +125,13 @@ export default function SellerStorePage() {
           {store ? (
             <ColorBlock color="lilac" className="!py-8 !px-8">
               <div className="flex items-center gap-3 mb-5">
-                <div className="grid h-12 w-12 place-items-center rounded-full bg-black/10">
+                <div className="grid h-12 w-12 place-items-center rounded-full" style={{ background: "var(--on-lilac-line)" }}>
                   <StoreIcon size={20} />
                 </div>
               </div>
               <div className="t-headline mb-2">{store.name}</div>
-              <p className="t-body-sm text-foreground/65 mb-6">
-                {store.description || "Belum ada deskripsi."}
+              <p className="t-body-sm mb-6" style={{ color: "var(--on-lilac-soft)" }}>
+                {store.description || "Belum ada deskripsi toko."}
               </p>
               <div className="flex flex-wrap gap-2">
                 <Link
@@ -143,8 +143,8 @@ export default function SellerStorePage() {
                 </Link>
                 <Link
                   href={`/products?storeId=${store.id}`}
-                  className="inline-flex items-center gap-2 rounded-[50px] border border-black/30 px-5 py-2.5 hover:border-foreground transition-colors t-body-sm"
-                  style={{ fontWeight: 480 }}
+                  className="inline-flex items-center gap-2 rounded-[50px] border px-5 py-2.5 hover:opacity-70 transition-opacity t-body-sm"
+                  style={{ fontWeight: 480, borderColor: "var(--on-lilac-line)" }}
                 >
                   Lihat halaman publik
                 </Link>
@@ -154,7 +154,7 @@ export default function SellerStorePage() {
             <div className="rounded-[24px] border border-dashed border-[var(--hairline)] flex items-center justify-center p-10">
               <div className="text-center">
                 <p className="t-body-sm text-foreground/45">
-                  Isi formulir di samping untuk membuat tokomu. Setelah toko dibuat, kamu bisa menambahkan produk.
+                  Isi formulir di samping buat buka tokomu. Habis itu, kamu bisa langsung tambah produk.
                 </p>
               </div>
             </div>

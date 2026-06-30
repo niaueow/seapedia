@@ -62,7 +62,7 @@ export default function CheckoutPage() {
       const def = a.find((x) => x.isDefault) ?? a[0];
       if (def) setAddressId(def.id);
     } catch {
-      setError("Gagal memuat data checkout.");
+      setError("Hmm, halaman checkout belum kebuka. Coba muat ulang ya.");
     } finally {
       setLoading(false);
     }
@@ -82,7 +82,7 @@ export default function CheckoutPage() {
   async function placeOrder() {
     setPlaceError(null);
     if (!addressId) {
-      toast.warning("Pilih alamat pengiriman terlebih dahulu.");
+      toast.warning("Pilih dulu alamat pengirimannya ya.");
       return;
     }
     setPlacing(true);
@@ -92,18 +92,18 @@ export default function CheckoutPage() {
         body: { addressId, deliveryMethod: method },
       });
       window.dispatchEvent(new Event("cart:changed"));
-      toast.success("Pesanan berhasil dibuat.");
+      toast.success("Pesananmu berhasil! Makasih sudah dukung penjual lokal.");
       router.push(`/orders/${order.id}`);
     } catch (e) {
       const err = e as ApiError;
       const code = err.body?.code;
       let msg: string;
       if (code === "INSUFFICIENT_BALANCE") {
-        msg = "Saldo tidak cukup. Isi saldo dompet dulu lalu coba lagi.";
+        msg = "Saldo kamu belum cukup buat pesanan ini. Isi dompet dulu yuk.";
       } else if (code === "INSUFFICIENT_STOCK") {
-        msg = "Stok salah satu produk tidak mencukupi. Periksa kembali keranjangmu.";
+        msg = "Yah, stok salah satu produk keburu habis. Cek lagi keranjangmu ya.";
       } else {
-        msg = err.message || "Gagal membuat pesanan.";
+        msg = err.message || "Yah, pesanannya belum kebuat. Coba lagi sebentar ya.";
       }
       setPlaceError(msg);
       toast.error(msg);
@@ -113,9 +113,9 @@ export default function CheckoutPage() {
 
   return (
     <main className="mx-auto max-w-[1280px] px-6 py-10">
-      <h1 className="t-display-lg">Selesaikan pesanan</h1>
+      <h1 className="t-display-lg">Selesaikan pesananmu</h1>
       <p className="t-body-lg mt-2 text-foreground/65">
-        Periksa alamat, pilih pengiriman, lalu bayar dengan saldo dompet.
+        Cek alamat, pilih pengiriman, bayar pakai saldo dompet. Tinggal beberapa langkah lagi.
       </p>
 
       {error && (
@@ -126,18 +126,18 @@ export default function CheckoutPage() {
 
       {loading ? (
         <div className="mt-20 flex items-center justify-center gap-3 text-foreground/50">
-          <span className="spinner" aria-hidden /> Memuat…
+          <span className="spinner" aria-hidden /> Sebentar ya…
         </div>
       ) : empty ? (
         <div className="mt-24 text-center">
-          <h3 className="t-headline">Keranjang kosong</h3>
-          <p className="mt-2 t-body-lg text-foreground/55">Tambahkan produk dulu sebelum checkout.</p>
+          <h3 className="t-headline">Keranjangmu masih kosong</h3>
+          <p className="mt-2 t-body-lg text-foreground/55">Pilih produk dari penjual lokal dulu, baru lanjut checkout.</p>
           <Link
             href="/products"
             className="mt-6 inline-flex items-center gap-2 rounded-[50px] bg-black px-5 py-2.5 text-white hover:bg-neutral-800 transition-colors"
             style={{ fontWeight: 480 }}
           >
-            Jelajahi produk
+            Mulai belanja
           </Link>
         </div>
       ) : (
@@ -158,11 +158,11 @@ export default function CheckoutPage() {
 
               {addresses.length === 0 ? (
                 <div className="rounded-[12px] bg-amber-50 border border-amber-200 px-4 py-3 t-body-sm text-amber-800">
-                  Belum ada alamat.{" "}
+                  Belum ada alamat nih.{" "}
                   <Link href="/addresses" className="font-bold underline">
                     Tambah alamat
                   </Link>{" "}
-                  untuk melanjutkan.
+                  dulu biar bisa lanjut.
                 </div>
               ) : (
                 <div className="space-y-3">
@@ -205,7 +205,7 @@ export default function CheckoutPage() {
                     className={cx(
                       "flex items-center justify-between rounded-[12px] border p-4 cursor-pointer transition-all",
                       method === m
-                        ? "border-black bg-[var(--surface-soft)]"
+                        ? "border-foreground bg-[var(--surface-soft)]"
                         : "border-[var(--hairline)] hover:border-foreground/40",
                     )}
                   >
@@ -237,20 +237,20 @@ export default function CheckoutPage() {
               </p>
 
               <div className="space-y-2.5 t-body">
-                <div className="flex justify-between text-foreground/75">
+                <div className="flex justify-between text-[var(--on-lime-soft)]">
                   <span>Subtotal</span>
                   <span>{formatIDR(subtotal)}</span>
                 </div>
-                <div className="flex justify-between text-foreground/75">
-                  <span>PPN (12%)</span>
+                <div className="flex justify-between text-[var(--on-lime-soft)]">
+                  <span>PPN 12%</span>
                   <span>{formatIDR(ppn)}</span>
                 </div>
-                <div className="flex justify-between text-foreground/75">
+                <div className="flex justify-between text-[var(--on-lime-soft)]">
                   <span>Ongkir ({DELIVERY_LABELS[method]})</span>
                   <span>{formatIDR(fee)}</span>
                 </div>
                 <div
-                  className="flex justify-between border-t border-black/10 pt-3"
+                  className="flex justify-between border-t border-[var(--on-lime-line)] pt-3"
                   style={{ fontWeight: 620 }}
                 >
                   <span>Total</span>
@@ -269,7 +269,7 @@ export default function CheckoutPage() {
 
               {insufficient && (
                 <div className="mt-3 rounded-[10px] bg-background/60 px-3 py-2.5 t-body-sm text-foreground/70">
-                  Saldo kurang {formatIDR(total - balance)}.{" "}
+                  Saldomu kurang {formatIDR(total - balance)}. Isi dompet dulu yuk.{" "}
                   <Link href="/wallet" className="font-bold underline">
                     Isi saldo
                   </Link>
@@ -287,10 +287,10 @@ export default function CheckoutPage() {
                 onClick={placeOrder}
                 disabled={placing || insufficient || addresses.length === 0}
               >
-                {placing ? "Memproses…" : `Bayar ${formatIDR(total)}`}
+                {placing ? "Sebentar ya…" : `Bayar ${formatIDR(total)}`}
               </Pill>
               <p className="mt-3 t-caption text-foreground/45 text-center">
-                PPN 12% dihitung dari subtotal saja, bukan ongkir.
+                PPN 12% dihitung dari subtotal aja, ongkir nggak kena.
               </p>
             </ColorBlock>
           </div>

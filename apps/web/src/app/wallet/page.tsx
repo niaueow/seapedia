@@ -45,7 +45,7 @@ export default function WalletPage() {
       setBalance(w.balance);
       setHistory(h);
     } catch {
-      setError("Gagal memuat dompet.");
+      setError("Hmm, dompetnya belum kebuka. Coba muat ulang ya.");
     } finally {
       setLoading(false);
     }
@@ -59,7 +59,7 @@ export default function WalletPage() {
     e.preventDefault();
     const val = Math.floor(Number(amount));
     if (!Number.isFinite(val) || val < 1) {
-      toast.error("Masukkan jumlah yang valid (minimal Rp 1).");
+      toast.error("Isi nominalnya dulu ya, minimal Rp 1.");
       return;
     }
     setSubmitting(true);
@@ -71,10 +71,10 @@ export default function WalletPage() {
       setBalance(res.balance);
       setAmount("");
       setPage(1);
-      toast.success(`Saldo bertambah ${formatIDR(val)}.`);
+      toast.success(`Saldomu nambah ${formatIDR(val)}. Siap belanja!`);
       await loadAll();
     } catch (e) {
-      const msg = (e as ApiError).message || "Gagal mengisi saldo.";
+      const msg = (e as ApiError).message || "Yah, saldonya belum keisi. Coba lagi sebentar ya.";
       toast.error(msg);
     } finally {
       setSubmitting(false);
@@ -85,9 +85,9 @@ export default function WalletPage() {
 
   return (
     <main className="mx-auto max-w-[1280px] px-6 py-10">
-      <h1 className="t-display-lg">Dompet saya</h1>
+      <h1 className="t-display-lg">Dompet kamu</h1>
       <p className="t-body-lg mt-2 text-foreground/65">
-        Isi saldo untuk membayar pesanan. Top-up bersifat simulasi.
+        Isi saldo buat bayar pesanan. Tinggal klik, langsung nambah.
       </p>
 
       {error && (
@@ -102,7 +102,7 @@ export default function WalletPage() {
           {/* Balance block */}
           <ColorBlock color="lime" className="!py-8 !px-8">
             <div className="flex items-center gap-3 mb-4">
-              <div className="grid h-10 w-10 place-items-center rounded-full bg-black/10">
+              <div className="grid h-10 w-10 place-items-center rounded-full" style={{ background: "var(--on-lime-line)" }}>
                 <Wallet size={18} />
               </div>
             </div>
@@ -131,7 +131,7 @@ export default function WalletPage() {
                 min={1}
                 value={amount}
                 onChange={(e) => setAmount(e.target.value)}
-                placeholder="Jumlah lainnya…"
+                placeholder="Mau isi berapa?"
               />
               <Pill type="submit" disabled={submitting} className="shrink-0">
                 <Plus size={16} />
@@ -144,11 +144,11 @@ export default function WalletPage() {
         <Card className="h-fit">
           {loading ? (
             <div className="flex items-center gap-3 text-foreground/50 py-6">
-              <span className="spinner" aria-hidden /> Memuat…
+              <span className="spinner" aria-hidden /> Sebentar ya…
             </div>
           ) : !history || history.data.length === 0 ? (
             <div className="py-12 text-center">
-              <p className="t-body text-foreground/50">Belum ada transaksi. Mulai dengan isi saldo.</p>
+              <p className="t-body text-foreground/50">Belum ada transaksi. Isi saldo dulu yuk.</p>
             </div>
           ) : (
             <>
@@ -168,7 +168,7 @@ export default function WalletPage() {
                       <div className="text-right">
                         <div
                           className="t-body-sm"
-                          style={{ fontWeight: 560, color: credit ? "var(--success)" : "#000" }}
+                          style={{ fontWeight: 560, color: credit ? "var(--success)" : "var(--foreground)" }}
                         >
                           {credit ? "+" : "−"} {formatIDR(t.amount)}
                         </div>

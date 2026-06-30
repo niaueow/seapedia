@@ -81,7 +81,7 @@ function CatalogInner() {
     if (storeId) qs.set("storeId", storeId);
     api<CatalogResponse>(`/catalog/products?${qs.toString()}`, { auth: false })
       .then((r) => alive && setRes(r))
-      .catch(() => alive && setError("Gagal memuat produk. Pastikan server berjalan."))
+      .catch(() => alive && setError("Hmm, produknya belum kebuka. Coba muat ulang sebentar ya."))
       .finally(() => alive && setLoading(false));
     return () => { alive = false; };
   }, [q, storeId, page]);
@@ -108,9 +108,9 @@ function CatalogInner() {
 
   return (
     <main className="mx-auto max-w-[1280px] px-6 py-12">
-      <h1 className="t-display-lg">Jelajahi setiap toko</h1>
+      <h1 className="t-display-lg">Jelajahi toko-toko lokal</h1>
       <p className="t-body-lg mt-3 max-w-xl text-foreground/65">
-        Produk dari penjual independen SEAPEDIA. Siapa pun bisa melihat — checkout butuh akun Pembeli.
+        Semua produk dari penjual lokal SEAPEDIA. Bebas lihat-lihat, checkout tinggal masuk sebagai Pembeli.
       </p>
 
       {/* Search + filters */}
@@ -147,8 +147,8 @@ function CatalogInner() {
           <input
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            placeholder="Cari produk…"
-            className="w-full rounded-[8px] border border-[var(--hairline)] bg-background py-3 pl-10 pr-4 t-body outline-none transition-colors focus:border-black focus:ring-2 focus:ring-black/10"
+            placeholder="Mau cari apa hari ini?"
+            className="w-full rounded-[8px] border border-[var(--hairline)] bg-background py-3 pl-10 pr-4 t-body outline-none transition-colors focus:border-foreground focus:ring-2 focus:ring-foreground/10"
             aria-label="Cari produk"
           />
         </form>
@@ -157,7 +157,7 @@ function CatalogInner() {
       {/* Content */}
       {loading ? (
         <div className="mt-20 flex items-center justify-center gap-3 text-foreground/50">
-          <span className="spinner" aria-hidden /> Memuat produk…
+          <span className="spinner" aria-hidden /> Sebentar, lagi nyiapin produk…
         </div>
       ) : error ? (
         <div className="mt-10 rounded-[16px] bg-red-50 border border-red-200 px-6 py-5 t-body-sm text-red-700">
@@ -165,11 +165,11 @@ function CatalogInner() {
         </div>
       ) : !res || res.data.length === 0 ? (
         <div className="mt-24 text-center">
-          <h3 className="t-headline">Produk tidak ditemukan</h3>
+          <h3 className="t-headline">Belum ketemu nih</h3>
           <p className="mt-2 t-body-lg text-foreground/55">
             {q
-              ? `Tidak ada produk yang cocok dengan "${q}". Coba kata kunci lain.`
-              : "Belum ada produk di katalog. Coba lagi nanti."}
+              ? `Belum ada yang cocok sama "${q}". Coba kata kunci lain ya.`
+              : "Belum ada produk di katalog. Cek lagi nanti ya, penjual lokal baru terus berdatangan."}
           </p>
         </div>
       ) : (
@@ -213,7 +213,7 @@ export default function ProductsPage() {
       fallback={
         <main className="mx-auto max-w-[1280px] px-6 py-12">
           <div className="mt-20 flex items-center justify-center gap-3 text-foreground/50">
-            <span className="spinner" aria-hidden /> Memuat…
+            <span className="spinner" aria-hidden /> Sebentar ya…
           </div>
         </main>
       }

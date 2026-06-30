@@ -56,7 +56,7 @@ export function GuardGate({ state }: { state: GuardState }) {
         <main className="mx-auto max-w-[1280px] px-6 py-12">
             <div className="mt-20 flex items-center justify-center gap-3 text-foreground/50">
                 <span className="spinner" aria-hidden />
-                {state.reason === "wrong-role" ? "Mengalihkan…" : "Memuat…"}
+                {state.reason === "wrong-role" ? "Mengarahkan…" : "Sebentar ya…"}
             </div>
         </main>
     );

@@ -42,7 +42,7 @@ export default function SellerOrdersPage() {
     if (status) qs.set("status", status);
     api<OrderList>(`/seller/orders?${qs.toString()}`)
       .then((r) => alive && setList(r))
-      .catch(() => alive && setError("Gagal memuat pesanan masuk."))
+      .catch(() => alive && setError("Hmm, pesanannya belum kebuka. Coba muat ulang ya."))
       .finally(() => alive && setLoading(false));
     return () => { alive = false; };
   }, [guard.ready, page, status]);
@@ -56,10 +56,10 @@ export default function SellerOrdersPage() {
       <div className="flex items-end justify-between mb-8 gap-4 flex-wrap">
         <div>
           <h1 className="t-display-lg">Pesanan masuk</h1>
-          <p className="t-body-lg mt-2 text-foreground/65">Pesanan dari pembeli untuk produk tokomu.</p>
+          <p className="t-body-lg mt-2 text-foreground/65">Pesanan dari pembeli buat produk tokomu, semua ada di sini.</p>
         </div>
         <select
-          className="rounded-full border border-[var(--hairline)] px-4 py-2 t-body-sm bg-background hover:border-foreground transition-colors focus:outline-none focus:ring-2 focus:ring-black/20"
+          className="rounded-full border border-[var(--hairline)] px-4 py-2 t-body-sm bg-background hover:border-foreground transition-colors focus:outline-none focus:ring-2 focus:ring-foreground/20"
           value={status}
           onChange={(e) => { setStatus(e.target.value); setPage(1); }}
           aria-label="Filter status"
@@ -77,13 +77,13 @@ export default function SellerOrdersPage() {
 
       {loading ? (
         <div className="mt-20 flex items-center justify-center gap-3 text-foreground/50">
-          <span className="spinner" aria-hidden /> Memuat…
+          <span className="spinner" aria-hidden /> Sebentar ya…
         </div>
       ) : !list || list.data.length === 0 ? (
         <div className="mt-24 text-center">
           <h3 className="t-headline">Belum ada pesanan</h3>
           <p className="mt-2 t-body-lg text-foreground/55">
-            {status ? "Tidak ada pesanan dengan status ini." : "Pesanan dari pembeli akan muncul di sini."}
+            {status ? "Belum ada pesanan dengan status ini." : "Belum ada pesanan masuk. Tenang, pesanan pertama segera datang!"}
           </p>
         </div>
       ) : (

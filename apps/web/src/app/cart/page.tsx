@@ -57,7 +57,7 @@ export default function CartPage() {
     try {
       setCart(await api<Cart>("/cart"));
     } catch {
-      setError("Gagal memuat keranjang.");
+      setError("Hmm, keranjangnya belum kebuka. Coba muat ulang ya.");
     } finally {
       setLoading(false);
     }
@@ -81,7 +81,7 @@ export default function CartPage() {
       setCart(updated);
       notifyChange();
     } catch (e: any) {
-      toast.error(e?.message || "Gagal memperbarui jumlah.");
+      toast.error(e?.message || "Yah, jumlahnya belum keupdate. Coba lagi ya.");
     } finally {
       setBusyId(null);
     }
@@ -93,24 +93,24 @@ export default function CartPage() {
       const updated = await api<Cart>(`/cart/items/${item.id}`, { method: "DELETE" });
       setCart(updated);
       notifyChange();
-      toast.success("Item dihapus.");
+      toast.success("Item sudah dihapus.");
     } catch {
-      toast.error("Gagal menghapus item.");
+      toast.error("Yah, itemnya belum kehapus. Coba lagi ya.");
     } finally {
       setBusyId(null);
     }
   }
 
   async function clearCart() {
-    if (!confirm("Kosongkan seluruh keranjang?")) return;
+    if (!confirm("Yakin mau kosongkan semua keranjang?")) return;
     setBusyId("__all__");
     try {
       const updated = await api<Cart>("/cart", { method: "DELETE" });
       setCart(updated);
       notifyChange();
-      toast.success("Keranjang dikosongkan.");
+      toast.success("Keranjang sudah dikosongkan.");
     } catch {
-      toast.error("Gagal mengosongkan keranjang.");
+      toast.error("Yah, keranjangnya belum bisa dikosongkan. Coba lagi ya.");
     } finally {
       setBusyId(null);
     }
@@ -126,7 +126,7 @@ export default function CartPage() {
     return (
       <main className="mx-auto max-w-[1280px] px-6 py-12">
         <div className="mt-20 flex items-center justify-center gap-3 text-foreground/50">
-          <span className="spinner" aria-hidden /> Memuat…
+          <span className="spinner" aria-hidden /> Sebentar ya…
         </div>
       </main>
     );
@@ -138,16 +138,16 @@ export default function CartPage() {
         <div className="mx-auto grid h-16 w-16 place-items-center rounded-full bg-[var(--surface-soft)]">
           <ShoppingBag size={24} />
         </div>
-        <h1 className="t-display-lg mt-5">Keranjangmu kosong</h1>
+        <h1 className="t-display-lg mt-5">Keranjangmu masih kosong</h1>
         <p className="mt-3 t-body-lg text-foreground/65">
-          Satu keranjang hanya bisa berisi produk dari satu toko.
+          Yuk, isi dengan produk dari <strong style={{ fontWeight: 600 }}>UMKM favoritmu</strong>! Satu keranjang buat satu toko ya.
         </p>
         <Link
           href="/products"
           className="mt-6 inline-flex items-center gap-2 rounded-[50px] bg-black px-5 py-2.5 text-white hover:bg-neutral-800 transition-colors"
           style={{ fontWeight: 480 }}
         >
-          Jelajahi marketplace
+          Mulai belanja
         </Link>
       </main>
     );
@@ -158,7 +158,7 @@ export default function CartPage() {
       <h1 className="t-display-lg">Keranjangmu</h1>
       {cart!.store && (
         <p className="mt-2 t-body-lg text-foreground/65">
-          Dari <span style={{ fontWeight: 560 }}>{cart!.store.name}</span> · satu toko, satu keranjang
+          Dari <strong style={{ fontWeight: 600 }}>{cart!.store.name}</strong> · satu toko, satu keranjang
         </p>
       )}
 
@@ -178,7 +178,7 @@ export default function CartPage() {
               onClick={clearCart}
               disabled={busyId !== null}
             >
-              Kosongkan
+              Kosongkan semua
             </button>
           </div>
 
@@ -250,7 +250,7 @@ export default function CartPage() {
                   className={cx(
                     "rounded-[12px] border p-4 text-left transition-all",
                     method === opt.value
-                      ? "border-black bg-[var(--surface-soft)]"
+                      ? "border-foreground bg-[var(--surface-soft)]"
                       : "border-[var(--hairline)] hover:border-foreground/40",
                   )}
                 >
@@ -266,20 +266,20 @@ export default function CartPage() {
         <div className="lg:sticky lg:top-20 lg:self-start">
           <ColorBlock color="lime" className="!py-7 !px-7">
             <div className="space-y-2.5 t-body">
-              <div className="flex items-center justify-between text-foreground/75">
+              <div className="flex items-center justify-between text-[var(--on-lime-soft)]">
                 <span>Subtotal ({cart!.itemCount} item)</span>
                 <span>{formatIDR(subtotal)}</span>
               </div>
-              <div className="flex items-center justify-between text-foreground/75">
+              <div className="flex items-center justify-between text-[var(--on-lime-soft)]">
                 <span>Ongkir ({DELIVERY_LABELS[method]})</span>
                 <span>{formatIDR(fee)}</span>
               </div>
-              <div className="flex items-center justify-between text-foreground/75">
+              <div className="flex items-center justify-between text-[var(--on-lime-soft)]">
                 <span>PPN 12%</span>
                 <span>{formatIDR(ppn)}</span>
               </div>
               <div
-                className="flex items-center justify-between border-t border-black/10 pt-3"
+                className="flex items-center justify-between border-t border-[var(--on-lime-line)] pt-3"
                 style={{ fontWeight: 620 }}
               >
                 <span>Total</span>
@@ -296,7 +296,7 @@ export default function CartPage() {
             </Pill>
             <Link
               href="/products"
-              className="mt-2 flex items-center justify-center w-full rounded-[50px] border border-black/20 px-5 py-2.5 t-body-sm hover:border-foreground transition-colors"
+              className="mt-2 flex items-center justify-center w-full rounded-[50px] border border-[var(--on-lime-line)] px-5 py-2.5 t-body-sm hover:opacity-70 transition-opacity"
               style={{ fontWeight: 480 }}
             >
               Lanjut belanja

@@ -40,7 +40,7 @@ export function ReviewsSection() {
       const res = await api<ReviewList>("/reviews?limit=12", { auth: false });
       setList(res);
     } catch {
-      setLoadError("Gagal memuat ulasan.");
+      setLoadError("Hmm, ulasannya belum kebuka. Coba muat ulang ya.");
     } finally {
       setLoading(false);
     }
@@ -52,8 +52,8 @@ export function ReviewsSection() {
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    if (!name.trim()) { toast.warning("Nama tidak boleh kosong."); return; }
-    if (!comment.trim()) { toast.warning("Komentar tidak boleh kosong."); return; }
+    if (!name.trim()) { toast.warning("Isi namamu dulu ya."); return; }
+    if (!comment.trim()) { toast.warning("Ceritanya jangan kosong ya."); return; }
     setSubmitting(true);
     try {
       await api("/reviews", {
@@ -62,10 +62,10 @@ export function ReviewsSection() {
         body: { reviewerName: name.trim(), rating, comment: comment.trim() },
       });
       setName(""); setComment(""); setRating(5);
-      toast.success("Terima kasih! Ulasanmu sudah tampil.");
+      toast.success("Makasih ya! Ulasanmu sudah tampil.");
       await load();
     } catch (err: any) {
-      toast.error(err?.message ?? "Gagal mengirim ulasan.");
+      toast.error(err?.message ?? "Yah, ulasannya belum terkirim. Coba lagi sebentar ya.");
     } finally {
       setSubmitting(false);
     }
@@ -78,18 +78,18 @@ export function ReviewsSection() {
     <section className="mx-auto max-w-[1280px] px-6 py-24">
       <div className="mb-8 flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h2 className="t-display-lg">Ulasan pengalaman</h2>
+          <h2 className="t-display-lg">Kata mereka soal SEAPEDIA</h2>
         </div>
         {hasReviews && (
           <div className="t-body-sm text-foreground/50">
-            {avg.toFixed(1)} dari {list!.total} ulasan
+            {avg.toFixed(1)} bintang dari {list!.total} ulasan
           </div>
         )}
       </div>
 
       {loading ? (
         <div className="flex items-center gap-3 py-10 text-foreground/50">
-          <span className="spinner" aria-hidden /> Memuat ulasan…
+          <span className="spinner" aria-hidden /> Sebentar, lagi ambil ulasan…
         </div>
       ) : loadError ? (
         <div className="rounded-[16px] border border-red-200 bg-red-50 px-6 py-5 t-body-sm text-red-700">
@@ -97,37 +97,40 @@ export function ReviewsSection() {
         </div>
       ) : hasReviews ? (
         <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
-          {list!.data.map((r, i) => (
-            <article
-              key={r.id}
-              className="rounded-[24px] px-6 py-6"
-              style={{ background: `var(--block-${BLOCK_COLORS[i % BLOCK_COLORS.length]})` }}
-            >
-              <Stars value={r.rating} size={15} />
-              <p className="mt-3 t-body">{r.comment}</p>
-              <div className="mt-4 t-caption text-foreground/50">
-                {r.reviewerName} · {formatDate(r.createdAt)}
-              </div>
-            </article>
-          ))}
+          {list!.data.map((r, i) => {
+            const token = BLOCK_COLORS[i % BLOCK_COLORS.length];
+            return (
+              <article
+                key={r.id}
+                className="rounded-[24px] px-6 py-6"
+                style={{ background: `var(--block-${token})`, color: `var(--on-${token})` }}
+              >
+                <Stars value={r.rating} size={15} tone={`var(--on-${token})`} />
+                <p className="mt-3 t-body">{r.comment}</p>
+                <div className="mt-4 t-caption" style={{ color: `var(--on-${token}-soft)` }}>
+                  {r.reviewerName} · {formatDate(r.createdAt)}
+                </div>
+              </article>
+            );
+          })}
         </div>
       ) : (
         <div className="rounded-[24px] border border-[var(--hairline)] bg-background px-6 py-12 text-center">
-          <p className="t-body text-foreground/50">Belum ada ulasan. Jadilah yang pertama.</p>
+          <p className="t-body text-foreground/50">Belum ada ulasan nih. Yuk, jadi yang pertama cerita pengalamanmu!</p>
         </div>
       )}
 
       <div className="mt-8 rounded-[24px] border border-[var(--hairline)] bg-background p-6 sm:p-8">
-        <div className="t-card-title mb-1">Tulis ulasan</div>
+        <div className="t-card-title mb-1">Bagikan pengalamanmu</div>
         <p className="t-body-sm mb-5 text-foreground/55">
-          Bagikan pendapatmu tentang Seapedia.
+          Ceritakan pengalaman belanjamu, sekalian dukung penjual lokal.
         </p>
         <form onSubmit={handleSubmit} className="space-y-4">
           <Field label="Nama">
             <TextInput
               value={name}
               onChange={(e) => setName(e.target.value)}
-              placeholder="Nama kamu…"
+              placeholder="Tulis namamu"
               maxLength={60}
               autoComplete="name"
             />
@@ -141,7 +144,7 @@ export function ReviewsSection() {
             <TextArea
               value={comment}
               onChange={(e) => setComment(e.target.value)}
-              placeholder="Ceritakan pengalamanmu…"
+              placeholder="Gimana pengalaman belanjamu?"
               maxLength={500}
               rows={3}
             />

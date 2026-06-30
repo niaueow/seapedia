@@ -15,14 +15,47 @@
   --hairline-soft: #f1f1f1;
   --surface-soft: #f7f7f5;
 
-  /* Pastel color blocks — intentionally stay vibrant in both themes */
+  /* ── Semantic color surfaces ──────────────────────────────────────────
+     Each block has a paired set of tokens so it can be themed independently:
+       --block-X        surface fill
+       --on-X           primary text/icon color that sits on that surface
+       --on-X-soft      muted secondary text on that surface
+       --on-X-line      hairline/divider drawn on that surface
+     Light mode keeps the signature pastels with near-black ink. */
   --block-lime: #dceeb1;
+  --on-lime: #16170f;
+  --on-lime-soft: rgba(0, 0, 0, 0.55);
+  --on-lime-line: rgba(0, 0, 0, 0.1);
+
   --block-lilac: #c5b0f4;
+  --on-lilac: #161226;
+  --on-lilac-soft: rgba(0, 0, 0, 0.52);
+  --on-lilac-line: rgba(0, 0, 0, 0.1);
+
   --block-cream: #f4ecd6;
+  --on-cream: #1c1810;
+  --on-cream-soft: rgba(0, 0, 0, 0.55);
+  --on-cream-line: rgba(0, 0, 0, 0.1);
+
   --block-pink: #efd4d4;
+  --on-pink: #211417;
+  --on-pink-soft: rgba(0, 0, 0, 0.52);
+  --on-pink-line: rgba(0, 0, 0, 0.1);
+
   --block-mint: #c8e6cd;
+  --on-mint: #112019;
+  --on-mint-soft: rgba(0, 0, 0, 0.52);
+  --on-mint-line: rgba(0, 0, 0, 0.1);
+
   --block-coral: #f3c9b6;
+  --on-coral: #21130d;
+  --on-coral-soft: rgba(0, 0, 0, 0.52);
+  --on-coral-line: rgba(0, 0, 0, 0.1);
+
   --block-navy: #1f1d3d;
+  --on-navy: #ffffff;
+  --on-navy-soft: rgba(255, 255, 255, 0.62);
+  --on-navy-line: rgba(255, 255, 255, 0.16);
 
   /* Accents */
   --accent-magenta: #ff3d8b;
@@ -49,16 +82,58 @@ html.dark {
   color-scheme: dark;
 
   --background: #0e0e0e;
-  --foreground: #efefef;
+  --foreground: #ededed;
 
-  --hairline: #272727;
+  --hairline: #292929;
   --hairline-soft: #1c1c1c;
-  --surface-soft: #171717;
+  --surface-soft: #181818;
 
-  --muted-foreground: #888888;
-  --input-bg: #171717;
+  --muted-foreground: #8a8a8a;
+  --input-bg: #161616;
 
-  /* block colors intentionally stay pastel — they provide accent contrast on dark BG */
+  /* ── Dark-mode semantic surfaces ──────────────────────────────────────
+     Same hue family as light mode, but re-mixed: deeper, desaturated fills
+     that sit as elevated cards on the near-black background, paired with a
+     light hue-tinted ink so text clears WCAG AA on every surface. */
+  --block-lime: #2b3519;
+  --on-lime: #e7f2c8;
+  --on-lime-soft: rgba(231, 242, 200, 0.62);
+  --on-lime-line: rgba(231, 242, 200, 0.16);
+
+  --block-lilac: #2d2649;
+  --on-lilac: #e7ddff;
+  --on-lilac-soft: rgba(231, 221, 255, 0.62);
+  --on-lilac-line: rgba(231, 221, 255, 0.16);
+
+  --block-cream: #322c1d;
+  --on-cream: #f2e8cf;
+  --on-cream-soft: rgba(242, 232, 207, 0.6);
+  --on-cream-line: rgba(242, 232, 207, 0.16);
+
+  --block-pink: #3b2731;
+  --on-pink: #f6d8df;
+  --on-pink-soft: rgba(246, 216, 223, 0.62);
+  --on-pink-line: rgba(246, 216, 223, 0.16);
+
+  --block-mint: #1a3324;
+  --on-mint: #cfe9d4;
+  --on-mint-soft: rgba(207, 233, 212, 0.62);
+  --on-mint-line: rgba(207, 233, 212, 0.16);
+
+  --block-coral: #3c271a;
+  --on-coral: #f7d3bf;
+  --on-coral-soft: rgba(247, 211, 191, 0.62);
+  --on-coral-line: rgba(247, 211, 191, 0.16);
+
+  --block-navy: #272252;
+  --on-navy: #ffffff;
+  --on-navy-soft: rgba(255, 255, 255, 0.64);
+  --on-navy-line: rgba(255, 255, 255, 0.18);
+
+  /* Accents tuned for dark surfaces */
+  --accent-magenta: #ff5b9e;
+  --success: #3ad17a;
+  --danger: #ff6b81;
 }
 
 /* ── Tailwind v4 theme inline ───────────────────────────────────────── */

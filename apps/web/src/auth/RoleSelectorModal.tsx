@@ -11,11 +11,11 @@ const ROLE_LABELS: Record<RoleName, string> = {
   DRIVER: "Kurir",
 };
 
-const ROLE_BG: Record<RoleName, string> = {
-  BUYER: "var(--block-lime)",
-  SELLER: "var(--block-lilac)",
-  DRIVER: "var(--block-coral)",
-  ADMIN: "var(--block-navy)",
+const ROLE_TOKEN: Record<RoleName, string> = {
+  BUYER: "lime",
+  SELLER: "lilac",
+  DRIVER: "coral",
+  ADMIN: "navy",
 };
 
 export function RoleSelectorModal({
@@ -34,7 +34,7 @@ export function RoleSelectorModal({
     try {
       await onSelect(role);
     } catch (e: any) {
-      setError(e?.message ?? "Gagal memilih peran.");
+      setError(e?.message ?? "Yah, perannya belum bisa dipilih. Coba lagi ya.");
       setBusy(null);
     }
   }
@@ -42,9 +42,9 @@ export function RoleSelectorModal({
   return (
     <div className="fixed inset-0 z-50 grid place-items-center bg-black/60 p-4">
       <div className="w-full max-w-sm rounded-[24px] bg-background p-6">
-        <h2 className="t-headline mb-2">Masuk sebagai</h2>
+        <h2 className="t-headline mb-2">Mau masuk sebagai apa?</h2>
         <p className="t-body-sm text-foreground/55 mb-5">
-          Akunmu punya lebih dari satu peran. Pilih peran yang ingin kamu gunakan sekarang.
+          Akunmu punya beberapa peran. Pilih satu buat sekarang, bisa diganti kapan aja.
         </p>
 
         <div className="space-y-2">
@@ -54,15 +54,15 @@ export function RoleSelectorModal({
               onClick={() => choose(role)}
               disabled={busy !== null}
               className="flex w-full items-center justify-between rounded-[14px] px-5 py-4 text-left transition-all hover:opacity-90 disabled:opacity-60"
-              style={{ background: ROLE_BG[role] ?? "var(--surface-soft)" }}
+              style={{ background: `var(--block-${ROLE_TOKEN[role]})` }}
             >
-              <span className="t-body-sm" style={{ fontWeight: 560, color: role === "ADMIN" ? "#fff" : "#000" }}>
+              <span className="t-body-sm" style={{ fontWeight: 560, color: `var(--on-${ROLE_TOKEN[role]})` }}>
                 {ROLE_LABELS[role]}
               </span>
               <span
                 aria-hidden
                 className="t-body-sm"
-                style={{ color: role === "ADMIN" ? "rgba(255,255,255,0.6)" : "rgba(0,0,0,0.4)" }}
+                style={{ color: `var(--on-${ROLE_TOKEN[role]}-soft)` }}
               >
                 {busy === role ? "…" : "→"}
               </span>

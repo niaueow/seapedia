@@ -110,10 +110,10 @@ export function Navbar() {
     setMobileOpen(false);
     try {
       await selectRole(role);
-      toast.success(`Sekarang bertindak sebagai ${ROLE_LABELS[role]}.`);
+      toast.success(`Siap, sekarang kamu jadi ${ROLE_LABELS[role]}.`);
       router.push("/dashboard");
     } catch {
-      toast.error("Gagal mengganti peran.");
+      toast.error("Yah, perannya belum bisa diganti. Coba lagi ya.");
     }
   }
 
@@ -121,7 +121,7 @@ export function Navbar() {
     setRoleMenu(false);
     setMobileOpen(false);
     await logout();
-    toast.info("Kamu telah keluar.");
+    toast.info("Kamu sudah keluar. Sampai ketemu lagi!");
     router.push("/");
   }
 
@@ -175,7 +175,7 @@ export function Navbar() {
                 className="inline-flex items-center gap-2 rounded-[50px] bg-black px-5 py-2.5 text-white t-body-sm hover:bg-neutral-800 transition-colors"
                 style={{ fontWeight: 480 }}
               >
-                Mulai
+                Daftar gratis
               </Link>
             </>
           ) : (
@@ -302,12 +302,12 @@ export function Navbar() {
                   className="inline-flex items-center justify-center gap-2 rounded-[50px] bg-black px-5 py-2.5 text-white t-body-sm hover:bg-neutral-800"
                   onClick={() => setMobileOpen(false)}
                 >
-                  Mulai
+                  Daftar gratis
                 </Link>
               </div>
             ) : (
               <div className="flex flex-col gap-2">
-                <div className="t-caption text-foreground/45">Masuk sebagai {user.username}</div>
+                <div className="t-caption text-foreground/45">Lagi masuk sebagai {user.username}</div>
                 {activeRole === "BUYER" && (
                   <Link
                     href="/cart"
@@ -330,7 +330,7 @@ export function Navbar() {
                     onClick={() => handleSwitchRole(r as RoleName)}
                     className="flex items-center gap-2 rounded-[10px] text-left t-body-sm text-foreground/70"
                   >
-                    {ROLE_ICON[r as RoleName]} Jadi {ROLE_LABELS[r as RoleName]}
+                    {ROLE_ICON[r as RoleName]} Beralih ke {ROLE_LABELS[r as RoleName]}
                   </button>
                 ))}
                 <button

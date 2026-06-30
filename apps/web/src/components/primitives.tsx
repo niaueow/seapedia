@@ -41,16 +41,6 @@ export function Pill({
 /* ── Color block section ────────────────────────────────────────────── */
 type BlockColor = "lime" | "lilac" | "cream" | "pink" | "mint" | "coral" | "navy";
 
-const BLOCK_HEX: Record<BlockColor, string> = {
-  lime: "#dceeb1",
-  lilac: "#c5b0f4",
-  cream: "#f4ecd6",
-  pink: "#efd4d4",
-  mint: "#c8e6cd",
-  coral: "#f3c9b6",
-  navy: "#1f1d3d",
-};
-
 export function ColorBlock({
   color,
   children,
@@ -60,15 +50,13 @@ export function ColorBlock({
   children: ReactNode;
   className?: string;
 }) {
-  const dark = color === "navy";
   return (
     <section
-      className={cx(
-        "w-full px-8 py-12 sm:px-12 sm:py-16 rounded-[24px]",
-        dark ? "text-white" : "text-black",
-        className,
-      )}
-      style={{ background: BLOCK_HEX[color] }}
+      className={cx("w-full px-8 py-12 sm:px-12 sm:py-16 rounded-[24px]", className)}
+      style={{
+        background: `var(--block-${color})`,
+        color: `var(--on-${color})`,
+      }}
     >
       {children}
     </section>
@@ -89,27 +77,34 @@ export function Stars({
   value,
   size = 16,
   onChange,
+  tone,
 }: {
   value: number;
   size?: number;
   onChange?: (v: number) => void;
+  /** Optional ink color (e.g. an on-surface token) for stars sitting on a colored card. */
+  tone?: string;
 }) {
   return (
     <div className="inline-flex items-center gap-0.5">
-      {[1, 2, 3, 4, 5].map((i) => (
-        <button
-          key={i}
-          type="button"
-          disabled={!onChange}
-          onClick={() => onChange?.(i)}
-          className={cx(onChange ? "cursor-pointer" : "cursor-default", "leading-none p-0 bg-transparent border-0")}
-        >
-          <Star
-            size={size}
-            className={i <= value ? "fill-foreground text-foreground" : "text-foreground/25"}
-          />
-        </button>
-      ))}
+      {[1, 2, 3, 4, 5].map((i) => {
+        const filled = i <= value;
+        return (
+          <button
+            key={i}
+            type="button"
+            disabled={!onChange}
+            onClick={() => onChange?.(i)}
+            className={cx(onChange ? "cursor-pointer" : "cursor-default", "leading-none p-0 bg-transparent border-0")}
+          >
+            <Star
+              size={size}
+              className={tone ? undefined : filled ? "fill-foreground text-foreground" : "text-foreground/25"}
+              style={tone ? { color: tone, fill: filled ? tone : "transparent", opacity: filled ? 1 : 0.3 } : undefined}
+            />
+          </button>
+        );
+      })}
     </div>
   );
 }
@@ -166,8 +161,8 @@ export function Chip({ color, children }: { color?: BlockColor; children: ReactN
       className="inline-flex items-center rounded-full px-3 py-1 t-caption"
       style={
         color
-          ? { background: BLOCK_HEX[color], color: color === "navy" ? "#fff" : "#000" }
-          : { background: "var(--surface-soft)", color: "#000" }
+          ? { background: `var(--block-${color})`, color: `var(--on-${color})` }
+          : { background: "var(--surface-soft)", color: "var(--foreground)" }
       }
     >
       {children}
@@ -175,5 +170,4 @@ export function Chip({ color, children }: { color?: BlockColor; children: ReactN
   );
 }
 
-export { BLOCK_HEX };
 export type { BlockColor };

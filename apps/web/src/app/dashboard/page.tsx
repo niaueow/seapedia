@@ -24,7 +24,7 @@ export default function DashboardPage() {
       fallback={
         <main className="mx-auto max-w-[1280px] px-6 py-12">
           <div className="mt-20 flex items-center justify-center gap-3 text-foreground/50">
-            <span className="spinner" aria-hidden /> Memuat…
+            <span className="spinner" aria-hidden /> Sebentar ya…
           </div>
         </main>
       }
@@ -81,7 +81,7 @@ function DashboardInner() {
     return (
       <main className="mx-auto max-w-[1280px] px-6 py-12">
         <div className="mt-20 flex items-center justify-center gap-3 text-foreground/50">
-          <span className="spinner" aria-hidden /> Memuat…
+          <span className="spinner" aria-hidden /> Sebentar ya…
         </div>
       </main>
     );
@@ -93,15 +93,15 @@ function DashboardInner() {
     <main className="mx-auto max-w-[1280px] px-6 py-10">
       {/* Header */}
       <div className="mb-8">
-        <h1 className="t-display-lg">Halo, {user.username}</h1>
+        <h1 className="t-display-lg">Halo, {user.username}!</h1>
         <p className="t-body-lg mt-2 text-foreground/65">
-          Kelola aktivitasmu di Seapedia sesuai peran yang sedang aktif.
+          Atur semua aktivitasmu di SEAPEDIA sesuai peran yang lagi aktif.
         </p>
       </div>
 
       {denied && (
         <div className="mb-6 rounded-[16px] border border-amber-200 bg-amber-50 px-6 py-4 t-body-sm text-amber-800">
-          Halaman itu membutuhkan peran tertentu. Ganti peran aktifmu untuk membukanya.
+          Halaman itu butuh peran tertentu. Ganti dulu peran aktifmu buat buka.
         </div>
       )}
 
@@ -125,18 +125,14 @@ function DashboardInner() {
                 }}
               >
                 <div className="flex items-center justify-between mb-3">
-                  <span
-                    className="t-caption"
-                    style={{ color: color === "navy" ? "rgba(255,255,255,0.6)" : "rgba(0,0,0,0.5)" }}
-                  >
-                    {isActive ? "Aktif sekarang" : "Ketuk untuk beralih"}
+                  <span className="t-caption" style={{ color: `var(--on-${color}-soft)` }}>
+                    {isActive ? "Lagi aktif" : "Ketuk buat beralih"}
                   </span>
-                  {!isActive && <ChevronRight size={16} className="text-foreground/40" />}
+                  {!isActive && (
+                    <ChevronRight size={16} style={{ color: `var(--on-${color}-soft)` }} />
+                  )}
                 </div>
-                <div
-                  className="t-headline"
-                  style={{ color: color === "navy" ? "#fff" : "#000" }}
-                >
+                <div className="t-headline" style={{ color: `var(--on-${color})` }}>
                   {ROLE_LABELS[r as RoleName]}
                 </div>
               </div>
@@ -155,7 +151,7 @@ function DashboardInner() {
               </div>
             </div>
             <div className="t-display-lg">{balance === null ? "Rp0" : formatIDR(balance)}</div>
-            <p className="mt-2 t-body-sm text-foreground/50">Saldo untuk membayar pesanan.</p>
+            <p className="mt-2 t-body-sm text-foreground/50">Saldo buat bayar pesananmu.</p>
             <div className="mt-5 flex gap-2">
               <Link
                 href="/wallet"
@@ -169,7 +165,7 @@ function DashboardInner() {
                 className="inline-flex items-center gap-2 rounded-[50px] border border-[var(--hairline)] px-5 py-2.5 text-foreground hover:border-foreground transition-colors t-body-sm"
                 style={{ fontWeight: 480 }}
               >
-                Riwayat pesanan
+                Pesananku
               </Link>
             </div>
           </Card>
@@ -185,7 +181,7 @@ function DashboardInner() {
                 { href: "/products", label: "Jelajahi produk" },
                 { href: "/cart", label: "Keranjang belanja" },
                 { href: "/addresses", label: "Alamat pengiriman" },
-                { href: "/orders", label: "Pesanan saya" },
+                { href: "/orders", label: "Pesananku" },
               ].map((item) => (
                 <Link
                   key={item.href}
@@ -211,7 +207,7 @@ function DashboardInner() {
             </div>
             {!storeLoaded ? (
               <div className="flex items-center gap-3 text-foreground/50">
-                <span className="spinner" aria-hidden /> Memuat…
+                <span className="spinner" aria-hidden /> Sebentar ya…
               </div>
             ) : store ? (
               <>
@@ -239,14 +235,14 @@ function DashboardInner() {
             ) : (
               <>
                 <p className="t-body-sm text-foreground/55 mt-1">
-                  Kamu belum punya toko. Buat toko untuk mulai berjualan.
+                  Kamu belum punya toko. Buka toko dan mulai dukung dirimu sendiri sebagai penjual lokal.
                 </p>
                 <Link
                   href="/seller/store"
                   className="mt-4 inline-flex items-center gap-2 rounded-[50px] bg-black px-5 py-2.5 text-white hover:bg-neutral-800 transition-colors t-body-sm"
                   style={{ fontWeight: 480 }}
                 >
-                  Buat toko
+                  Buka toko
                 </Link>
               </>
             )}
@@ -261,7 +257,7 @@ function DashboardInner() {
             <div className="space-y-1">
               {[
                 { href: "/seller/store", label: "Profil toko" },
-                { href: "/seller/products", label: "Produk saya" },
+                { href: "/seller/products", label: "Produk kamu" },
                 { href: "/seller/orders", label: "Pesanan masuk" },
                 { href: "/products", label: "Lihat katalog publik" },
               ].map((item) => (
@@ -285,8 +281,7 @@ function DashboardInner() {
             {activeRole === "DRIVER" ? "Kurir" : "Admin"}
           </div>
           <p className="t-body-sm text-foreground/55">
-            Fitur untuk peran ini akan hadir pada tahap berikutnya.
-            Kamu tetap bisa menjelajahi katalog publik.
+            Fitur buat peran ini hadir di tahap berikutnya. Sambil nunggu, lihat-lihat katalog dulu yuk.
           </p>
           <Link
             href="/products"

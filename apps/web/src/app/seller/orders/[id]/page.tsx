@@ -25,7 +25,7 @@ export default function SellerOrderDetailPage() {
       .then((o) => alive && setOrder(o))
       .catch((e: ApiError) => {
         if (!alive) return;
-        setError(e.status === 404 || e.status === 403 ? "Pesanan tidak ditemukan." : "Gagal memuat pesanan.");
+        setError(e.status === 404 || e.status === 403 ? "Pesanannya nggak ketemu." : "Hmm, pesanannya belum kebuka. Coba muat ulang ya.");
       })
       .finally(() => alive && setLoading(false));
     return () => { alive = false; };
@@ -37,19 +37,19 @@ export default function SellerOrderDetailPage() {
     <main className="mx-auto max-w-[1280px] px-6 py-10">
       <Link
         href="/seller/orders"
-        className="inline-flex items-center gap-1.5 t-body-sm text-black/50 hover:text-black mb-6 transition-colors"
+        className="inline-flex items-center gap-1.5 t-body-sm text-foreground/50 hover:text-foreground mb-6 transition-colors"
       >
         <ChevronLeft size={15} /> Kembali ke pesanan masuk
       </Link>
 
       {loading ? (
-        <div className="mt-20 flex items-center justify-center gap-3 text-black/50">
-          <span className="spinner" aria-hidden /> Memuat…
+        <div className="mt-20 flex items-center justify-center gap-3 text-foreground/50">
+          <span className="spinner" aria-hidden /> Sebentar ya…
         </div>
       ) : error || !order ? (
         <div className="mt-24 text-center">
-          <h3 className="t-headline">{error ?? "Tidak ditemukan"}</h3>
-          <p className="mt-2 t-body-lg text-black/55">Pesanan ini bukan milik tokomu atau tidak tersedia.</p>
+          <h3 className="t-headline">{error ?? "Pesanannya nggak ketemu"}</h3>
+          <p className="mt-2 t-body-lg text-foreground/55">Pesanan ini bukan punya tokomu, atau sudah nggak ada.</p>
           <Link
             href="/seller/orders"
             className="mt-6 inline-flex items-center gap-2 rounded-[50px] bg-black px-5 py-2.5 text-white hover:bg-neutral-800 transition-colors"
@@ -64,8 +64,8 @@ export default function SellerOrderDetailPage() {
             <h1 className="t-display-lg">#{order.id.slice(-8).toUpperCase()}</h1>
           </div>
           <OrderDetail order={order} />
-          <p className="mt-6 t-caption text-black/35 text-center">
-            Pemrosesan pesanan lebih lanjut akan tersedia pada tahap berikutnya.
+          <p className="mt-6 t-caption text-foreground/35 text-center">
+            Proses pesanan lebih lanjut hadir di tahap berikutnya ya.
           </p>
         </>
       )}

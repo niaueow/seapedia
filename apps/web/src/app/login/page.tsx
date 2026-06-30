@@ -46,7 +46,7 @@ function LoginInner() {
         router.push(dest);
       }
     } catch (e: any) {
-      const msg = e?.message ?? "Username atau kata sandi salah.";
+      const msg = e?.message ?? "Hmm, username atau sandinya belum pas. Coba cek lagi ya.";
       setError(msg);
       toast.error(msg);
     } finally {
@@ -65,7 +65,7 @@ function LoginInner() {
       <div>
         <h1 className="t-display-lg">Masuk ke SEAPEDIA</h1>
         <p className="t-body-lg mt-3 max-w-md text-foreground/65">
-          Satu akun bisa punya beberapa peran. Kamu akan memilih peran aktif setelah masuk.
+          Satu akun, banyak peran. Habis masuk, tinggal pilih mau jadi apa.
         </p>
 
         <form onSubmit={handleSubmit} className="mt-8 max-w-sm space-y-4">
@@ -95,12 +95,12 @@ function LoginInner() {
           )}
 
           <Pill type="submit" className="w-full" disabled={loading}>
-            {loading ? "Memproses…" : "Masuk"}
+            {loading ? "Sebentar ya…" : "Masuk"}
           </Pill>
           <p className="t-body-sm text-foreground/50">
             Belum punya akun?{" "}
             <Link href="/register" className="underline hover:text-foreground">
-              Daftar sekarang
+              Daftar gratis di sini
             </Link>
           </p>
         </form>

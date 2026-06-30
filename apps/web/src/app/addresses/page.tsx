@@ -50,7 +50,7 @@ export default function AddressesPage() {
     setLoading(true);
     setError(null);
     try { setItems(await api<Address[]>("/addresses")); }
-    catch { setError("Gagal memuat alamat."); }
+    catch { setError("Hmm, alamatnya belum kebuka. Coba muat ulang ya."); }
     finally { setLoading(false); }
   }
 
@@ -79,7 +79,7 @@ export default function AddressesPage() {
     e.preventDefault();
     setFormError(null);
     if (!form.recipientName.trim() || !form.phone.trim() || !form.fullAddress.trim()) {
-      setFormError("Nama penerima, nomor telepon, dan alamat lengkap wajib diisi.");
+      setFormError("Isi dulu nama penerima, nomor telepon, dan alamat lengkapnya ya.");
       return;
     }
     setSubmitting(true);
@@ -96,10 +96,10 @@ export default function AddressesPage() {
       if (editId) await api(`/addresses/${editId}`, { method: "PATCH", body });
       else await api("/addresses", { method: "POST", body });
       setModalOpen(false);
-      toast.success(editId ? "Alamat diperbarui." : "Alamat ditambahkan.");
+      toast.success(editId ? "Alamat sudah diperbarui." : "Alamat sudah disimpan.");
       await load();
     } catch (e) {
-      const msg = (e as ApiError).message || "Gagal menyimpan alamat.";
+      const msg = (e as ApiError).message || "Yah, alamatnya belum kesimpan. Coba lagi ya.";
       setFormError(msg);
       toast.error(msg);
     } finally {
@@ -110,20 +110,20 @@ export default function AddressesPage() {
     setBusyId(a.id);
     try {
       await api(`/addresses/${a.id}`, { method: "PATCH", body: { isDefault: true } });
-      toast.success("Alamat utama diperbarui.");
+      toast.success("Sip, ini jadi alamat utamamu sekarang.");
       await load();
-    } catch { toast.error("Gagal mengatur alamat utama."); }
+    } catch { toast.error("Yah, belum berhasil. Coba lagi sebentar ya."); }
     finally { setBusyId(null); }
   }
 
   async function remove(a: Address) {
-    if (!confirm("Hapus alamat ini?")) return;
+    if (!confirm("Yakin mau hapus alamat ini?")) return;
     setBusyId(a.id);
     try {
       await api(`/addresses/${a.id}`, { method: "DELETE" });
-      toast.success("Alamat dihapus.");
+      toast.success("Alamat sudah dihapus.");
       await load();
-    } catch { toast.error("Gagal menghapus alamat."); }
+    } catch { toast.error("Yah, alamatnya belum kehapus. Coba lagi ya."); }
     finally { setBusyId(null); }
   }
 
@@ -132,7 +132,7 @@ export default function AddressesPage() {
       <div className="flex items-start justify-between mb-8">
         <div>
           <h1 className="t-display-lg">Alamat pengiriman</h1>
-          <p className="t-body-lg mt-2 text-foreground/65">Kelola alamat untuk pengiriman pesananmu.</p>
+          <p className="t-body-lg mt-2 text-foreground/65">Atur alamat biar pesananmu nyampe ke tempat yang pas.</p>
         </div>
         <Pill onClick={openCreate} className="shrink-0 mt-2">
           <Plus size={16} /> Tambah
@@ -145,12 +145,12 @@ export default function AddressesPage() {
 
       {loading ? (
         <div className="mt-20 flex items-center justify-center gap-3 text-foreground/50">
-          <span className="spinner" aria-hidden /> Memuat…
+          <span className="spinner" aria-hidden /> Sebentar ya…
         </div>
       ) : items.length === 0 ? (
         <div className="mt-24 text-center">
           <h3 className="t-headline">Belum ada alamat</h3>
-          <p className="mt-2 t-body-lg text-foreground/55">Tambahkan alamat pengiriman agar bisa checkout.</p>
+          <p className="mt-2 t-body-lg text-foreground/55">Tambah satu alamat dulu biar bisa lanjut checkout.</p>
           <button
             onClick={openCreate}
             className="mt-6 inline-flex items-center gap-2 rounded-[50px] bg-black px-5 py-2.5 text-white hover:bg-neutral-800 transition-colors"
@@ -171,7 +171,10 @@ export default function AddressesPage() {
                   <span className="t-body-sm" style={{ fontWeight: 560 }}>{a.label || "Alamat"}</span>
                 </div>
                 {a.isDefault && (
-                  <span className="inline-flex items-center rounded-full px-2.5 py-1 t-caption bg-[var(--block-lime)]">
+                  <span
+                    className="inline-flex items-center rounded-full px-2.5 py-1 t-caption bg-[var(--block-lime)]"
+                    style={{ color: "var(--on-lime)" }}
+                  >
                     Utama
                   </span>
                 )}
@@ -222,7 +225,7 @@ export default function AddressesPage() {
             onClick={(e) => e.stopPropagation()}
             onSubmit={handleSubmit}
           >
-            <h2 className="t-headline mb-5">{editId ? "Perbarui alamat" : "Alamat baru"}</h2>
+            <h2 className="t-headline mb-5">{editId ? "Ubah alamat" : "Alamat baru"}</h2>
 
             <div className="space-y-4">
               <Field label="Label (opsional)">
@@ -264,7 +267,7 @@ export default function AddressesPage() {
                   Batal
                 </button>
                 <Pill type="submit" disabled={submitting} className="flex-1">
-                  {submitting ? "Menyimpan…" : "Simpan"}
+                  {submitting ? "Sebentar ya…" : "Simpan"}
                 </Pill>
               </div>
             </div>

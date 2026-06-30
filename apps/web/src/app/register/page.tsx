@@ -10,10 +10,10 @@ import { Pill, Field, TextInput, cx } from "../../components/primitives";
 
 type RoleName = "BUYER" | "SELLER" | "DRIVER";
 
-const BLOCK_HEX: Record<string, string> = {
-  BUYER: "#dceeb1",
-  SELLER: "#c5b0f4",
-  DRIVER: "#f3c9b6",
+const ROLE_TOKEN: Record<string, string> = {
+  BUYER: "lime",
+  SELLER: "lilac",
+  DRIVER: "coral",
 };
 
 const SELECTABLE_ROLES: {
@@ -26,19 +26,19 @@ const SELECTABLE_ROLES: {
     value: "BUYER",
     label: "Pembeli",
     icon: <ShoppingBag size={18} />,
-    desc: "Dompet, keranjang, checkout, riwayat pesanan.",
+    desc: "Belanja produk lokal, bayar pakai dompet, lacak pesanan.",
   },
   {
     value: "SELLER",
     label: "Penjual",
     icon: <StoreIcon size={18} />,
-    desc: "Buka toko, kelola produk, proses pesanan.",
+    desc: "Buka toko sendiri dan jual produkmu ke pembeli sekitar.",
   },
   {
     value: "DRIVER",
     label: "Kurir",
     icon: <Truck size={18} />,
-    desc: "Temukan pekerjaan, antar pesanan, dan raih penghasilan.",
+    desc: "Antar pesanan dan dapat penghasilan tambahan.",
   },
 ];
 
@@ -64,7 +64,7 @@ export default function RegisterPage() {
     e.preventDefault();
     setError(null);
     if (roles.length === 0) {
-      toast.warning("Pilih minimal satu peran.");
+      toast.warning("Pilih dulu minimal satu peran ya.");
       return;
     }
     setLoading(true);
@@ -74,10 +74,10 @@ export default function RegisterPage() {
         auth: false,
         body: { username, email, name: name || undefined, password, roles },
       });
-      toast.success("Akun berhasil dibuat. Silakan masuk.");
+      toast.success("Akunmu jadi! Sekarang tinggal masuk.");
       router.push("/login");
     } catch (e: any) {
-      const msg = e?.message ?? "Gagal mendaftar.";
+      const msg = e?.message ?? "Yah, pendaftarannya belum berhasil. Coba lagi sebentar ya.";
       setError(msg);
       toast.error(msg);
     } finally {
@@ -89,9 +89,9 @@ export default function RegisterPage() {
     <div className="mx-auto grid max-w-[1280px] gap-10 px-6 py-16 lg:grid-cols-2">
       {/* Left: form */}
       <div>
-        <h1 className="t-display-lg mt-3">Buat akunmu</h1>
+        <h1 className="t-display-lg mt-3">Yuk, buat akunmu</h1>
         <p className="t-body-lg mt-3 max-w-md text-foreground/65">
-          Pilih satu atau lebih peran. Satu akun bisa membeli, menjual, dan mengirim — kamu yang pilih perannya setiap sesi.
+          Pilih satu peran atau lebih. Satu akun bisa belanja, jualan, sampai antar pesanan. Kamu yang atur tiap sesi.
         </p>
 
         <form onSubmit={handleSubmit} className="mt-8 max-w-sm space-y-4">
@@ -137,7 +137,7 @@ export default function RegisterPage() {
           )}
 
           <Pill type="submit" className="w-full" disabled={loading || roles.length === 0}>
-            {loading ? "Mendaftar…" : "Buat akun"}
+            {loading ? "Lagi daftarin kamu…" : "Buat akun"}
           </Pill>
           <p className="t-body-sm text-foreground/50">
             Sudah punya akun?{" "}
@@ -162,7 +162,7 @@ export default function RegisterPage() {
                   "flex w-full items-center gap-4 rounded-[16px] border p-5 text-left transition-all",
                   on ? "border-foreground" : "border-[var(--hairline)] hover:border-foreground/40",
                 )}
-                style={on ? { background: BLOCK_HEX[m.value] } : undefined}
+                style={on ? { background: `var(--block-${ROLE_TOKEN[m.value]})`, color: `var(--on-${ROLE_TOKEN[m.value]})` } : undefined}
               >
                 <span className="grid h-10 w-10 place-items-center rounded-full bg-black text-white shrink-0">
                   {m.icon}
@@ -184,7 +184,7 @@ export default function RegisterPage() {
           })}
         </div>
         <p className="mt-3 t-caption text-foreground/40">
-          Akun Admin disediakan melalui data seed, bukan lewat pendaftaran mandiri.
+          Akun Admin tidak bisa didaftarkan sendiri.
         </p>
       </div>
     </div>

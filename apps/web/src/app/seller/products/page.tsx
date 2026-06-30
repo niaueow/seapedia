@@ -55,7 +55,7 @@ export default function SellerProductsPage() {
       ]);
       setHasStore(!!store);
       setList(products);
-    } catch { setError("Gagal memuat produk."); }
+    } catch { setError("Hmm, produknya belum kebuka. Coba muat ulang ya."); }
     finally { setLoading(false); }
   }
 
@@ -80,9 +80,9 @@ export default function SellerProductsPage() {
     setFormError(null);
     const price = Math.floor(Number(form.price));
     const stock = Math.floor(Number(form.stock));
-    if (!form.name.trim()) { setFormError("Nama produk wajib diisi."); return; }
-    if (!Number.isFinite(price) || price < 0) { setFormError("Harga harus berupa angka bulat ≥ 0."); return; }
-    if (!Number.isFinite(stock) || stock < 0) { setFormError("Stok harus berupa angka bulat ≥ 0."); return; }
+    if (!form.name.trim()) { setFormError("Isi dulu nama produknya ya."); return; }
+    if (!Number.isFinite(price) || price < 0) { setFormError("Harga harus angka bulat, minimal 0."); return; }
+    if (!Number.isFinite(stock) || stock < 0) { setFormError("Stok harus angka bulat, minimal 0."); return; }
     setSaving(true);
     try {
       if (editId) {
@@ -97,23 +97,23 @@ export default function SellerProductsPage() {
         });
       }
       setModalOpen(false);
-      toast.success(editId ? "Produk diperbarui." : "Produk ditambahkan.");
+      toast.success(editId ? "Produk sudah diperbarui." : "Produk sudah ditambahkan.");
       await load();
     } catch (e) {
-      const msg = (e as ApiError).message || "Gagal menyimpan produk.";
+      const msg = (e as ApiError).message || "Yah, produknya belum kesimpan. Coba lagi ya.";
       setFormError(msg);
       toast.error(msg);
     } finally { setSaving(false); }
   }
 
   async function softDelete(p: Product) {
-    if (!confirm(`Nonaktifkan "${p.name}"? Produk akan disembunyikan dari katalog.`)) return;
+    if (!confirm(`Nonaktifkan "${p.name}"? Produk ini bakal disembunyikan dari katalog.`)) return;
     setBusyId(p.id);
     try {
       await api(`/products/${p.id}`, { method: "DELETE" });
-      toast.success(`"${p.name}" dinonaktifkan.`);
+      toast.success(`"${p.name}" sudah dinonaktifkan.`);
       await load();
-    } catch { toast.error("Gagal menghapus produk."); }
+    } catch { toast.error("Yah, produknya belum kehapus. Coba lagi ya."); }
     finally { setBusyId(null); }
   }
 
@@ -121,9 +121,9 @@ export default function SellerProductsPage() {
     setBusyId(p.id);
     try {
       await api(`/products/${p.id}`, { method: "PATCH", body: { isActive: true } });
-      toast.success(`"${p.name}" diaktifkan kembali.`);
+      toast.success(`"${p.name}" sudah aktif lagi.`);
       await load();
-    } catch { toast.error("Gagal mengaktifkan produk."); }
+    } catch { toast.error("Yah, produknya belum bisa diaktifkan. Coba lagi ya."); }
     finally { setBusyId(null); }
   }
 
@@ -133,8 +133,8 @@ export default function SellerProductsPage() {
     <main className="mx-auto max-w-[1280px] px-6 py-10">
       <div className="flex items-start justify-between mb-8 gap-4">
         <div>
-          <h1 className="t-display-lg">Produk saya</h1>
-          <p className="t-body-lg mt-2 text-foreground/65">Kelola produk yang dijual di tokomu.</p>
+          <h1 className="t-display-lg">Produk kamu</h1>
+          <p className="t-body-lg mt-2 text-foreground/65">Atur semua produk yang kamu jual di tokomu.</p>
         </div>
         {hasStore && (
           <Pill onClick={openCreate} className="shrink-0 mt-2">
@@ -149,21 +149,21 @@ export default function SellerProductsPage() {
 
       {hasStore === false && (
         <div className="mb-6 rounded-[16px] bg-amber-50 border border-amber-200 px-6 py-4 t-body-sm text-amber-800">
-          Kamu belum punya toko.{" "}
-          <Link href="/seller/store" className="font-bold underline">Buat toko</Link>{" "}
-          dulu sebelum menambahkan produk.
+          Kamu belum punya toko nih.{" "}
+          <Link href="/seller/store" className="font-bold underline">Buka toko</Link>{" "}
+          dulu ya sebelum tambah produk.
         </div>
       )}
 
       {loading ? (
         <div className="mt-20 flex items-center justify-center gap-3 text-foreground/50">
-          <span className="spinner" aria-hidden /> Memuat…
+          <span className="spinner" aria-hidden /> Sebentar ya…
         </div>
       ) : !list || list.data.length === 0 ? (
         hasStore !== false && (
           <div className="mt-24 text-center">
             <h3 className="t-headline">Belum ada produk</h3>
-            <p className="mt-2 t-body-lg text-foreground/55">Tambahkan produk pertamamu agar muncul di katalog publik.</p>
+            <p className="mt-2 t-body-lg text-foreground/55">Tambah produk pertamamu biar langsung tampil di katalog dan dilihat pembeli.</p>
             <button
               onClick={openCreate}
               className="mt-6 inline-flex items-center gap-2 rounded-[50px] bg-black px-5 py-2.5 text-white hover:bg-neutral-800 transition-colors"
@@ -198,6 +198,7 @@ export default function SellerProductsPage() {
                           className="inline-flex items-center rounded-full px-2.5 py-1 t-caption"
                           style={{
                             background: p.isActive ? "var(--block-lime)" : "var(--block-pink)",
+                            color: p.isActive ? "var(--on-lime)" : "var(--on-pink)",
                             fontWeight: 540,
                           }}
                         >
@@ -270,7 +271,7 @@ export default function SellerProductsPage() {
             onClick={(e) => e.stopPropagation()}
             onSubmit={handleSubmit}
           >
-            <h2 className="t-headline mb-5">{editId ? "Perbarui produk" : "Produk baru"}</h2>
+            <h2 className="t-headline mb-5">{editId ? "Ubah produk" : "Produk baru"}</h2>
 
             <div className="space-y-4">
               <Field label="Nama produk">
@@ -287,7 +288,7 @@ export default function SellerProductsPage() {
                   <TextInput type="number" min={0} step={1} value={form.stock} onChange={(e) => update("stock", e.target.value)} />
                 </Field>
               </div>
-              <Field label="URL gambar (opsional)">
+              <Field label="Link gambar (opsional)">
                 <TextInput type="url" value={form.imageUrl} onChange={(e) => update("imageUrl", e.target.value)} placeholder="https://…" />
               </Field>
               {editId && (
@@ -311,7 +312,7 @@ export default function SellerProductsPage() {
                   Batal
                 </button>
                 <Pill type="submit" disabled={saving} className="flex-1">
-                  {saving ? "Menyimpan…" : "Simpan"}
+                  {saving ? "Sebentar ya…" : "Simpan"}
                 </Pill>
               </div>
             </div>

@@ -54,17 +54,17 @@ export default function ProductDetailPage() {
       if (clearFirst) await api("/cart", { method: "DELETE" });
       await api("/cart/items", { method: "POST", body: { productId: product.id, quantity: qty } });
       setConflict(false);
-      toast.success("Produk ditambahkan ke keranjang.");
+      toast.success("Sip, sudah masuk keranjang!");
       window.dispatchEvent(new Event("cart:changed"));
     } catch (e) {
       const err = e as ApiError;
       if (err.status === 409 && err.body?.code === "DIFFERENT_STORE") {
         setConflict(true);
-        toast.warning("Keranjangmu berisi produk dari toko lain.");
+        toast.warning("Keranjangmu masih ada produk dari toko lain nih.");
       } else if (err.status === 400) {
-        toast.error(err.message || "Jumlah melebihi stok.");
+        toast.error(err.message || "Stoknya nggak cukup buat jumlah segitu.");
       } else {
-        toast.error(err.message || "Gagal menambahkan ke keranjang.");
+        toast.error(err.message || "Yah, belum berhasil masuk keranjang. Coba lagi ya.");
       }
     } finally {
       setAdding(false);
@@ -74,15 +74,15 @@ export default function ProductDetailPage() {
   function handleAddClick() {
     if (authLoading) return;
     if (!user) { router.push(`/login?next=${encodeURIComponent(`/products/${id}`)}`); return; }
-    if (!isBuyer) { toast.warning("Beralih ke peran Pembeli untuk menambahkan ke keranjang."); return; }
+    if (!isBuyer) { toast.warning("Ganti dulu ke peran Pembeli buat belanja ya."); return; }
     doAdd(false);
   }
 
   if (loading) {
     return (
       <main className="mx-auto max-w-[1280px] px-6 py-12">
-        <div className="mt-20 flex items-center justify-center gap-3 text-black/50">
-          <span className="spinner" aria-hidden /> Memuat produk…
+        <div className="mt-20 flex items-center justify-center gap-3 text-foreground/50">
+          <span className="spinner" aria-hidden /> Sebentar, lagi buka produknya…
         </div>
       </main>
     );
@@ -91,14 +91,14 @@ export default function ProductDetailPage() {
   if (notFound || !product) {
     return (
       <main className="mx-auto max-w-[700px] px-6 py-24 text-center">
-        <h3 className="t-headline">Produk tidak ditemukan</h3>
-        <p className="mt-2 t-body-lg text-black/55">Produk ini mungkin sudah tidak tersedia atau dihapus penjual.</p>
+        <h3 className="t-headline">Produknya nggak ketemu</h3>
+        <p className="mt-2 t-body-lg text-foreground/55">Mungkin produknya sudah habis atau ditarik penjual.</p>
         <Link
           href="/products"
           className="mt-6 inline-flex items-center gap-2 rounded-[50px] bg-black px-5 py-2.5 text-white hover:bg-neutral-800 transition-colors"
           style={{ fontWeight: 480 }}
         >
-          Kembali ke katalog
+          Lihat produk lain
         </Link>
       </main>
     );
@@ -110,7 +110,7 @@ export default function ProductDetailPage() {
     <main className="mx-auto max-w-[1280px] px-6 py-10">
       <Link
         href="/products"
-        className="inline-flex items-center gap-1.5 t-body-sm text-black/50 hover:text-black mb-6 transition-colors"
+        className="inline-flex items-center gap-1.5 t-body-sm text-foreground/50 hover:text-foreground mb-6 transition-colors"
       >
         <ChevronLeft size={15} /> Kembali ke katalog
       </Link>
@@ -122,7 +122,7 @@ export default function ProductDetailPage() {
             {product.imageUrl ? (
               <img src={product.imageUrl} alt={product.name} className="h-full w-full object-cover" />
             ) : (
-              <span className="text-9xl font-black text-black/10 select-none leading-none">
+              <span className="text-9xl font-black text-foreground/10 select-none leading-none">
                 {product.name.charAt(0)}
               </span>
             )}
@@ -134,7 +134,7 @@ export default function ProductDetailPage() {
           </div>
           {product.description && (
             <div className="p-6 border-t border-[var(--hairline-soft)]">
-              <p className="t-body text-black/70" style={{ overflowWrap: "anywhere" }}>
+              <p className="t-body text-foreground/70" style={{ overflowWrap: "anywhere" }}>
                 {product.description}
               </p>
             </div>
@@ -158,13 +158,13 @@ export default function ProductDetailPage() {
                 className="t-body-sm"
                 style={{ color: out ? "var(--danger)" : "var(--success)", fontWeight: 540 }}
               >
-                {out ? "Stok habis" : `Stok tersedia: ${product.stock}`}
+                {out ? "Stoknya habis" : `Stok tersedia: ${product.stock}`}
               </span>
             </div>
 
             {!out && (
               <div className="mt-5 flex items-center gap-4">
-                <span className="t-body-sm text-black/55">Jumlah</span>
+                <span className="t-body-sm text-foreground/55">Jumlah</span>
                 <div className="flex items-center rounded-full border border-[var(--hairline)]">
                   <button
                     type="button"
@@ -194,28 +194,28 @@ export default function ProductDetailPage() {
               onClick={handleAddClick}
               disabled={out || adding || authLoading}
             >
-              {adding ? "Menambahkan…" : out ? "Stok habis" : "Tambah ke keranjang"}
+              {adding ? "Sebentar ya…" : out ? "Stoknya habis" : "Masukkan keranjang"}
             </Pill>
 
             {!user && !authLoading && (
-              <p className="mt-3 t-caption text-black/45 text-center">
-                <Link href="/login" className="underline hover:text-black">Masuk</Link> sebagai pembeli untuk berbelanja.
+              <p className="mt-3 t-caption text-foreground/45 text-center">
+                <Link href="/login" className="underline hover:text-foreground">Masuk</Link> dulu sebagai Pembeli buat mulai belanja.
               </p>
             )}
           </Card>
 
           {conflict && (
             <Card>
-              <div className="t-body-sm text-black/70 mb-3">
-                Keranjangmu masih berisi produk dari toko lain. Satu keranjang hanya bisa berisi produk dari satu toko.
+              <div className="t-body-sm text-foreground/70 mb-3">
+                Satu keranjang buat satu toko dulu ya, biar ongkirnya hemat. Mau pindah toko? Kosongkan keranjang dulu.
               </div>
               <button
-                className="w-full rounded-[50px] border border-black px-5 py-2.5 t-body-sm hover:bg-black hover:text-white transition-colors disabled:opacity-40"
+                className="w-full rounded-[50px] border border-foreground px-5 py-2.5 t-body-sm hover:bg-foreground hover:text-background transition-colors disabled:opacity-40"
                 style={{ fontWeight: 480 }}
                 onClick={() => doAdd(true)}
                 disabled={adding}
               >
-                Kosongkan keranjang dan tambah ini
+                Kosongkan keranjang, tambahkan ini
               </button>
             </Card>
           )}
@@ -225,7 +225,7 @@ export default function ProductDetailPage() {
             <div className="t-headline">{product.store.name}</div>
             <Link
               href={`/products?storeId=${product.store.id}`}
-              className="mt-4 inline-flex items-center gap-2 rounded-[50px] border border-[var(--hairline)] px-4 py-2 t-body-sm hover:border-black transition-colors"
+              className="mt-4 inline-flex items-center gap-2 rounded-[50px] border border-[var(--hairline)] px-4 py-2 t-body-sm hover:border-foreground transition-colors"
             >
               Lihat semua produk toko ini
             </Link>

@@ -44,7 +44,7 @@ export function Footer() {
               SEAPEDIA
             </div>
             <p className="mt-3 max-w-xs t-body-sm text-foreground/55">
-              Marketplace banyak toko untuk pembeli, penjual, dan kurir. Dibangun dengan satu akun, banyak peran.
+              Marketplace banyak toko buat pembeli, penjual, dan kurir. Satu akun, banyak peran.
             </p>
           </div>
 
@@ -72,7 +72,7 @@ export function Footer() {
             &copy; {new Date().getFullYear()} SEAPEDIA
           </span>
           <span className="t-caption text-foreground/40">
-            Hitam-putih dengan warna blok pastel
+            <strong style={{ fontWeight: 600 }}>Dukung UMKM lokal</strong> lewat setiap pesanan
           </span>
         </div>
       </div>

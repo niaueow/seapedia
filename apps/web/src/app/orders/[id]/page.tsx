@@ -25,7 +25,7 @@ export default function BuyerOrderDetailPage() {
       .then((o) => alive && setOrder(o))
       .catch((e: ApiError) => {
         if (!alive) return;
-        setError(e.status === 404 || e.status === 403 ? "Pesanan tidak ditemukan." : "Gagal memuat pesanan.");
+        setError(e.status === 404 || e.status === 403 ? "Pesanannya nggak ketemu." : "Hmm, pesananmu belum kebuka. Coba muat ulang ya.");
       })
       .finally(() => alive && setLoading(false));
     return () => { alive = false; };
@@ -37,19 +37,19 @@ export default function BuyerOrderDetailPage() {
     <main className="mx-auto max-w-[1280px] px-6 py-10">
       <Link
         href="/orders"
-        className="inline-flex items-center gap-1.5 t-body-sm text-black/50 hover:text-black mb-6 transition-colors"
+        className="inline-flex items-center gap-1.5 t-body-sm text-foreground/50 hover:text-foreground mb-6 transition-colors"
       >
         <ChevronLeft size={15} /> Kembali ke pesanan
       </Link>
 
       {loading ? (
-        <div className="mt-20 flex items-center justify-center gap-3 text-black/50">
-          <span className="spinner" aria-hidden /> Memuat…
+        <div className="mt-20 flex items-center justify-center gap-3 text-foreground/50">
+          <span className="spinner" aria-hidden /> Sebentar ya…
         </div>
       ) : error || !order ? (
         <div className="mt-24 text-center">
-          <h3 className="t-headline">{error ?? "Tidak ditemukan"}</h3>
-          <p className="mt-2 t-body-lg text-black/55">Pesanan ini tidak tersedia untuk akunmu.</p>
+          <h3 className="t-headline">{error ?? "Pesanannya nggak ketemu"}</h3>
+          <p className="mt-2 t-body-lg text-foreground/55">Pesanan ini bukan punya akunmu, atau sudah nggak tersedia.</p>
           <Link
             href="/orders"
             className="mt-6 inline-flex items-center gap-2 rounded-[50px] bg-black px-5 py-2.5 text-white hover:bg-neutral-800 transition-colors"

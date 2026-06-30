@@ -42,7 +42,7 @@ export default function OrdersPage() {
     if (status) qs.set("status", status);
     api<OrderList>(`/orders?${qs.toString()}`)
       .then((r) => alive && setList(r))
-      .catch(() => alive && setError("Gagal memuat pesanan."))
+      .catch(() => alive && setError("Hmm, pesananmu belum kebuka. Coba muat ulang ya."))
       .finally(() => alive && setLoading(false));
     return () => { alive = false; };
   }, [guard.ready, page, status]);
@@ -55,11 +55,11 @@ export default function OrdersPage() {
     <main className="mx-auto max-w-[1280px] px-6 py-10">
       <div className="flex items-end justify-between mb-8 gap-4 flex-wrap">
         <div>
-          <h1 className="t-display-lg">Riwayat pesanan</h1>
-          <p className="t-body-lg mt-2 text-foreground/65">Lacak status dan rincian pesananmu.</p>
+          <h1 className="t-display-lg">Pesananmu</h1>
+          <p className="t-body-lg mt-2 text-foreground/65">Pantau status dan rincian tiap pesananmu di sini.</p>
         </div>
         <select
-          className="rounded-full border border-[var(--hairline)] px-4 py-2 t-body-sm bg-background hover:border-foreground transition-colors focus:outline-none focus:ring-2 focus:ring-black/20"
+          className="rounded-full border border-[var(--hairline)] px-4 py-2 t-body-sm bg-background hover:border-foreground transition-colors focus:outline-none focus:ring-2 focus:ring-foreground/20"
           value={status}
           onChange={(e) => { setStatus(e.target.value); setPage(1); }}
           aria-label="Filter status"
@@ -77,20 +77,20 @@ export default function OrdersPage() {
 
       {loading ? (
         <div className="mt-20 flex items-center justify-center gap-3 text-foreground/50">
-          <span className="spinner" aria-hidden /> Memuat…
+          <span className="spinner" aria-hidden /> Sebentar ya…
         </div>
       ) : !list || list.data.length === 0 ? (
         <div className="mt-24 text-center">
           <h3 className="t-headline">Belum ada pesanan</h3>
           <p className="mt-2 t-body-lg text-foreground/55">
-            {status ? "Tidak ada pesanan dengan status ini." : "Pesananmu akan muncul di sini setelah checkout."}
+            {status ? "Belum ada pesanan dengan status ini." : "Pesananmu bakal muncul di sini setelah checkout pertama."}
           </p>
           <Link
             href="/products"
             className="mt-6 inline-flex items-center gap-2 rounded-[50px] bg-black px-5 py-2.5 text-white hover:bg-neutral-800 transition-colors"
             style={{ fontWeight: 480 }}
           >
-            Mulai belanja
+            Yuk, mulai belanja
           </Link>
         </div>
       ) : (

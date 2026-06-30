@@ -65,6 +65,6 @@ export const DELIVERY_FEES: Record<string, number> = {
 
 export const WALLET_TXN_LABELS: Record<string, string> = {
     TOPUP: "Isi saldo",
-    PURCHASE: "Pembayaran pesanan",
-    REFUND: "Pengembalian dana",
+    PURCHASE: "Bayar pesanan",
+    REFUND: "Dana kembali",
 };

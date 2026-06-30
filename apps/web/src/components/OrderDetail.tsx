@@ -35,18 +35,26 @@ export type OrderFull = {
   store?: { id: string; name: string };
 };
 
-const STATUS_BG: Record<string, string> = {
-  SEDANG_DIKEMAS: "var(--block-lime)",
-  SEDANG_DIKIRIM: "var(--block-lilac)",
-  SELESAI: "var(--block-mint)",
-  DIBATALKAN: "var(--block-pink)",
+const STATUS_TOKEN: Record<string, string> = {
+  SEDANG_DIKEMAS: "lime",
+  MENUNGGU_PENGIRIM: "cream",
+  SEDANG_DIKIRIM: "lilac",
+  PESANAN_SELESAI: "mint",
+  SELESAI: "mint",
+  DIKEMBALIKAN: "pink",
+  DIBATALKAN: "pink",
 };
 
 export function StatusChip({ status }: { status: string }) {
+  const token = STATUS_TOKEN[status];
   return (
     <span
       className="inline-flex items-center rounded-full px-3 py-1 t-caption"
-      style={{ background: STATUS_BG[status] ?? "var(--surface-soft)", fontWeight: 540 }}
+      style={{
+        background: token ? `var(--block-${token})` : "var(--surface-soft)",
+        color: token ? `var(--on-${token})` : "var(--foreground)",
+        fontWeight: 540,
+      }}
     >
       {ORDER_STATUS_LABELS[status] ?? status}
     </span>
@@ -97,7 +105,7 @@ export function OrderDetail({ order }: { order: OrderFull }) {
         {/* Shipping */}
         <Card>
           <div className="flex justify-between t-body-sm mb-3">
-            <span className="text-foreground/55">Metode</span>
+            <span className="text-foreground/55">Metode pengiriman</span>
             <span style={{ fontWeight: 540 }}>{DELIVERY_LABELS[order.deliveryMethod] ?? order.deliveryMethod}</span>
           </div>
           <div className="rounded-[12px] bg-[var(--surface-soft)] p-4">
@@ -115,20 +123,20 @@ export function OrderDetail({ order }: { order: OrderFull }) {
         {/* Cost breakdown */}
         <ColorBlock color="lime" className="!py-7 !px-7">
           <div className="space-y-2.5 t-body">
-            <div className="flex justify-between text-foreground/75">
+            <div className="flex justify-between text-[var(--on-lime-soft)]">
               <span>Subtotal</span>
               <span>{formatIDR(order.subtotal)}</span>
             </div>
-            <div className="flex justify-between text-foreground/75">
-              <span>PPN (12%)</span>
+            <div className="flex justify-between text-[var(--on-lime-soft)]">
+              <span>PPN 12%</span>
               <span>{formatIDR(order.ppnAmount)}</span>
             </div>
-            <div className="flex justify-between text-foreground/75">
+            <div className="flex justify-between text-[var(--on-lime-soft)]">
               <span>Ongkir</span>
               <span>{formatIDR(order.deliveryFee)}</span>
             </div>
             <div
-              className="flex justify-between border-t border-black/10 pt-3"
+              className="flex justify-between border-t border-[var(--on-lime-line)] pt-3"
               style={{ fontWeight: 620 }}
             >
               <span>Total</span>
@@ -146,8 +154,8 @@ export function OrderDetail({ order }: { order: OrderFull }) {
                   <div
                     className="mt-1 h-2.5 w-2.5 shrink-0 rounded-full border-2"
                     style={{
-                      borderColor: i === 0 ? "#000" : "var(--hairline)",
-                      background: i === 0 ? "#000" : "transparent",
+                      borderColor: i === 0 ? "var(--foreground)" : "var(--hairline)",
+                      background: i === 0 ? "var(--foreground)" : "transparent",
                     }}
                   />
                   {i < history.length - 1 && (
