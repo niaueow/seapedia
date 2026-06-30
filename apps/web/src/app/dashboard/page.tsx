@@ -3,11 +3,11 @@
 import { Suspense, useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { ShoppingBag, Store as StoreIcon, Wallet, MapPin, Package, ChevronRight } from "lucide-react";
+import { ShoppingBag, Store as StoreIcon, Wallet, Package, ChevronRight } from "lucide-react";
 import { useAuth } from "../../auth/auth-context";
 import { api, ApiError } from "../../lib/api";
 import { formatIDR, ROLE_LABELS, type RoleName } from "../../lib/format";
-import { Card, ColorBlock, Pill } from "../../components/primitives";
+import { Card } from "../../components/primitives";
 
 type Store = { id: string; name: string; description: string | null } | null;
 

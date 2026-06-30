@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowRight, ShoppingBag, Store as StoreIcon, Check } from "lucide-react";
+import { ArrowRight, Check } from "lucide-react";
 import { ReviewsSection } from "../components/ReviewsSection";
 
 // ── Types ──────────────────────────────────────────────────────────────
