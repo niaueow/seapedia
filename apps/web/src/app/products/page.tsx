@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { Suspense, useEffect, useState } from "react";
 import Link from "next/link";
@@ -37,21 +37,21 @@ function ProductCard({ product }: { product: CatalogProduct }) {
             className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.04]"
           />
         ) : (
-          <span className="text-[4rem] font-bold text-black/20 transition-transform duration-500 group-hover:scale-105 select-none">
+          <span className="text-[4rem] font-bold text-foreground/20 transition-transform duration-500 group-hover:scale-105 select-none">
             {product.name.charAt(0).toUpperCase()}
           </span>
         )}
         {product.stock === 0 && (
-          <div className="absolute inset-0 grid place-items-center bg-white/70">
+          <div className="absolute inset-0 grid place-items-center bg-background/70">
             <span className="t-caption">Stok habis</span>
           </div>
         )}
       </div>
-      <div className="mt-3 t-caption text-black/45">{product.store.name}</div>
+      <div className="mt-3 t-caption text-foreground/45">{product.store.name}</div>
       <div className="mt-1 t-card-title leading-snug">{product.name}</div>
       <div className="mt-auto flex items-center justify-between pt-2">
         <span style={{ fontWeight: 560 }}>{formatIDR(product.price)}</span>
-        <span className="t-caption text-black/45">stok {product.stock}</span>
+        <span className="t-caption text-foreground/45">stok {product.stock}</span>
       </div>
     </Link>
   );
@@ -109,7 +109,7 @@ function CatalogInner() {
   return (
     <main className="mx-auto max-w-[1280px] px-6 py-12">
       <h1 className="t-display-lg">Jelajahi setiap toko</h1>
-      <p className="t-body-lg mt-3 max-w-xl text-black/65">
+      <p className="t-body-lg mt-3 max-w-xl text-foreground/65">
         Produk dari penjual independen SEAPEDIA. Siapa pun bisa melihat — checkout butuh akun Pembeli.
       </p>
 
@@ -121,7 +121,7 @@ function CatalogInner() {
               Toko: {storeName ?? "terpilih"}
               <button
                 onClick={() => pushParams({ storeId: "", page: 1 })}
-                className="text-black/50 hover:text-black"
+                className="text-foreground/50 hover:text-foreground"
                 aria-label="Hapus filter toko"
               >
                 ✕
@@ -133,7 +133,7 @@ function CatalogInner() {
               "{q}"
               <button
                 onClick={() => pushParams({ q: "", page: 1 })}
-                className="text-black/50 hover:text-black"
+                className="text-foreground/50 hover:text-foreground"
                 aria-label="Hapus pencarian"
               >
                 ✕
@@ -143,12 +143,12 @@ function CatalogInner() {
         </div>
 
         <form onSubmit={onSearch} className="relative sm:w-72">
-          <Search size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-black/40" />
+          <Search size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-foreground/40" />
           <input
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Cari produk…"
-            className="w-full rounded-[8px] border border-[var(--hairline)] bg-white py-3 pl-10 pr-4 t-body outline-none transition-colors focus:border-black focus:ring-2 focus:ring-black/10"
+            className="w-full rounded-[8px] border border-[var(--hairline)] bg-background py-3 pl-10 pr-4 t-body outline-none transition-colors focus:border-black focus:ring-2 focus:ring-black/10"
             aria-label="Cari produk"
           />
         </form>
@@ -156,7 +156,7 @@ function CatalogInner() {
 
       {/* Content */}
       {loading ? (
-        <div className="mt-20 flex items-center justify-center gap-3 text-black/50">
+        <div className="mt-20 flex items-center justify-center gap-3 text-foreground/50">
           <span className="spinner" aria-hidden /> Memuat produk…
         </div>
       ) : error ? (
@@ -166,7 +166,7 @@ function CatalogInner() {
       ) : !res || res.data.length === 0 ? (
         <div className="mt-24 text-center">
           <h3 className="t-headline">Produk tidak ditemukan</h3>
-          <p className="mt-2 t-body-lg text-black/55">
+          <p className="mt-2 t-body-lg text-foreground/55">
             {q
               ? `Tidak ada produk yang cocok dengan "${q}". Coba kata kunci lain.`
               : "Belum ada produk di katalog. Coba lagi nanti."}
@@ -183,17 +183,17 @@ function CatalogInner() {
           {totalPages > 1 && (
             <div className="mt-12 flex items-center justify-center gap-3">
               <button
-                className="inline-flex items-center gap-2 rounded-[50px] border border-[var(--hairline)] px-5 py-2.5 t-body-sm hover:border-black disabled:opacity-40 transition-colors"
+                className="inline-flex items-center gap-2 rounded-[50px] border border-[var(--hairline)] px-5 py-2.5 t-body-sm hover:border-foreground disabled:opacity-40 transition-colors"
                 disabled={page <= 1}
                 onClick={() => pushParams({ page: page - 1 })}
               >
                 ← Sebelumnya
               </button>
-              <span className="t-body-sm text-black/50">
+              <span className="t-body-sm text-foreground/50">
                 {page} / {totalPages}
               </span>
               <button
-                className="inline-flex items-center gap-2 rounded-[50px] border border-[var(--hairline)] px-5 py-2.5 t-body-sm hover:border-black disabled:opacity-40 transition-colors"
+                className="inline-flex items-center gap-2 rounded-[50px] border border-[var(--hairline)] px-5 py-2.5 t-body-sm hover:border-foreground disabled:opacity-40 transition-colors"
                 disabled={page >= totalPages}
                 onClick={() => pushParams({ page: page + 1 })}
               >
@@ -212,7 +212,7 @@ export default function ProductsPage() {
     <Suspense
       fallback={
         <main className="mx-auto max-w-[1280px] px-6 py-12">
-          <div className="mt-20 flex items-center justify-center gap-3 text-black/50">
+          <div className="mt-20 flex items-center justify-center gap-3 text-foreground/50">
             <span className="spinner" aria-hidden /> Memuat…
           </div>
         </main>

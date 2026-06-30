@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useEffect, useState } from "react";
 import { api } from "../lib/api";
@@ -81,14 +81,14 @@ export function ReviewsSection() {
           <h2 className="t-display-lg">Ulasan pengalaman</h2>
         </div>
         {hasReviews && (
-          <div className="t-body-sm text-black/50">
+          <div className="t-body-sm text-foreground/50">
             {avg.toFixed(1)} dari {list!.total} ulasan
           </div>
         )}
       </div>
 
       {loading ? (
-        <div className="flex items-center gap-3 py-10 text-black/50">
+        <div className="flex items-center gap-3 py-10 text-foreground/50">
           <span className="spinner" aria-hidden /> Memuat ulasan…
         </div>
       ) : loadError ? (
@@ -105,21 +105,21 @@ export function ReviewsSection() {
             >
               <Stars value={r.rating} size={15} />
               <p className="mt-3 t-body">{r.comment}</p>
-              <div className="mt-4 t-caption text-black/50">
+              <div className="mt-4 t-caption text-foreground/50">
                 {r.reviewerName} · {formatDate(r.createdAt)}
               </div>
             </article>
           ))}
         </div>
       ) : (
-        <div className="rounded-[24px] border border-[var(--hairline)] bg-white px-6 py-12 text-center">
-          <p className="t-body text-black/50">Belum ada ulasan. Jadilah yang pertama.</p>
+        <div className="rounded-[24px] border border-[var(--hairline)] bg-background px-6 py-12 text-center">
+          <p className="t-body text-foreground/50">Belum ada ulasan. Jadilah yang pertama.</p>
         </div>
       )}
 
-      <div className="mt-8 rounded-[24px] border border-[var(--hairline)] bg-white p-6 sm:p-8">
+      <div className="mt-8 rounded-[24px] border border-[var(--hairline)] bg-background p-6 sm:p-8">
         <div className="t-card-title mb-1">Tulis ulasan</div>
-        <p className="t-body-sm mb-5 text-black/55">
+        <p className="t-body-sm mb-5 text-foreground/55">
           Bagikan pendapatmu tentang Seapedia.
         </p>
         <form onSubmit={handleSubmit} className="space-y-4">

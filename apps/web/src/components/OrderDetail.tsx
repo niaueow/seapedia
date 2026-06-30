@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { formatIDR, formatDateTime, DELIVERY_LABELS, ORDER_STATUS_LABELS } from "../lib/format";
 import { Card, ColorBlock } from "./primitives";
@@ -67,7 +67,7 @@ export function OrderDetail({ order }: { order: OrderFull }) {
           <div className="flex items-start justify-between gap-3 flex-wrap">
             <div>
               <div className="t-headline">#{order.id.slice(-8).toUpperCase()}</div>
-              <div className="t-caption text-black/40 mt-1">
+              <div className="t-caption text-foreground/40 mt-1">
                 {formatDateTime(order.createdAt)}{order.store ? ` · ${order.store.name}` : ""}
               </div>
             </div>
@@ -82,7 +82,7 @@ export function OrderDetail({ order }: { order: OrderFull }) {
               <div key={it.id} className="flex items-center justify-between py-3 gap-3">
                 <div className="flex-1 min-w-0">
                   <div className="t-body-sm" style={{ fontWeight: 540 }}>{it.productName}</div>
-                  <div className="t-caption text-black/45 mt-0.5">
+                  <div className="t-caption text-foreground/45 mt-0.5">
                     {formatIDR(it.unitPrice)} × {it.quantity}
                   </div>
                 </div>
@@ -97,13 +97,13 @@ export function OrderDetail({ order }: { order: OrderFull }) {
         {/* Shipping */}
         <Card>
           <div className="flex justify-between t-body-sm mb-3">
-            <span className="text-black/55">Metode</span>
+            <span className="text-foreground/55">Metode</span>
             <span style={{ fontWeight: 540 }}>{DELIVERY_LABELS[order.deliveryMethod] ?? order.deliveryMethod}</span>
           </div>
           <div className="rounded-[12px] bg-[var(--surface-soft)] p-4">
             <div className="t-body-sm" style={{ fontWeight: 560 }}>{order.recipientName}</div>
-            <div className="t-caption text-black/50 mt-0.5">{order.recipientPhone}</div>
-            <div className="t-caption text-black/50 mt-1" style={{ overflowWrap: "anywhere" }}>
+            <div className="t-caption text-foreground/50 mt-0.5">{order.recipientPhone}</div>
+            <div className="t-caption text-foreground/50 mt-1" style={{ overflowWrap: "anywhere" }}>
               {order.shippingAddress}
             </div>
           </div>
@@ -115,15 +115,15 @@ export function OrderDetail({ order }: { order: OrderFull }) {
         {/* Cost breakdown */}
         <ColorBlock color="lime" className="!py-7 !px-7">
           <div className="space-y-2.5 t-body">
-            <div className="flex justify-between text-black/75">
+            <div className="flex justify-between text-foreground/75">
               <span>Subtotal</span>
               <span>{formatIDR(order.subtotal)}</span>
             </div>
-            <div className="flex justify-between text-black/75">
+            <div className="flex justify-between text-foreground/75">
               <span>PPN (12%)</span>
               <span>{formatIDR(order.ppnAmount)}</span>
             </div>
-            <div className="flex justify-between text-black/75">
+            <div className="flex justify-between text-foreground/75">
               <span>Ongkir</span>
               <span>{formatIDR(order.deliveryFee)}</span>
             </div>
@@ -158,8 +158,8 @@ export function OrderDetail({ order }: { order: OrderFull }) {
                   <div className="t-body-sm" style={{ fontWeight: i === 0 ? 560 : 440 }}>
                     {ORDER_STATUS_LABELS[h.status] ?? h.status}
                   </div>
-                  {h.note && <div className="t-caption text-black/50">{h.note}</div>}
-                  <div className="t-caption text-black/40">{formatDateTime(h.createdAt)}</div>
+                  {h.note && <div className="t-caption text-foreground/50">{h.note}</div>}
+                  <div className="t-caption text-foreground/40">{formatDateTime(h.createdAt)}</div>
                 </div>
               </div>
             ))}

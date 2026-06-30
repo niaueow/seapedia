@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useCallback, useEffect, useState } from "react";
 import { Plus, Wallet } from "lucide-react";
@@ -86,7 +86,7 @@ export default function WalletPage() {
   return (
     <main className="mx-auto max-w-[1280px] px-6 py-10">
       <h1 className="t-display-lg">Dompet saya</h1>
-      <p className="t-body-lg mt-2 text-black/65">
+      <p className="t-body-lg mt-2 text-foreground/65">
         Isi saldo untuk membayar pesanan. Top-up bersifat simulasi.
       </p>
 
@@ -119,7 +119,7 @@ export default function WalletPage() {
                   key={q}
                   type="button"
                   onClick={() => setAmount(String(q))}
-                  className="rounded-full border border-[var(--hairline)] py-2.5 t-body-sm hover:border-black transition-colors"
+                  className="rounded-full border border-[var(--hairline)] py-2.5 t-body-sm hover:border-foreground transition-colors"
                 >
                   + {formatIDR(q)}
                 </button>
@@ -143,12 +143,12 @@ export default function WalletPage() {
         {/* Right: history */}
         <Card className="h-fit">
           {loading ? (
-            <div className="flex items-center gap-3 text-black/50 py-6">
+            <div className="flex items-center gap-3 text-foreground/50 py-6">
               <span className="spinner" aria-hidden /> Memuat…
             </div>
           ) : !history || history.data.length === 0 ? (
             <div className="py-12 text-center">
-              <p className="t-body text-black/50">Belum ada transaksi. Mulai dengan isi saldo.</p>
+              <p className="t-body text-foreground/50">Belum ada transaksi. Mulai dengan isi saldo.</p>
             </div>
           ) : (
             <>
@@ -161,7 +161,7 @@ export default function WalletPage() {
                         <div className="t-body-sm" style={{ fontWeight: 500 }}>
                           {WALLET_TXN_LABELS[t.type] ?? t.type}
                         </div>
-                        <div className="t-caption text-black/40 mt-0.5">
+                        <div className="t-caption text-foreground/40 mt-0.5">
                           {t.description || "Transaksi dompet"} · {formatDateTime(t.createdAt)}
                         </div>
                       </div>
@@ -172,7 +172,7 @@ export default function WalletPage() {
                         >
                           {credit ? "+" : "−"} {formatIDR(t.amount)}
                         </div>
-                        <div className="t-caption text-black/40">
+                        <div className="t-caption text-foreground/40">
                           Sisa: {formatIDR(t.balanceAfter)}
                         </div>
                       </div>
@@ -184,15 +184,15 @@ export default function WalletPage() {
               {totalPages > 1 && (
                 <div className="mt-5 flex items-center justify-between">
                   <button
-                    className="inline-flex items-center gap-2 rounded-[50px] border border-[var(--hairline)] px-4 py-2 t-body-sm hover:border-black disabled:opacity-40 transition-colors"
+                    className="inline-flex items-center gap-2 rounded-[50px] border border-[var(--hairline)] px-4 py-2 t-body-sm hover:border-foreground disabled:opacity-40 transition-colors"
                     disabled={page <= 1}
                     onClick={() => setPage((p) => p - 1)}
                   >
                     ← Sebelumnya
                   </button>
-                  <span className="t-caption text-black/40">{page} / {totalPages}</span>
+                  <span className="t-caption text-foreground/40">{page} / {totalPages}</span>
                   <button
-                    className="inline-flex items-center gap-2 rounded-[50px] border border-[var(--hairline)] px-4 py-2 t-body-sm hover:border-black disabled:opacity-40 transition-colors"
+                    className="inline-flex items-center gap-2 rounded-[50px] border border-[var(--hairline)] px-4 py-2 t-body-sm hover:border-foreground disabled:opacity-40 transition-colors"
                     disabled={page >= totalPages}
                     onClick={() => setPage((p) => p + 1)}
                   >

@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { Suspense, useEffect, useState } from "react";
 import Link from "next/link";
@@ -23,7 +23,7 @@ export default function DashboardPage() {
     <Suspense
       fallback={
         <main className="mx-auto max-w-[1280px] px-6 py-12">
-          <div className="mt-20 flex items-center justify-center gap-3 text-black/50">
+          <div className="mt-20 flex items-center justify-center gap-3 text-foreground/50">
             <span className="spinner" aria-hidden /> Memuat…
           </div>
         </main>
@@ -80,7 +80,7 @@ function DashboardInner() {
   if (loading || !user) {
     return (
       <main className="mx-auto max-w-[1280px] px-6 py-12">
-        <div className="mt-20 flex items-center justify-center gap-3 text-black/50">
+        <div className="mt-20 flex items-center justify-center gap-3 text-foreground/50">
           <span className="spinner" aria-hidden /> Memuat…
         </div>
       </main>
@@ -94,7 +94,7 @@ function DashboardInner() {
       {/* Header */}
       <div className="mb-8">
         <h1 className="t-display-lg">Halo, {user.username}</h1>
-        <p className="t-body-lg mt-2 text-black/65">
+        <p className="t-body-lg mt-2 text-foreground/65">
           Kelola aktivitasmu di Seapedia sesuai peran yang sedang aktif.
         </p>
       </div>
@@ -131,7 +131,7 @@ function DashboardInner() {
                   >
                     {isActive ? "Aktif sekarang" : "Ketuk untuk beralih"}
                   </span>
-                  {!isActive && <ChevronRight size={16} className="text-black/40" />}
+                  {!isActive && <ChevronRight size={16} className="text-foreground/40" />}
                 </div>
                 <div
                   className="t-headline"
@@ -155,7 +155,7 @@ function DashboardInner() {
               </div>
             </div>
             <div className="t-display-lg">{balance === null ? "Rp0" : formatIDR(balance)}</div>
-            <p className="mt-2 t-body-sm text-black/50">Saldo untuk membayar pesanan.</p>
+            <p className="mt-2 t-body-sm text-foreground/50">Saldo untuk membayar pesanan.</p>
             <div className="mt-5 flex gap-2">
               <Link
                 href="/wallet"
@@ -166,7 +166,7 @@ function DashboardInner() {
               </Link>
               <Link
                 href="/orders"
-                className="inline-flex items-center gap-2 rounded-[50px] border border-[var(--hairline)] px-5 py-2.5 text-black hover:border-black transition-colors t-body-sm"
+                className="inline-flex items-center gap-2 rounded-[50px] border border-[var(--hairline)] px-5 py-2.5 text-foreground hover:border-foreground transition-colors t-body-sm"
                 style={{ fontWeight: 480 }}
               >
                 Riwayat pesanan
@@ -193,7 +193,7 @@ function DashboardInner() {
                   className="flex items-center justify-between rounded-[10px] px-3 py-2.5 hover:bg-[var(--surface-soft)] transition-colors t-body-sm"
                 >
                   {item.label}
-                  <ChevronRight size={15} className="text-black/30" />
+                  <ChevronRight size={15} className="text-foreground/30" />
                 </Link>
               ))}
             </div>
@@ -210,13 +210,13 @@ function DashboardInner() {
               </div>
             </div>
             {!storeLoaded ? (
-              <div className="flex items-center gap-3 text-black/50">
+              <div className="flex items-center gap-3 text-foreground/50">
                 <span className="spinner" aria-hidden /> Memuat…
               </div>
             ) : store ? (
               <>
                 <div className="t-headline mt-1">{store.name}</div>
-                <p className="mt-1 t-body-sm text-black/55">
+                <p className="mt-1 t-body-sm text-foreground/55">
                   {store.description || "Belum ada deskripsi toko."}
                 </p>
                 <div className="mt-5 flex gap-2">
@@ -229,7 +229,7 @@ function DashboardInner() {
                   </Link>
                   <Link
                     href="/seller/store"
-                    className="inline-flex items-center gap-2 rounded-[50px] border border-[var(--hairline)] px-5 py-2.5 text-black hover:border-black transition-colors t-body-sm"
+                    className="inline-flex items-center gap-2 rounded-[50px] border border-[var(--hairline)] px-5 py-2.5 text-foreground hover:border-foreground transition-colors t-body-sm"
                     style={{ fontWeight: 480 }}
                   >
                     Edit toko
@@ -238,7 +238,7 @@ function DashboardInner() {
               </>
             ) : (
               <>
-                <p className="t-body-sm text-black/55 mt-1">
+                <p className="t-body-sm text-foreground/55 mt-1">
                   Kamu belum punya toko. Buat toko untuk mulai berjualan.
                 </p>
                 <Link
@@ -271,7 +271,7 @@ function DashboardInner() {
                   className="flex items-center justify-between rounded-[10px] px-3 py-2.5 hover:bg-[var(--surface-soft)] transition-colors t-body-sm"
                 >
                   {item.label}
-                  <ChevronRight size={15} className="text-black/30" />
+                  <ChevronRight size={15} className="text-foreground/30" />
                 </Link>
               ))}
             </div>
@@ -284,13 +284,13 @@ function DashboardInner() {
           <div className="t-card-title mb-2">
             {activeRole === "DRIVER" ? "Kurir" : "Admin"}
           </div>
-          <p className="t-body-sm text-black/55">
+          <p className="t-body-sm text-foreground/55">
             Fitur untuk peran ini akan hadir pada tahap berikutnya.
             Kamu tetap bisa menjelajahi katalog publik.
           </p>
           <Link
             href="/products"
-            className="mt-5 inline-flex items-center gap-2 rounded-[50px] border border-[var(--hairline)] px-5 py-2.5 text-black hover:border-black transition-colors t-body-sm"
+            className="mt-5 inline-flex items-center gap-2 rounded-[50px] border border-[var(--hairline)] px-5 py-2.5 text-foreground hover:border-foreground transition-colors t-body-sm"
             style={{ fontWeight: 480 }}
           >
             Lihat produk

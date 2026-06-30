@@ -36,27 +36,27 @@ export function Footer() {
   if (pathname === "/login" || pathname === "/register") return null;
 
   return (
-    <footer className="border-t border-[var(--hairline)] bg-white">
+    <footer className="border-t border-[var(--hairline)] bg-background">
       <div className="mx-auto max-w-[1280px] px-6 py-16">
         <div className="grid gap-10 md:grid-cols-[1.4fr_repeat(3,1fr)]">
           <div>
             <div style={{ fontWeight: 620, fontSize: 28, letterSpacing: "-0.03em" }}>
               SEAPEDIA
             </div>
-            <p className="mt-3 max-w-xs t-body-sm text-black/55">
+            <p className="mt-3 max-w-xs t-body-sm text-foreground/55">
               Marketplace banyak toko untuk pembeli, penjual, dan kurir. Dibangun dengan satu akun, banyak peran.
             </p>
           </div>
 
           {cols.map((c) => (
             <div key={c.head}>
-              <div className="t-caption mb-3 text-black/45">{c.head}</div>
+              <div className="t-caption mb-3 text-foreground/45">{c.head}</div>
               <ul className="space-y-2">
                 {c.links.map((l) => (
                   <li key={l.label}>
                     <Link
                       href={l.href}
-                      className="t-body-sm text-black/65 hover:text-black transition-colors"
+                      className="t-body-sm text-foreground/65 hover:text-foreground transition-colors"
                     >
                       {l.label}
                     </Link>
@@ -68,10 +68,10 @@ export function Footer() {
         </div>
 
         <div className="mt-12 flex flex-col gap-2 border-t border-[var(--hairline-soft)] pt-6 sm:flex-row sm:items-center sm:justify-between">
-          <span className="t-caption text-black/40">
+          <span className="t-caption text-foreground/40">
             &copy; {new Date().getFullYear()} SEAPEDIA
           </span>
-          <span className="t-caption text-black/40">
+          <span className="t-caption text-foreground/40">
             Hitam-putih dengan warna blok pastel
           </span>
         </div>

@@ -8,6 +8,7 @@ async function bootstrap() {
   // Allow the Next.js web app (port 3001) to call this API from the browser.
   app.enableCors({
     origin: 'http://localhost:3001',
+    'https://seapedianyaniaueow.vercel.app',
     credentials: true,
   });
 

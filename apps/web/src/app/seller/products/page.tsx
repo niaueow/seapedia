@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
@@ -134,7 +134,7 @@ export default function SellerProductsPage() {
       <div className="flex items-start justify-between mb-8 gap-4">
         <div>
           <h1 className="t-display-lg">Produk saya</h1>
-          <p className="t-body-lg mt-2 text-black/65">Kelola produk yang dijual di tokomu.</p>
+          <p className="t-body-lg mt-2 text-foreground/65">Kelola produk yang dijual di tokomu.</p>
         </div>
         {hasStore && (
           <Pill onClick={openCreate} className="shrink-0 mt-2">
@@ -156,14 +156,14 @@ export default function SellerProductsPage() {
       )}
 
       {loading ? (
-        <div className="mt-20 flex items-center justify-center gap-3 text-black/50">
+        <div className="mt-20 flex items-center justify-center gap-3 text-foreground/50">
           <span className="spinner" aria-hidden /> Memuat…
         </div>
       ) : !list || list.data.length === 0 ? (
         hasStore !== false && (
           <div className="mt-24 text-center">
             <h3 className="t-headline">Belum ada produk</h3>
-            <p className="mt-2 t-body-lg text-black/55">Tambahkan produk pertamamu agar muncul di katalog publik.</p>
+            <p className="mt-2 t-body-lg text-foreground/55">Tambahkan produk pertamamu agar muncul di katalog publik.</p>
             <button
               onClick={openCreate}
               className="mt-6 inline-flex items-center gap-2 rounded-[50px] bg-black px-5 py-2.5 text-white hover:bg-neutral-800 transition-colors"
@@ -206,7 +206,7 @@ export default function SellerProductsPage() {
                       </td>
                       <td className="px-6 py-4 text-right whitespace-nowrap">
                         <button
-                          className="inline-flex items-center rounded-[50px] border border-[var(--hairline)] px-3.5 py-1.5 t-caption hover:border-black disabled:opacity-40 transition-colors mr-2"
+                          className="inline-flex items-center rounded-[50px] border border-[var(--hairline)] px-3.5 py-1.5 t-caption hover:border-foreground disabled:opacity-40 transition-colors mr-2"
                           onClick={() => openEdit(p)}
                           disabled={busyId === p.id}
                         >
@@ -240,15 +240,15 @@ export default function SellerProductsPage() {
           {totalPages > 1 && (
             <div className="mt-5 flex items-center justify-between">
               <button
-                className="inline-flex items-center gap-2 rounded-[50px] border border-[var(--hairline)] px-4 py-2 t-body-sm hover:border-black disabled:opacity-40 transition-colors"
+                className="inline-flex items-center gap-2 rounded-[50px] border border-[var(--hairline)] px-4 py-2 t-body-sm hover:border-foreground disabled:opacity-40 transition-colors"
                 disabled={page <= 1}
                 onClick={() => setPage((p) => p - 1)}
               >
                 ← Sebelumnya
               </button>
-              <span className="t-caption text-black/40">{page} / {totalPages}</span>
+              <span className="t-caption text-foreground/40">{page} / {totalPages}</span>
               <button
-                className="inline-flex items-center gap-2 rounded-[50px] border border-[var(--hairline)] px-4 py-2 t-body-sm hover:border-black disabled:opacity-40 transition-colors"
+                className="inline-flex items-center gap-2 rounded-[50px] border border-[var(--hairline)] px-4 py-2 t-body-sm hover:border-foreground disabled:opacity-40 transition-colors"
                 disabled={page >= totalPages}
                 onClick={() => setPage((p) => p + 1)}
               >
@@ -266,7 +266,7 @@ export default function SellerProductsPage() {
           onClick={() => !saving && setModalOpen(false)}
         >
           <form
-            className="w-full max-w-[500px] rounded-[24px] bg-white p-6 max-h-[90vh] overflow-y-auto"
+            className="w-full max-w-[500px] rounded-[24px] bg-background p-6 max-h-[90vh] overflow-y-auto"
             onClick={(e) => e.stopPropagation()}
             onSubmit={handleSubmit}
           >
@@ -306,7 +306,7 @@ export default function SellerProductsPage() {
                   type="button"
                   onClick={() => setModalOpen(false)}
                   disabled={saving}
-                  className="flex-1 rounded-[50px] border border-[var(--hairline)] py-2.5 t-body-sm hover:border-black disabled:opacity-40 transition-colors"
+                  className="flex-1 rounded-[50px] border border-[var(--hairline)] py-2.5 t-body-sm hover:border-foreground disabled:opacity-40 transition-colors"
                 >
                   Batal
                 </button>

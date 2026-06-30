@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
@@ -90,7 +90,7 @@ export default function RegisterPage() {
       {/* Left: form */}
       <div>
         <h1 className="t-display-lg mt-3">Buat akunmu</h1>
-        <p className="t-body-lg mt-3 max-w-md text-black/65">
+        <p className="t-body-lg mt-3 max-w-md text-foreground/65">
           Pilih satu atau lebih peran. Satu akun bisa membeli, menjual, dan mengirim — kamu yang pilih perannya setiap sesi.
         </p>
 
@@ -139,9 +139,9 @@ export default function RegisterPage() {
           <Pill type="submit" className="w-full" disabled={loading || roles.length === 0}>
             {loading ? "Mendaftar…" : "Buat akun"}
           </Pill>
-          <p className="t-body-sm text-black/50">
+          <p className="t-body-sm text-foreground/50">
             Sudah punya akun?{" "}
-            <Link href="/login" className="underline hover:text-black">
+            <Link href="/login" className="underline hover:text-foreground">
               Masuk
             </Link>
           </p>
@@ -160,7 +160,7 @@ export default function RegisterPage() {
                 onClick={() => toggleRole(m.value)}
                 className={cx(
                   "flex w-full items-center gap-4 rounded-[16px] border p-5 text-left transition-all",
-                  on ? "border-black" : "border-[var(--hairline)] hover:border-black/40",
+                  on ? "border-foreground" : "border-[var(--hairline)] hover:border-foreground/40",
                 )}
                 style={on ? { background: BLOCK_HEX[m.value] } : undefined}
               >
@@ -169,7 +169,7 @@ export default function RegisterPage() {
                 </span>
                 <div className="flex-1 min-w-0">
                   <div className="t-card-title">{m.label}</div>
-                  <div className="t-body-sm text-black/65 mt-0.5">{m.desc}</div>
+                  <div className="t-body-sm text-foreground/65 mt-0.5">{m.desc}</div>
                 </div>
                 <span
                   className={cx(
@@ -183,7 +183,7 @@ export default function RegisterPage() {
             );
           })}
         </div>
-        <p className="mt-3 t-caption text-black/40">
+        <p className="mt-3 t-caption text-foreground/40">
           Akun Admin disediakan melalui data seed, bukan lewat pendaftaran mandiri.
         </p>
       </div>

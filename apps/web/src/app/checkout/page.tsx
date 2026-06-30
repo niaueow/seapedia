@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
@@ -114,7 +114,7 @@ export default function CheckoutPage() {
   return (
     <main className="mx-auto max-w-[1280px] px-6 py-10">
       <h1 className="t-display-lg">Selesaikan pesanan</h1>
-      <p className="t-body-lg mt-2 text-black/65">
+      <p className="t-body-lg mt-2 text-foreground/65">
         Periksa alamat, pilih pengiriman, lalu bayar dengan saldo dompet.
       </p>
 
@@ -125,13 +125,13 @@ export default function CheckoutPage() {
       )}
 
       {loading ? (
-        <div className="mt-20 flex items-center justify-center gap-3 text-black/50">
+        <div className="mt-20 flex items-center justify-center gap-3 text-foreground/50">
           <span className="spinner" aria-hidden /> Memuat…
         </div>
       ) : empty ? (
         <div className="mt-24 text-center">
           <h3 className="t-headline">Keranjang kosong</h3>
-          <p className="mt-2 t-body-lg text-black/55">Tambahkan produk dulu sebelum checkout.</p>
+          <p className="mt-2 t-body-lg text-foreground/55">Tambahkan produk dulu sebelum checkout.</p>
           <Link
             href="/products"
             className="mt-6 inline-flex items-center gap-2 rounded-[50px] bg-black px-5 py-2.5 text-white hover:bg-neutral-800 transition-colors"
@@ -151,7 +151,7 @@ export default function CheckoutPage() {
                     <MapPin size={18} />
                   </div>
                 </div>
-                <Link href="/addresses" className="t-body-sm text-black/50 hover:text-black">
+                <Link href="/addresses" className="t-body-sm text-foreground/50 hover:text-foreground">
                   Kelola
                 </Link>
               </div>
@@ -173,7 +173,7 @@ export default function CheckoutPage() {
                         "flex items-start gap-3 rounded-[12px] border p-4 cursor-pointer transition-all",
                         addressId === a.id
                           ? "border-black bg-[var(--surface-soft)]"
-                          : "border-[var(--hairline)] hover:border-black/40",
+                          : "border-[var(--hairline)] hover:border-foreground/40",
                       )}
                     >
                       <input
@@ -187,7 +187,7 @@ export default function CheckoutPage() {
                         <div className="t-body-sm" style={{ fontWeight: 560 }}>
                           {a.recipientName}{a.label ? ` · ${a.label}` : ""}{a.isDefault ? " (utama)" : ""}
                         </div>
-                        <div className="t-caption text-black/50 mt-0.5">
+                        <div className="t-caption text-foreground/50 mt-0.5">
                           {a.phone} · {a.fullAddress}{a.city ? `, ${a.city}` : ""}{a.postalCode ? ` ${a.postalCode}` : ""}
                         </div>
                       </div>
@@ -206,7 +206,7 @@ export default function CheckoutPage() {
                       "flex items-center justify-between rounded-[12px] border p-4 cursor-pointer transition-all",
                       method === m
                         ? "border-black bg-[var(--surface-soft)]"
-                        : "border-[var(--hairline)] hover:border-black/40",
+                        : "border-[var(--hairline)] hover:border-foreground/40",
                     )}
                   >
                     <div className="flex items-center gap-3">
@@ -232,20 +232,20 @@ export default function CheckoutPage() {
           {/* Right: summary */}
           <div className="lg:sticky lg:top-20 lg:self-start">
             <ColorBlock color="lime" className="!py-7 !px-7">
-              <p className="t-body-sm text-black/60 mb-4">
+              <p className="t-body-sm text-foreground/60 mb-4">
                 Toko: {cart!.store?.name} · {cart!.itemCount} item
               </p>
 
               <div className="space-y-2.5 t-body">
-                <div className="flex justify-between text-black/75">
+                <div className="flex justify-between text-foreground/75">
                   <span>Subtotal</span>
                   <span>{formatIDR(subtotal)}</span>
                 </div>
-                <div className="flex justify-between text-black/75">
+                <div className="flex justify-between text-foreground/75">
                   <span>PPN (12%)</span>
                   <span>{formatIDR(ppn)}</span>
                 </div>
-                <div className="flex justify-between text-black/75">
+                <div className="flex justify-between text-foreground/75">
                   <span>Ongkir ({DELIVERY_LABELS[method]})</span>
                   <span>{formatIDR(fee)}</span>
                 </div>
@@ -258,8 +258,8 @@ export default function CheckoutPage() {
                 </div>
               </div>
 
-              <div className="mt-4 flex justify-between rounded-[10px] bg-white/60 px-3 py-2 t-body-sm">
-                <span className="text-black/60">Saldo dompet</span>
+              <div className="mt-4 flex justify-between rounded-[10px] bg-background/60 px-3 py-2 t-body-sm">
+                <span className="text-foreground/60">Saldo dompet</span>
                 <span
                   style={{ fontWeight: 560, color: insufficient ? "var(--danger)" : "var(--success)" }}
                 >
@@ -268,7 +268,7 @@ export default function CheckoutPage() {
               </div>
 
               {insufficient && (
-                <div className="mt-3 rounded-[10px] bg-white/60 px-3 py-2.5 t-body-sm text-black/70">
+                <div className="mt-3 rounded-[10px] bg-background/60 px-3 py-2.5 t-body-sm text-foreground/70">
                   Saldo kurang {formatIDR(total - balance)}.{" "}
                   <Link href="/wallet" className="font-bold underline">
                     Isi saldo
@@ -289,7 +289,7 @@ export default function CheckoutPage() {
               >
                 {placing ? "Memproses…" : `Bayar ${formatIDR(total)}`}
               </Pill>
-              <p className="mt-3 t-caption text-black/45 text-center">
+              <p className="mt-3 t-caption text-foreground/45 text-center">
                 PPN 12% dihitung dari subtotal saja, bukan ongkir.
               </p>
             </ColorBlock>

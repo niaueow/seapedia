@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
@@ -56,10 +56,10 @@ export default function OrdersPage() {
       <div className="flex items-end justify-between mb-8 gap-4 flex-wrap">
         <div>
           <h1 className="t-display-lg">Riwayat pesanan</h1>
-          <p className="t-body-lg mt-2 text-black/65">Lacak status dan rincian pesananmu.</p>
+          <p className="t-body-lg mt-2 text-foreground/65">Lacak status dan rincian pesananmu.</p>
         </div>
         <select
-          className="rounded-full border border-[var(--hairline)] px-4 py-2 t-body-sm bg-white hover:border-black transition-colors focus:outline-none focus:ring-2 focus:ring-black/20"
+          className="rounded-full border border-[var(--hairline)] px-4 py-2 t-body-sm bg-background hover:border-foreground transition-colors focus:outline-none focus:ring-2 focus:ring-black/20"
           value={status}
           onChange={(e) => { setStatus(e.target.value); setPage(1); }}
           aria-label="Filter status"
@@ -76,13 +76,13 @@ export default function OrdersPage() {
       )}
 
       {loading ? (
-        <div className="mt-20 flex items-center justify-center gap-3 text-black/50">
+        <div className="mt-20 flex items-center justify-center gap-3 text-foreground/50">
           <span className="spinner" aria-hidden /> Memuat…
         </div>
       ) : !list || list.data.length === 0 ? (
         <div className="mt-24 text-center">
           <h3 className="t-headline">Belum ada pesanan</h3>
-          <p className="mt-2 t-body-lg text-black/55">
+          <p className="mt-2 t-body-lg text-foreground/55">
             {status ? "Tidak ada pesanan dengan status ini." : "Pesananmu akan muncul di sini setelah checkout."}
           </p>
           <Link
@@ -98,23 +98,23 @@ export default function OrdersPage() {
           <div className="space-y-3">
             {list.data.map((o) => (
               <Link key={o.id} href={`/orders/${o.id}`} className="block group">
-                <Card className="!p-0 overflow-hidden hover:border-black/40 transition-colors">
+                <Card className="!p-0 overflow-hidden hover:border-foreground/40 transition-colors">
                   <div className="flex items-center justify-between gap-3 px-6 py-5 flex-wrap">
                     <div>
                       <div className="t-body-sm" style={{ fontWeight: 600 }}>
                         #{o.id.slice(-8).toUpperCase()}
                       </div>
-                      <div className="t-caption text-black/45 mt-0.5">
+                      <div className="t-caption text-foreground/45 mt-0.5">
                         {o.store.name} · {o._count.items} item · {DELIVERY_LABELS[o.deliveryMethod] ?? o.deliveryMethod}
                       </div>
-                      <div className="t-caption text-black/35 mt-0.5">{formatDateTime(o.createdAt)}</div>
+                      <div className="t-caption text-foreground/35 mt-0.5">{formatDateTime(o.createdAt)}</div>
                     </div>
                     <div className="flex flex-col items-end gap-2">
                       <StatusChip status={o.status} />
                       <div className="t-body-sm" style={{ fontWeight: 580 }}>{formatIDR(o.total)}</div>
                     </div>
                   </div>
-                  <div className="border-t border-[var(--hairline-soft)] px-6 py-2.5 flex items-center justify-end gap-1 t-caption text-black/40 group-hover:text-black transition-colors">
+                  <div className="border-t border-[var(--hairline-soft)] px-6 py-2.5 flex items-center justify-end gap-1 t-caption text-foreground/40 group-hover:text-foreground transition-colors">
                     Lihat detail <ChevronRight size={13} />
                   </div>
                 </Card>
@@ -125,15 +125,15 @@ export default function OrdersPage() {
           {totalPages > 1 && (
             <div className="mt-6 flex items-center justify-between">
               <button
-                className="inline-flex items-center gap-2 rounded-[50px] border border-[var(--hairline)] px-4 py-2 t-body-sm hover:border-black disabled:opacity-40 transition-colors"
+                className="inline-flex items-center gap-2 rounded-[50px] border border-[var(--hairline)] px-4 py-2 t-body-sm hover:border-foreground disabled:opacity-40 transition-colors"
                 disabled={page <= 1}
                 onClick={() => setPage((p) => p - 1)}
               >
                 ← Sebelumnya
               </button>
-              <span className="t-caption text-black/40">{page} / {totalPages}</span>
+              <span className="t-caption text-foreground/40">{page} / {totalPages}</span>
               <button
-                className="inline-flex items-center gap-2 rounded-[50px] border border-[var(--hairline)] px-4 py-2 t-body-sm hover:border-black disabled:opacity-40 transition-colors"
+                className="inline-flex items-center gap-2 rounded-[50px] border border-[var(--hairline)] px-4 py-2 t-body-sm hover:border-foreground disabled:opacity-40 transition-colors"
                 disabled={page >= totalPages}
                 onClick={() => setPage((p) => p + 1)}
               >

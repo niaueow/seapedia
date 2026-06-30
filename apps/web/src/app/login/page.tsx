@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { Suspense, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -64,7 +64,7 @@ function LoginInner() {
     <div className="mx-auto max-w-[720px] px-6 py-16">
       <div>
         <h1 className="t-display-lg">Masuk ke SEAPEDIA</h1>
-        <p className="t-body-lg mt-3 max-w-md text-black/65">
+        <p className="t-body-lg mt-3 max-w-md text-foreground/65">
           Satu akun bisa punya beberapa peran. Kamu akan memilih peran aktif setelah masuk.
         </p>
 
@@ -97,9 +97,9 @@ function LoginInner() {
           <Pill type="submit" className="w-full" disabled={loading}>
             {loading ? "Memproses…" : "Masuk"}
           </Pill>
-          <p className="t-body-sm text-black/50">
+          <p className="t-body-sm text-foreground/50">
             Belum punya akun?{" "}
-            <Link href="/register" className="underline hover:text-black">
+            <Link href="/register" className="underline hover:text-foreground">
               Daftar sekarang
             </Link>
           </p>

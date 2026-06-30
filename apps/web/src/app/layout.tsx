@@ -34,6 +34,10 @@ export default function RootLayout({
       className={`${inter.variable} ${jetbrainsMono.variable}`}
       style={{ "--font-sans": "var(--font-inter)", "--font-mono": "var(--font-jetbrains)" } as React.CSSProperties}
     >
+      <head>
+        {/* Prevent flash of wrong theme on load */}
+        <script dangerouslySetInnerHTML={{ __html: `try{var t=localStorage.getItem('seapedia_theme');if(t==='dark'||(!t&&window.matchMedia('(prefers-color-scheme: dark)').matches)){document.documentElement.classList.add('dark')}}catch(e){}` }} />
+      </head>
       <body>
         <ToastProvider>
           <AuthProvider>

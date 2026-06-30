@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
@@ -125,7 +125,7 @@ export default function CartPage() {
   if (loading) {
     return (
       <main className="mx-auto max-w-[1280px] px-6 py-12">
-        <div className="mt-20 flex items-center justify-center gap-3 text-black/50">
+        <div className="mt-20 flex items-center justify-center gap-3 text-foreground/50">
           <span className="spinner" aria-hidden /> Memuat…
         </div>
       </main>
@@ -139,7 +139,7 @@ export default function CartPage() {
           <ShoppingBag size={24} />
         </div>
         <h1 className="t-display-lg mt-5">Keranjangmu kosong</h1>
-        <p className="mt-3 t-body-lg text-black/65">
+        <p className="mt-3 t-body-lg text-foreground/65">
           Satu keranjang hanya bisa berisi produk dari satu toko.
         </p>
         <Link
@@ -157,7 +157,7 @@ export default function CartPage() {
     <main className="mx-auto max-w-[1280px] px-6 py-12">
       <h1 className="t-display-lg">Keranjangmu</h1>
       {cart!.store && (
-        <p className="mt-2 t-body-lg text-black/65">
+        <p className="mt-2 t-body-lg text-foreground/65">
           Dari <span style={{ fontWeight: 560 }}>{cart!.store.name}</span> · satu toko, satu keranjang
         </p>
       )}
@@ -172,7 +172,7 @@ export default function CartPage() {
         {/* Items */}
         <div className="space-y-3">
           <div className="flex items-center justify-between mb-2">
-            <span className="t-body-sm text-black/50">{cart!.itemCount} item</span>
+            <span className="t-body-sm text-foreground/50">{cart!.itemCount} item</span>
             <button
               className="t-body-sm text-red-600 hover:text-red-800 transition-colors"
               onClick={clearCart}
@@ -193,7 +193,7 @@ export default function CartPage() {
                       className="h-full w-full object-cover"
                     />
                   ) : (
-                    <span className="text-2xl font-bold text-black/20 select-none">
+                    <span className="text-2xl font-bold text-foreground/20 select-none">
                       {item.product.name.charAt(0)}
                     </span>
                   )}
@@ -202,7 +202,7 @@ export default function CartPage() {
                   <Link href={`/products/${item.product.id}`} className="t-card-title truncate hover:underline block">
                     {item.product.name}
                   </Link>
-                  <div className="t-body-sm text-black/50 mt-0.5">
+                  <div className="t-body-sm text-foreground/50 mt-0.5">
                     {formatIDR(item.product.price)} per item
                   </div>
                 </div>
@@ -231,7 +231,7 @@ export default function CartPage() {
                 <button
                   onClick={() => removeItem(item)}
                   disabled={busyId !== null}
-                  className="grid h-9 w-9 place-items-center text-black/40 hover:text-black transition-colors disabled:opacity-40"
+                  className="grid h-9 w-9 place-items-center text-foreground/40 hover:text-foreground transition-colors disabled:opacity-40"
                   aria-label="Hapus item"
                 >
                   <Trash2 size={16} />
@@ -251,7 +251,7 @@ export default function CartPage() {
                     "rounded-[12px] border p-4 text-left transition-all",
                     method === opt.value
                       ? "border-black bg-[var(--surface-soft)]"
-                      : "border-[var(--hairline)] hover:border-black/40",
+                      : "border-[var(--hairline)] hover:border-foreground/40",
                   )}
                 >
                   <div className="t-card-title">{opt.label}</div>
@@ -266,15 +266,15 @@ export default function CartPage() {
         <div className="lg:sticky lg:top-20 lg:self-start">
           <ColorBlock color="lime" className="!py-7 !px-7">
             <div className="space-y-2.5 t-body">
-              <div className="flex items-center justify-between text-black/75">
+              <div className="flex items-center justify-between text-foreground/75">
                 <span>Subtotal ({cart!.itemCount} item)</span>
                 <span>{formatIDR(subtotal)}</span>
               </div>
-              <div className="flex items-center justify-between text-black/75">
+              <div className="flex items-center justify-between text-foreground/75">
                 <span>Ongkir ({DELIVERY_LABELS[method]})</span>
                 <span>{formatIDR(fee)}</span>
               </div>
-              <div className="flex items-center justify-between text-black/75">
+              <div className="flex items-center justify-between text-foreground/75">
                 <span>PPN 12%</span>
                 <span>{formatIDR(ppn)}</span>
               </div>
@@ -296,7 +296,7 @@ export default function CartPage() {
             </Pill>
             <Link
               href="/products"
-              className="mt-2 flex items-center justify-center w-full rounded-[50px] border border-black/20 px-5 py-2.5 t-body-sm hover:border-black transition-colors"
+              className="mt-2 flex items-center justify-center w-full rounded-[50px] border border-black/20 px-5 py-2.5 t-body-sm hover:border-foreground transition-colors"
               style={{ fontWeight: 480 }}
             >
               Lanjut belanja

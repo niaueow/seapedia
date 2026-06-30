@@ -22,17 +22,19 @@ export function ThemeToggle() {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    const current =
-      document.documentElement.getAttribute("data-theme") === "dark"
-        ? "dark"
-        : "light";
-    setTheme(current);
+    const isDark = document.documentElement.classList.contains("dark");
+    setTheme(isDark ? "dark" : "light");
     setMounted(true);
   }, []);
 
   function toggle() {
     const next: Theme = theme === "dark" ? "light" : "dark";
-    document.documentElement.setAttribute("data-theme", next);
+    const html = document.documentElement;
+    if (next === "dark") {
+      html.classList.add("dark");
+    } else {
+      html.classList.remove("dark");
+    }
     try {
       localStorage.setItem("seapedia_theme", next);
     } catch {

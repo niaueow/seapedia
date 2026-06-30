@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
@@ -54,7 +54,7 @@ export function useRequireRole(allow: RoleName | RoleName[]): GuardState {
 export function GuardGate({ state }: { state: GuardState }) {
     return (
         <main className="mx-auto max-w-[1280px] px-6 py-12">
-            <div className="mt-20 flex items-center justify-center gap-3 text-black/50">
+            <div className="mt-20 flex items-center justify-center gap-3 text-foreground/50">
                 <span className="spinner" aria-hidden />
                 {state.reason === "wrong-role" ? "Mengalihkan…" : "Memuat…"}
             </div>

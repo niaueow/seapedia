@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
@@ -70,7 +70,7 @@ export default function SellerStorePage() {
     <main className="mx-auto max-w-[1280px] px-6 py-10">
       <div className="mb-8">
         <h1 className="t-display-lg">{store ? "Profil toko" : "Buat toko"}</h1>
-        <p className="t-body-lg mt-2 text-black/65">
+        <p className="t-body-lg mt-2 text-foreground/65">
           {store ? "Perbarui identitas tokomu di Seapedia." : "Buat toko untuk mulai berjualan. Nama toko harus unik."}
         </p>
       </div>
@@ -80,7 +80,7 @@ export default function SellerStorePage() {
       )}
 
       {loading ? (
-        <div className="mt-20 flex items-center justify-center gap-3 text-black/50">
+        <div className="mt-20 flex items-center justify-center gap-3 text-foreground/50">
           <span className="spinner" aria-hidden /> Memuat…
         </div>
       ) : (
@@ -130,7 +130,7 @@ export default function SellerStorePage() {
                 </div>
               </div>
               <div className="t-headline mb-2">{store.name}</div>
-              <p className="t-body-sm text-black/65 mb-6">
+              <p className="t-body-sm text-foreground/65 mb-6">
                 {store.description || "Belum ada deskripsi."}
               </p>
               <div className="flex flex-wrap gap-2">
@@ -143,7 +143,7 @@ export default function SellerStorePage() {
                 </Link>
                 <Link
                   href={`/products?storeId=${store.id}`}
-                  className="inline-flex items-center gap-2 rounded-[50px] border border-black/30 px-5 py-2.5 hover:border-black transition-colors t-body-sm"
+                  className="inline-flex items-center gap-2 rounded-[50px] border border-black/30 px-5 py-2.5 hover:border-foreground transition-colors t-body-sm"
                   style={{ fontWeight: 480 }}
                 >
                   Lihat halaman publik
@@ -153,7 +153,7 @@ export default function SellerStorePage() {
           ) : (
             <div className="rounded-[24px] border border-dashed border-[var(--hairline)] flex items-center justify-center p-10">
               <div className="text-center">
-                <p className="t-body-sm text-black/45">
+                <p className="t-body-sm text-foreground/45">
                   Isi formulir di samping untuk membuat tokomu. Setelah toko dibuat, kamu bisa menambahkan produk.
                 </p>
               </div>

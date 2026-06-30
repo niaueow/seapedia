@@ -19,6 +19,7 @@ import {
   ShieldCheck,
   User as UserIcon,
 } from "lucide-react";
+import { ThemeToggle } from "./ThemeToggle";
 
 type NavLink = { href: string; label: string };
 
@@ -125,7 +126,7 @@ export function Navbar() {
   }
 
   return (
-    <header className="sticky top-0 z-50 border-b border-[var(--hairline)] bg-white/90 backdrop-blur-md">
+    <header className="sticky top-0 z-50 border-b border-[var(--hairline)] bg-background/90 backdrop-blur-md">
       <div className="mx-auto flex h-14 max-w-[1280px] items-center gap-6 px-6">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2 shrink-0">
@@ -147,8 +148,8 @@ export function Navbar() {
               key={l.href}
               href={l.href}
               className={cx(
-                "t-body-sm transition-colors hover:text-black",
-                isActive(l.href) ? "text-black" : "text-black/55",
+                "t-body-sm transition-colors hover:text-foreground",
+                isActive(l.href) ? "text-foreground" : "text-foreground/55",
               )}
             >
               {l.label}
@@ -158,13 +159,14 @@ export function Navbar() {
 
         {/* Desktop right */}
         <div className="ml-auto hidden items-center gap-3 md:flex">
+          <ThemeToggle />
           {loading ? (
             <span className="spinner" aria-hidden />
           ) : !user ? (
             <>
               <Link
                 href="/login"
-                className="t-body-sm px-2 text-black/70 hover:text-black"
+                className="t-body-sm px-2 text-foreground/70 hover:text-foreground"
               >
                 Masuk
               </Link>
@@ -200,18 +202,18 @@ export function Navbar() {
               <div className="relative" ref={menuRef}>
                 <button
                   onClick={() => setRoleMenu((v) => !v)}
-                  className="flex items-center gap-2 rounded-full border border-[var(--hairline)] py-1.5 pl-3 pr-2 hover:border-black transition-colors"
+                  className="flex items-center gap-2 rounded-full border border-[var(--hairline)] py-1.5 pl-3 pr-2 hover:border-foreground transition-colors"
                 >
-                  <span className="grid h-5 w-5 place-items-center rounded-full bg-[var(--surface-soft)] text-black">
+                  <span className="grid h-5 w-5 place-items-center rounded-full bg-[var(--surface-soft)] text-foreground">
                     {activeRole ? ROLE_ICON[activeRole] : <UserIcon size={13} />}
                   </span>
                   <span className="t-body-sm">{user.username}</span>
-                  <ChevronDown size={14} className="text-black/40" />
+                  <ChevronDown size={14} className="text-foreground/40" />
                 </button>
 
                 {roleMenu && (
-                  <div className="absolute right-0 mt-2 w-56 rounded-[16px] border border-[var(--hairline)] bg-white p-2 shadow-[0_8px_30px_rgba(0,0,0,0.08)]">
-                    <div className="px-3 pb-1.5 pt-1 t-caption text-black/45">
+                  <div className="absolute right-0 mt-2 w-56 rounded-[16px] border border-[var(--hairline)] bg-background p-2 shadow-[0_8px_30px_rgba(0,0,0,0.12)]">
+                    <div className="px-3 pb-1.5 pt-1 t-caption text-foreground/45">
                       {activeRole ? ROLE_LABELS[activeRole] : "Pilih peran"}
                     </div>
 
@@ -226,14 +228,14 @@ export function Navbar() {
                     {otherRoles.length > 0 && (
                       <>
                         <div className="my-1 h-px bg-[var(--hairline-soft)]" />
-                        <div className="px-3 pb-1 t-caption text-black/40">Ganti peran</div>
+                        <div className="px-3 pb-1 t-caption text-foreground/40">Ganti peran</div>
                         {otherRoles.map((r) => (
                           <button
                             key={r}
                             onClick={() => handleSwitchRole(r as RoleName)}
                             className="flex w-full items-center gap-2.5 rounded-[10px] px-3 py-2 text-left hover:bg-[var(--surface-soft)] t-body-sm"
                           >
-                            <span className="text-black/50">
+                            <span className="text-foreground/50">
                               {ROLE_ICON[r as RoleName]}
                             </span>
                             {ROLE_LABELS[r as RoleName]}
@@ -245,7 +247,7 @@ export function Navbar() {
                     <div className="my-1.5 h-px bg-[var(--hairline-soft)]" />
                     <button
                       onClick={handleLogout}
-                      className="flex w-full items-center gap-2.5 rounded-[10px] px-3 py-2 text-left hover:bg-[var(--surface-soft)] t-body-sm text-black/70"
+                      className="flex w-full items-center gap-2.5 rounded-[10px] px-3 py-2 text-left hover:bg-[var(--surface-soft)] t-body-sm text-foreground/70"
                     >
                       <LogOut size={14} /> Keluar
                     </button>
@@ -268,15 +270,15 @@ export function Navbar() {
 
       {/* Mobile drawer */}
       {mobileOpen && (
-        <div className="border-t border-[var(--hairline)] bg-white px-6 py-5 md:hidden">
+        <div className="border-t border-[var(--hairline)] bg-background px-6 py-5 md:hidden">
           <div className="flex flex-col gap-4">
             {links.map((l) => (
               <Link
                 key={l.href}
                 href={l.href}
                 className={cx(
-                  "t-body-sm transition-colors hover:text-black",
-                  isActive(l.href) ? "text-black font-medium" : "text-black/60",
+                  "t-body-sm transition-colors hover:text-foreground",
+                  isActive(l.href) ? "text-foreground font-medium" : "text-foreground/60",
                 )}
                 onClick={() => setMobileOpen(false)}
               >
@@ -290,7 +292,7 @@ export function Navbar() {
               <div className="flex flex-col gap-2">
                 <Link
                   href="/login"
-                  className="inline-flex items-center justify-center gap-2 rounded-[50px] border border-[var(--hairline)] bg-white px-5 py-2.5 t-body-sm hover:border-black"
+                  className="inline-flex items-center justify-center gap-2 rounded-[50px] border border-[var(--hairline)] bg-background px-5 py-2.5 t-body-sm hover:border-foreground"
                   onClick={() => setMobileOpen(false)}
                 >
                   Masuk
@@ -305,11 +307,11 @@ export function Navbar() {
               </div>
             ) : (
               <div className="flex flex-col gap-2">
-                <div className="t-caption text-black/45">Masuk sebagai {user.username}</div>
+                <div className="t-caption text-foreground/45">Masuk sebagai {user.username}</div>
                 {activeRole === "BUYER" && (
                   <Link
                     href="/cart"
-                    className="flex items-center gap-2 t-body-sm text-black/70"
+                    className="flex items-center gap-2 t-body-sm text-foreground/70"
                     onClick={() => setMobileOpen(false)}
                   >
                     <ShoppingBag size={15} /> Keranjang {cartCount > 0 ? `(${cartCount})` : ""}
@@ -317,7 +319,7 @@ export function Navbar() {
                 )}
                 <Link
                   href="/dashboard"
-                  className="flex items-center gap-2 t-body-sm text-black/70"
+                  className="flex items-center gap-2 t-body-sm text-foreground/70"
                   onClick={() => setMobileOpen(false)}
                 >
                   Dasbor
@@ -326,19 +328,24 @@ export function Navbar() {
                   <button
                     key={r}
                     onClick={() => handleSwitchRole(r as RoleName)}
-                    className="flex items-center gap-2 rounded-[10px] text-left t-body-sm text-black/70"
+                    className="flex items-center gap-2 rounded-[10px] text-left t-body-sm text-foreground/70"
                   >
                     {ROLE_ICON[r as RoleName]} Jadi {ROLE_LABELS[r as RoleName]}
                   </button>
                 ))}
                 <button
                   onClick={handleLogout}
-                  className="flex items-center gap-2 text-left t-body-sm text-black/60"
+                  className="flex items-center gap-2 text-left t-body-sm text-foreground/60"
                 >
                   <LogOut size={14} /> Keluar
                 </button>
               </div>
             )}
+
+            <div className="flex items-center justify-between pt-1 border-t border-[var(--hairline-soft)]">
+              <span className="t-caption text-foreground/40">Tampilan</span>
+              <ThemeToggle />
+            </div>
           </div>
         </div>
       )}

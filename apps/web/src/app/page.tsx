@@ -1,4 +1,4 @@
-import Link from "next/link";
+﻿import Link from "next/link";
 import { ArrowRight, Check } from "lucide-react";
 import { ReviewsSection } from "../components/ReviewsSection";
 
@@ -83,7 +83,7 @@ function ProductCard({ product }: { product: CatalogProduct }) {
           />
         ) : (
           <span
-            className="text-[4rem] font-bold text-black/20 transition-transform duration-500 group-hover:scale-105 select-none"
+            className="text-[4rem] font-bold text-foreground/20 transition-transform duration-500 group-hover:scale-105 select-none"
             aria-hidden
           >
             {monogram}
@@ -91,22 +91,22 @@ function ProductCard({ product }: { product: CatalogProduct }) {
         )}
         <div className="absolute left-2 top-2">
           <span
-            className="inline-flex items-center rounded-full px-3 py-1 t-caption bg-[var(--surface-soft)] text-black/70"
+            className="inline-flex items-center rounded-full px-3 py-1 t-caption bg-[var(--surface-soft)] text-foreground/70"
           >
             {product.store.name}
           </span>
         </div>
         {product.stock === 0 && (
-          <div className="absolute inset-0 grid place-items-center bg-white/70">
+          <div className="absolute inset-0 grid place-items-center bg-background/70">
             <span className="t-caption">Stok habis</span>
           </div>
         )}
       </div>
-      <div className="mt-3 t-caption text-black/45">{product.store.name}</div>
+      <div className="mt-3 t-caption text-foreground/45">{product.store.name}</div>
       <div className="mt-1 t-card-title leading-snug">{product.name}</div>
       <div className="mt-auto flex items-center justify-between pt-2">
         <span style={{ fontWeight: 560 }}>{formatIDR(product.price)}</span>
-        <span className="t-caption text-black/45">stok {product.stock}</span>
+        <span className="t-caption text-foreground/45">stok {product.stock}</span>
       </div>
     </Link>
   );
@@ -125,7 +125,7 @@ export default async function HomePage() {
         <h1 className="t-display-xl max-w-4xl">
           Lebih Banyak Pelanggan Dimulai dari Satu Langkah.
         </h1>
-        <p className="t-body-lg mt-6 max-w-2xl text-black/70">
+        <p className="t-body-lg mt-6 max-w-2xl text-foreground/70">
           Mulai perjalanan bisnis di SEAPEDIA dan hadirkan produk kepada lebih banyak pembeli melalui marketplace yang dirancang untuk mendukung pertumbuhan UMKM.
         </p>
 
@@ -139,7 +139,7 @@ export default async function HomePage() {
           </Link>
           <Link
             href="/register"
-            className="inline-flex items-center gap-2 rounded-[50px] border border-[var(--hairline)] bg-white px-5 py-2.5 text-black hover:border-black transition-colors"
+            className="inline-flex items-center gap-2 rounded-[50px] border border-[var(--hairline)] bg-background px-5 py-2.5 text-foreground hover:border-foreground transition-colors"
             style={{ fontWeight: 480, letterSpacing: "-0.01em" }}
           >
             Buat akun
@@ -147,7 +147,7 @@ export default async function HomePage() {
         </div>
 
         {/* Live count */}
-        <div className="mt-6 flex items-center gap-2 t-body-sm text-black/45">
+        <div className="mt-6 flex items-center gap-2 t-body-sm text-foreground/45">
           <span
             className="h-2 w-2 rounded-full"
             style={{ background: connected ? "var(--success)" : "var(--hairline)" }}
@@ -174,7 +174,7 @@ export default async function HomePage() {
                   />
                 ) : (
                   <div className="aspect-[4/5] flex items-center justify-center">
-                    <span className="text-[3rem] font-bold text-black/15 select-none">
+                    <span className="text-[3rem] font-bold text-foreground/15 select-none">
                       {p.name.charAt(0)}
                     </span>
                   </div>
@@ -196,7 +196,7 @@ export default async function HomePage() {
           </div>
           <Link
             href="/products"
-            className="hidden items-center gap-1.5 t-body-sm text-black/60 hover:text-black sm:flex"
+            className="hidden items-center gap-1.5 t-body-sm text-foreground/60 hover:text-foreground sm:flex"
           >
             Lihat semua <ArrowRight size={16} />
           </Link>
@@ -204,7 +204,7 @@ export default async function HomePage() {
 
         {featured.length === 0 ? (
           <div className="rounded-[24px] border border-[var(--hairline)] p-12 text-center">
-            <p className="t-body text-black/50">
+            <p className="t-body text-foreground/50">
               Belum ada produk. Jadilah penjual pertama di SEAPEDIA.
             </p>
             <Link
@@ -233,7 +233,7 @@ export default async function HomePage() {
           <div className="grid items-center gap-10 md:grid-cols-2">
             <div>
               <h2 className="t-display-lg">Semua Kebutuhan Belanja dalam Satu Tempat.</h2>
-              <p className="t-body-lg mt-4 max-w-md text-black/75">
+              <p className="t-body-lg mt-4 max-w-md text-foreground/75">
    Nikmati proses belanja yang lebih praktis, mulai dari memilih produk hingga pembayaran, semuanya dalam satu pengalaman yang mulus.
               </p>
               <ul className="mt-6 space-y-2">
@@ -261,12 +261,12 @@ export default async function HomePage() {
                 <Link
                   key={p.id}
                   href={`/products/${p.id}`}
-                  className="overflow-hidden rounded-[8px] bg-white aspect-square flex items-center justify-center hover:opacity-90 transition-opacity"
+                  className="overflow-hidden rounded-[8px] bg-background aspect-square flex items-center justify-center hover:opacity-90 transition-opacity"
                 >
                   {p.imageUrl ? (
                     <img src={p.imageUrl} alt={p.name} className="h-full w-full object-cover" />
                   ) : (
-                    <span className="text-3xl font-bold text-black/15 select-none">
+                    <span className="text-3xl font-bold text-foreground/15 select-none">
                       {p.name.charAt(0)}
                     </span>
                   )}
@@ -296,7 +296,7 @@ export default async function HomePage() {
               { t: "Kelola produk", d: "Buat, edit, dan hapus listingmu sendiri." },
               { t: "Proses pesanan", d: "Terima dan proses pesanan dari pembelimu." },
             ].map((c) => (
-              <div key={c.t} className="rounded-[16px] bg-white/10 p-5">
+              <div key={c.t} className="rounded-[16px] bg-background/10 p-5">
                 <div className="t-card-title text-white">{c.t}</div>
                 <p className="mt-2 t-body-sm text-white/70">{c.d}</p>
               </div>
@@ -304,7 +304,7 @@ export default async function HomePage() {
           </div>
           <Link
             href="/register"
-            className="mt-8 inline-flex items-center gap-2 rounded-[50px] border border-white/30 bg-transparent px-5 py-2.5 text-white hover:bg-white/10 transition-colors"
+            className="mt-8 inline-flex items-center gap-2 rounded-[50px] border border-white/30 bg-transparent px-5 py-2.5 text-white hover:bg-background/10 transition-colors"
             style={{ fontWeight: 480 }}
           >
             Jadi penjual
@@ -331,7 +331,7 @@ export default async function HomePage() {
             </Link>
             <Link
               href="/register"
-              className="inline-flex items-center gap-2 rounded-[50px] border border-[var(--hairline)] bg-white px-5 py-2.5 text-black hover:border-black transition-colors"
+              className="inline-flex items-center gap-2 rounded-[50px] border border-[var(--hairline)] bg-background px-5 py-2.5 text-foreground hover:border-foreground transition-colors"
               style={{ fontWeight: 480 }}
             >
               Buat akun

@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useEffect, useState } from "react";
 import { MapPin, Plus } from "lucide-react";
@@ -132,7 +132,7 @@ export default function AddressesPage() {
       <div className="flex items-start justify-between mb-8">
         <div>
           <h1 className="t-display-lg">Alamat pengiriman</h1>
-          <p className="t-body-lg mt-2 text-black/65">Kelola alamat untuk pengiriman pesananmu.</p>
+          <p className="t-body-lg mt-2 text-foreground/65">Kelola alamat untuk pengiriman pesananmu.</p>
         </div>
         <Pill onClick={openCreate} className="shrink-0 mt-2">
           <Plus size={16} /> Tambah
@@ -144,13 +144,13 @@ export default function AddressesPage() {
       )}
 
       {loading ? (
-        <div className="mt-20 flex items-center justify-center gap-3 text-black/50">
+        <div className="mt-20 flex items-center justify-center gap-3 text-foreground/50">
           <span className="spinner" aria-hidden /> Memuat…
         </div>
       ) : items.length === 0 ? (
         <div className="mt-24 text-center">
           <h3 className="t-headline">Belum ada alamat</h3>
-          <p className="mt-2 t-body-lg text-black/55">Tambahkan alamat pengiriman agar bisa checkout.</p>
+          <p className="mt-2 t-body-lg text-foreground/55">Tambahkan alamat pengiriman agar bisa checkout.</p>
           <button
             onClick={openCreate}
             className="mt-6 inline-flex items-center gap-2 rounded-[50px] bg-black px-5 py-2.5 text-white hover:bg-neutral-800 transition-colors"
@@ -177,8 +177,8 @@ export default function AddressesPage() {
                 )}
               </div>
               <div className="t-body-sm" style={{ fontWeight: 560 }}>{a.recipientName}</div>
-              <div className="t-body-sm text-black/55 mt-0.5">{a.phone}</div>
-              <div className="t-body-sm text-black/55 mt-1 overflow-wrap-anywhere">
+              <div className="t-body-sm text-foreground/55 mt-0.5">{a.phone}</div>
+              <div className="t-body-sm text-foreground/55 mt-1 overflow-wrap-anywhere">
                 {a.fullAddress}{a.city ? `, ${a.city}` : ""}{a.postalCode ? ` ${a.postalCode}` : ""}
               </div>
               <div className="mt-4 flex flex-wrap gap-2">
@@ -186,7 +186,7 @@ export default function AddressesPage() {
                   <button
                     onClick={() => setDefault(a)}
                     disabled={busyId === a.id}
-                    className="inline-flex items-center gap-1.5 rounded-[50px] border border-[var(--hairline)] px-3.5 py-1.5 t-caption hover:border-black disabled:opacity-40 transition-colors"
+                    className="inline-flex items-center gap-1.5 rounded-[50px] border border-[var(--hairline)] px-3.5 py-1.5 t-caption hover:border-foreground disabled:opacity-40 transition-colors"
                   >
                     Jadikan utama
                   </button>
@@ -194,7 +194,7 @@ export default function AddressesPage() {
                 <button
                   onClick={() => openEdit(a)}
                   disabled={busyId === a.id}
-                  className="inline-flex items-center gap-1.5 rounded-[50px] border border-[var(--hairline)] px-3.5 py-1.5 t-caption hover:border-black disabled:opacity-40 transition-colors"
+                  className="inline-flex items-center gap-1.5 rounded-[50px] border border-[var(--hairline)] px-3.5 py-1.5 t-caption hover:border-foreground disabled:opacity-40 transition-colors"
                 >
                   Edit
                 </button>
@@ -218,7 +218,7 @@ export default function AddressesPage() {
           onClick={() => !submitting && setModalOpen(false)}
         >
           <form
-            className="w-full max-w-[480px] rounded-[24px] bg-white p-6 max-h-[90vh] overflow-y-auto"
+            className="w-full max-w-[480px] rounded-[24px] bg-background p-6 max-h-[90vh] overflow-y-auto"
             onClick={(e) => e.stopPropagation()}
             onSubmit={handleSubmit}
           >
@@ -259,7 +259,7 @@ export default function AddressesPage() {
                   type="button"
                   onClick={() => setModalOpen(false)}
                   disabled={submitting}
-                  className="flex-1 rounded-[50px] border border-[var(--hairline)] py-2.5 t-body-sm hover:border-black disabled:opacity-40 transition-colors"
+                  className="flex-1 rounded-[50px] border border-[var(--hairline)] py-2.5 t-body-sm hover:border-foreground disabled:opacity-40 transition-colors"
                 >
                   Batal
                 </button>
