@@ -5,7 +5,6 @@ import { AppModule } from './app.module';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  console.log('WEB_ORIGIN =', JSON.stringify(process.env.WEB_ORIGIN));
   // Allow the Next.js web app to call this API from the browser.
   // Origins come from WEB_ORIGIN (comma-separated) so production hosts are
   // configured per-environment; localhost:3001 is always allowed for local dev.
