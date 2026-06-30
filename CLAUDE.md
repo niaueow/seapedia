@@ -3,9 +3,7 @@
 Operating instructions for Claude Code working on this repo. Read this fully before editing. The non-obvious, project-specific rules in **§3 Critical Conventions** are mandatory — most of them were learned the hard way and silently break the build if ignored.
 
 > **Authoritative source documents (read these first):**
-> - **`docs/PRD.md`** — the original challenge brief / product requirements (business rules, level breakdown, exact acceptance criteria). When this file and the PRD disagree on a *business rule*, the **PRD wins** — but only within **Levels 1–3** (see scope below). Ignore PRD requirements that belong to Levels 4–7.
-> - **`docs/SEAPEDIA_Technical_Design.md`** — the original architecture rationale (optional background).
->
+> - **`docs/PRD.md`** — the original challenge brief / product requirements (business rules, level breakdown, exact acceptance criteria). When this file and the PRD disagree on a *business rule*, the **PRD wins** — but only within **Levels 1–3** (see scope below). 
 > This CLAUDE.md is the authoritative source for **implementation conventions, the as-built API contract, and the remaining-work plan**. The PRD is the authoritative source for **what the product must do**. Use both together.
 
 ---
@@ -216,17 +214,6 @@ Seed is idempotent (upsert). `pnpm prisma migrate reset` wipes + re-migrates + r
 
 **Brief identity:** "the marketplace of many shops." Signature element = the **marketplace tile** with an uppercase **store tag**. Spend boldness only there; keep everything else calm. UI copy is in **Bahasa Indonesia**, sentence case, plain verbs.
 
-**Tokens** (CSS variables in `globals.css`; neutrals are deliberately violet-tinted):
-- primary `#6D28D9`, primary-700 `#5B21B6`, accent `#5182EF`, accent-600 `#3B68D6`
-- violet-50 `#F5F3FF`, violet-100 `#EDE9FE`
-- ink `#1A1726`, muted `#6B6779`, border `#E7E4F0`, canvas `#FBFAFF`, surface `#FFFFFF`
-- success `#15803D`, danger `#DC2626`
-- radius `--r-sm:8px / --r:14px / --r-lg:20px`; shadows `--shadow-sm`, `--shadow-lift`
-- font: **Manrope** (`--font-sans`); 800 tight-tracking for `.display`, 600/700 uppercase wide-tracking for `.eyebrow`/labels, tabular figures for `.price`.
-
-**Existing reusable classes** (use these for consistency): `.page-container`, `.eyebrow`, `.display`, `.muted`, `.price`, `.btn` + `.btn-primary`/`.btn-ghost`/`.btn-sm`/`.btn-full`, `.brand-wordmark`, `.chip`, `.tile`/`.store-tag`/`.tile-name`/`.tile-stock`, `.app-nav` cluster + `.nav-link.is-active` + `.role-badge`/`.user-cluster`, `.auth-shell`/`.auth-card`/`.field`/`.input`/`.form-error`/`.role-pill`, `.modal-overlay`/`.modal-card`/`.role-choice`.
-Add new component classes in `globals.css` in the same style when needed; prefer them over scattered inline styles for repeated brand elements.
-
 **Quality floor for every page:** responsive to mobile, visible `:focus-visible` ring, loading state, empty state (an invitation to act, not just "no data"), and friendly error state in the interface's voice. Format money with `Intl.NumberFormat('id-ID',{style:'currency',currency:'IDR',maximumFractionDigits:0})`.
 
 ---
@@ -241,24 +228,6 @@ Add new component classes in `globals.css` in the same style when needed; prefer
 - **Route protection:** these pages are role-specific but pages render client-side, so add a small client guard — e.g. a `useRequireRole(role)` hook (or `<RoleGuard allow={['BUYER']}>`) that waits for `useAuth().loading`, then redirects to `/login` if not logged in or to `/` (with a message) if `activeRole` doesn't match. Don't rely on the UI alone — the backend already enforces auth; the guard is for UX.
 
 ---
-
-## 9. Remaining work — build these (this is "finishing the project")
-
-Backend is done. Build the following pages in `apps/web/src/app`, each wired to the contract in §5, styled with §7, following §8. Commit per page. Suggested order:
-
-1. **Landing reviews (`/` additions):** add a testimonials section to `page.tsx` — fetch `GET /reviews`, show `averageRating` + a few reviews as tiles, and a public submit form (`POST /reviews`, guest-allowed) with rating 1–5, name, comment. (Form needs a client component.)
-2. **Catalog list `/products`:** public. Search box (`?q=`), tile grid (reuse `.tile`/`.store-tag`), pagination, store filter. Each tile links to detail. Empty + loading states.
-3. **Product detail `/products/[id]`:** public. Show product + store block (link to `/products?storeId=`). "Tambah ke keranjang" button: if not logged-in BUYER → prompt login; else `POST /cart/items` and surface `DIFFERENT_STORE` with a "kosongkan keranjang" action.
-4. **Wallet `/wallet`** (BUYER): balance card, top-up modal (`POST /wallet/topup`), history list (`GET /wallet/history`) with `WalletTxnType` labels.
-5. **Addresses `/addresses`** (BUYER): list (default first), create/edit form, delete, set-default toggle.
-6. **Cart `/cart`** (BUYER): single-store summary, qty steppers (`PATCH /cart/items/:id`, 0=remove), subtotal, "Lanjut ke checkout". Conflict banner already prevented at add-time, but show store name + clear-cart.
-7. **Checkout `/checkout`** (BUYER): pick address + delivery method; live summary showing **subtotal, PPN 12%, ongkir, total** (compute client-side for display but the server is authoritative); place order (`POST /checkout`); handle `INSUFFICIENT_BALANCE`/`INSUFFICIENT_STOCK`; on success go to the new order detail.
-8. **Order history `/orders` + detail `/orders/[id]`** (BUYER): list with status chips + money; detail with item lines, money breakdown, and the `statusHistory` timeline.
-9. **Seller store `/seller/store`** (SELLER): create store if none (handle 409 unique-name), else edit.
-10. **Seller products `/seller/products`** (SELLER): table of own products (`GET /products/mine`), create/edit (modal or sub-page), soft-delete. Integer price/stock inputs.
-11. **Seller incoming orders `/seller/orders` + `/seller/orders/[id]`** (SELLER): list + read-only detail (no status changes — out of scope).
-12. **Role-based home/dashboard (optional):** a light buyer/seller landing summarizing wallet/store; or keep `/` as the public landing and let the navbar links suffice.
-13. **`useRequireRole` guard + a Footer (optional)**: protect the role pages per §8; add a simple footer to the shell.
 
 ### Definition of done
 - A guest can browse `/products`, view a detail, read/post reviews.
@@ -283,7 +252,6 @@ While following `DESIGN.md`, preserve the existing SEAPEDIA brand identity.
 
 Additional requirements:
 
-* Keep the primary brand color as `#7C3AED`.
 * Do not replace or redesign the brand color palette.
 * Remove every eyebrow label, eyebrow badge, and any similar decorative section label.
 * Never use em dashes (`—`) in UI copywriting.

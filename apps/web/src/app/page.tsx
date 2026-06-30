@@ -1,46 +1,18 @@
 import Link from "next/link";
+import { ArrowRight, ShoppingBag, Store as StoreIcon, Check } from "lucide-react";
 import { ReviewsSection } from "../components/ReviewsSection";
 
-// ── Static Assets (Hoisted SVG icons for better rendering performance & no flickering) ──
-const StoreIcon = () => (
-  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-    <path d="m2 7 4.41-4.41A2 2 0 0 1 7.83 2h8.34a2 2 0 0 1 1.42.59L22 7" />
-    <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8" />
-    <path d="M15 22v-4a2 2 0 0 0-2-2h-2a2 2 0 0 0-2 2v4" />
-    <path d="M2 7h20" />
-    <path d="M22 7v3a2 2 0 0 1-2 2v0a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 16 12a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 12 12a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 8 12a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 4 12v0a2 2 0 0 1-2-2V7" />
-  </svg>
-);
-
-const WalletIcon = () => (
-  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a8 8 0 0 1-5.45 7.49" />
-    <path d="M23 9h-4a2 2 0 0 0-0 4h4v-4Z" />
-    <path d="M5 11v4" />
-  </svg>
-);
-
-const FastDeliveryIcon = () => (
-  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2" />
-    <path d="M15 18H9" />
-    <path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.624l-3.48-4.35A1 1 0 0 0 17.52 8H14" />
-    <circle cx="17" cy="18" r="2" />
-    <circle cx="7" cy="18" r="2" />
-    <path d="M3 8h4m-4 4h4" />
-  </svg>
-);
-
-// ── Types ──
+// ── Types ──────────────────────────────────────────────────────────────
 type CatalogProduct = {
   id: string;
   name: string;
   price: number;
   stock: number;
+  imageUrl: string | null;
   store: { id: string; name: string };
 };
 
-// ── Utils ──
+// ── Utils ──────────────────────────────────────────────────────────────
 const formatIDR = (value: number) =>
   new Intl.NumberFormat("id-ID", {
     style: "currency",
@@ -48,146 +20,345 @@ const formatIDR = (value: number) =>
     maximumFractionDigits: 0,
   }).format(value);
 
-// ── Data Fetching (Server Component) ──
+// ── Data fetching ──────────────────────────────────────────────────────
 async function getProducts(): Promise<{
   connected: boolean;
   total: number;
   products: CatalogProduct[];
 }> {
   try {
-    // async-api-routes: fetch starts, await late
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_API_URL}/catalog/products?limit=8`,
-      { cache: "no-store", next: { revalidate: 0 } }
+      { cache: "no-store" },
     );
     if (!res.ok) return { connected: false, total: 0, products: [] };
     const json = await res.json();
-    return {
-      connected: true,
-      total: json.total ?? 0,
-      products: json.data ?? [],
-    };
+    return { connected: true, total: json.total ?? 0, products: json.data ?? [] };
   } catch {
     return { connected: false, total: 0, products: [] };
   }
 }
 
-// ── Static Features Array (Hoisted) ──
-const FEATURES = [
-  { icon: <StoreIcon />, label: "Banyak toko lokal" },
-  { icon: <WalletIcon />, label: "Bayar pakai dompet digital" },
-  { icon: <FastDeliveryIcon />, label: "Pengiriman cepat" },
-];
+// ── Marquee strip ──────────────────────────────────────────────────────
+function MarqueeStrip() {
+  const words = [
+    "PEMBELI",
+    "PENJUAL",
+    "KURIR",
+    "SATU MARKETPLACE",
+    "SATU KERANJANG",
+    "DOMPET DIGITAL",
+    "PPN 12%",
+    "MULTI PERAN",
+    "TOKO UNIK",
+  ];
+  const strip = [...words, ...words];
+  return (
+    <div className="overflow-hidden bg-black py-2.5 text-white">
+      <div className="flex w-max animate-marquee gap-8 whitespace-nowrap">
+        {strip.map((w, i) => (
+          <span key={i} className="t-caption text-white/75">
+            ★ {w}
+          </span>
+        ))}
+      </div>
+    </div>
+  );
+}
 
+// ── Product card (no image — monogram style) ───────────────────────────
+function ProductCard({ product }: { product: CatalogProduct }) {
+  const monogram = product.name.charAt(0).toUpperCase();
+  return (
+    <Link
+      href={`/products/${product.id}`}
+      className="group flex flex-col text-left"
+    >
+      <div className="relative overflow-hidden rounded-[8px] bg-[var(--surface-soft)] aspect-square flex items-center justify-center">
+        {product.imageUrl ? (
+          <img
+            src={product.imageUrl}
+            alt={product.name}
+            className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.04]"
+          />
+        ) : (
+          <span
+            className="text-[4rem] font-bold text-black/20 transition-transform duration-500 group-hover:scale-105 select-none"
+            aria-hidden
+          >
+            {monogram}
+          </span>
+        )}
+        <div className="absolute left-2 top-2">
+          <span
+            className="inline-flex items-center rounded-full px-3 py-1 t-caption bg-[var(--surface-soft)] text-black/70"
+          >
+            {product.store.name}
+          </span>
+        </div>
+        {product.stock === 0 && (
+          <div className="absolute inset-0 grid place-items-center bg-white/70">
+            <span className="t-caption">Stok habis</span>
+          </div>
+        )}
+      </div>
+      <div className="mt-3 t-caption text-black/45">{product.store.name}</div>
+      <div className="mt-1 t-card-title leading-snug">{product.name}</div>
+      <div className="mt-auto flex items-center justify-between pt-2">
+        <span style={{ fontWeight: 560 }}>{formatIDR(product.price)}</span>
+        <span className="t-caption text-black/45">stok {product.stock}</span>
+      </div>
+    </Link>
+  );
+}
+
+// ── Home page ──────────────────────────────────────────────────────────
 export default async function HomePage() {
   const { connected, total, products } = await getProducts();
+  const featured = products.slice(0, 4);
+  const hero = products.slice(0, 3);
 
   return (
     <main>
-      {/* ── Hero Section ── */}
-      <section className="container hero">
-        <h1 className="hero-title">
-          Belanja dari banyak toko lokal, <em>semua dalam satu tempat.</em>
+      {/* ── Hero ── */}
+      <section className="mx-auto max-w-[1280px] px-6 pb-12 pt-16 sm:pt-24">
+        <div className="t-eyebrow text-black/60 mb-5">Marketplace multi-peran</div>
+        <h1 className="t-display-xl max-w-4xl">
+          Beli, jual, dan kirim. Semua dalam satu login.
         </h1>
-
-        <p className="hero-body">
-          Temukan produk dari penjual yang bisa kamu percaya. Isi saldo dompet,
-          lalu selesaikan pesanan dalam hitungan detik.
+        <p className="t-body-lg mt-6 max-w-2xl text-black/70">
+          SEAPEDIA menghubungkan pembeli, penjual, dan kurir dalam satu marketplace.
+          Jelajahi sebagai tamu, atau masuk dan pilih peran yang ingin kamu jalankan.
         </p>
 
-        <div className="hero-actions">
-          <Link href="/products" className="btn btn-primary btn-lg">
-            Mulai belanja
+        <div className="mt-8 flex flex-wrap items-center gap-3">
+          <Link
+            href="/products"
+            className="inline-flex items-center gap-2 rounded-[50px] bg-black px-5 py-2.5 text-white hover:bg-neutral-800 transition-colors"
+            style={{ fontWeight: 480, letterSpacing: "-0.01em" }}
+          >
+            Jelajahi marketplace <ArrowRight size={18} />
           </Link>
-          <Link href="/register" className="btn btn-outline btn-lg">
-            Buka toko sendiri
+          <Link
+            href="/register"
+            className="inline-flex items-center gap-2 rounded-[50px] border border-[var(--hairline)] bg-white px-5 py-2.5 text-black hover:border-black transition-colors"
+            style={{ fontWeight: 480, letterSpacing: "-0.01em" }}
+          >
+            Buat akun
           </Link>
         </div>
 
-        {/* Live signal — quiet trust line instead of a system-status chip */}
-        <div className={`trust-line ${connected ? "" : "offline"}`}>
-          <span className="trust-dot" />
+        {/* Live count */}
+        <div className="mt-6 flex items-center gap-2 t-body-sm text-black/45">
+          <span
+            className="h-2 w-2 rounded-full"
+            style={{ background: connected ? "var(--success)" : "var(--hairline)" }}
+          />
           {connected
-            ? `${total.toLocaleString("id-ID")} produk siap kamu jelajahi`
-            : "Belum tersambung ke server. Pastikan API sedang berjalan."}
+            ? `${total.toLocaleString("id-ID")} produk tersedia`
+            : "Server belum terhubung"}
         </div>
 
-        {/* Feature Pills */}
-        <div className="feature-row">
-          {FEATURES.map((feat, idx) => (
-            <div key={idx} className="feature-pill">
-              <span className="feature-pill-icon">{feat.icon}</span>
-              {feat.label}
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* ── Featured Products Grid ── */}
-      <section className="container section">
-        <div className="section-header">
-          <h2 className="section-title">Produk pilihan untukmu</h2>
-          <p className="section-desc">
-            Barang populer dari berbagai toko, siap dikirim ke tempatmu.
-          </p>
-        </div>
-
-        {products.length === 0 ? (
-          <div className="empty-state">
-            <div className="empty-state-icon">🛍️</div>
-            <div>
-              <h3 className="empty-state-title">Belum ada produk di sini</h3>
-              <p className="empty-state-body">
-                Toko-toko baru sedang bersiap. Kamu juga bisa jadi yang pertama
-                berjualan di Seapedia.
-              </p>
-            </div>
-            <Link href="/register" className="btn btn-primary btn-sm" style={{ marginTop: 4 }}>
-              Buka toko
-            </Link>
-          </div>
-        ) : (
-          <div className="product-grid">
-            {products.map((p) => (
-              <Link href={`/products/${p.id}`} key={p.id} className="card">
-                <div className="card-thumb">
-                  <span className="card-monogram">{p.name.charAt(0)}</span>
-                  <span className="card-store">{p.store.name}</span>
-                </div>
-                <div className="card-body">
-                  <h3 className="card-name">{p.name}</h3>
-                  <div className="card-price">{formatIDR(p.price)}</div>
-                  <div className={`card-stock ${p.stock > 0 ? "" : "out"}`}>
-                    {p.stock > 0 ? `Stok tersedia: ${p.stock}` : "Stok habis"}
+        {/* Hero product grid */}
+        {hero.length > 0 && (
+          <div className="mt-14 grid grid-cols-3 gap-3 sm:gap-4">
+            {hero.map((p, i) => (
+              <Link
+                key={p.id}
+                href={`/products/${p.id}`}
+                className={`block overflow-hidden rounded-[8px] bg-[var(--surface-soft)] ${i === 1 ? "translate-y-6" : ""}`}
+              >
+                {p.imageUrl ? (
+                  <img
+                    src={p.imageUrl}
+                    alt={p.name}
+                    className="aspect-[4/5] w-full object-cover transition-transform duration-500 hover:scale-105"
+                  />
+                ) : (
+                  <div className="aspect-[4/5] flex items-center justify-center">
+                    <span className="text-[3rem] font-bold text-black/15 select-none">
+                      {p.name.charAt(0)}
+                    </span>
                   </div>
-                </div>
+                )}
               </Link>
             ))}
           </div>
         )}
       </section>
 
-      {/* ── Public application reviews ── */}
+      {/* ── Marquee ── */}
+      <MarqueeStrip />
+
+      {/* ── Featured products ── */}
+      <section className="mx-auto max-w-[1280px] px-6 py-24">
+        <div className="mb-8 flex items-end justify-between">
+          <div>
+            <div className="t-eyebrow text-black/55 mb-3">Baru di SEAPEDIA</div>
+            <h2 className="t-display-lg">Dari toko lokal independen</h2>
+          </div>
+          <Link
+            href="/products"
+            className="hidden items-center gap-1.5 t-body-sm text-black/60 hover:text-black sm:flex"
+          >
+            Lihat semua <ArrowRight size={16} />
+          </Link>
+        </div>
+
+        {featured.length === 0 ? (
+          <div className="rounded-[24px] border border-[var(--hairline)] p-12 text-center">
+            <p className="t-body text-black/50">
+              Belum ada produk. Jadilah penjual pertama di SEAPEDIA.
+            </p>
+            <Link
+              href="/register"
+              className="mt-4 inline-flex items-center gap-2 rounded-[50px] bg-black px-5 py-2.5 text-white hover:bg-neutral-800 transition-colors"
+              style={{ fontWeight: 480 }}
+            >
+              Buka toko
+            </Link>
+          </div>
+        ) : (
+          <div className="grid grid-cols-2 gap-x-5 gap-y-10 lg:grid-cols-4">
+            {featured.map((p) => (
+              <ProductCard key={p.id} product={p} />
+            ))}
+          </div>
+        )}
+      </section>
+
+      {/* ── For buyers — lime block ── */}
+      <div className="mx-auto max-w-[1280px] px-6">
+        <section
+          className="w-full rounded-[24px] px-8 py-12 sm:px-12 sm:py-16"
+          style={{ background: "var(--block-lime)" }}
+        >
+          <div className="grid items-center gap-10 md:grid-cols-2">
+            <div>
+              <div className="mb-4 inline-flex h-10 w-10 items-center justify-center rounded-full bg-black text-white">
+                <ShoppingBag size={18} />
+              </div>
+              <div className="t-eyebrow text-black/60 mb-3">Untuk pembeli</div>
+              <h2 className="t-display-lg">Dompet, keranjang, checkout bersih.</h2>
+              <p className="t-body-lg mt-4 max-w-md text-black/75">
+                Isi saldo dompetmu, tambahkan produk dari satu toko, pilih kecepatan pengiriman,
+                lalu bayar. Kami tampilkan subtotal, ongkir, dan PPN 12% sebelum kamu konfirmasi.
+              </p>
+              <ul className="mt-6 space-y-2">
+                {[
+                  "Top-up dompet digital",
+                  "Satu keranjang, satu toko",
+                  "Tiga pilihan pengiriman",
+                  "Timeline pesanan yang bisa dipantau",
+                ].map((f) => (
+                  <li key={f} className="flex items-center gap-2 t-body">
+                    <Check size={16} /> {f}
+                  </li>
+                ))}
+              </ul>
+              <Link
+                href="/products"
+                className="mt-7 inline-flex items-center gap-2 rounded-[50px] bg-black px-5 py-2.5 text-white hover:bg-neutral-800 transition-colors"
+                style={{ fontWeight: 480 }}
+              >
+                Mulai belanja <ArrowRight size={16} />
+              </Link>
+            </div>
+            <div className="grid grid-cols-2 gap-3">
+              {products.slice(0, 4).map((p) => (
+                <Link
+                  key={p.id}
+                  href={`/products/${p.id}`}
+                  className="overflow-hidden rounded-[8px] bg-white aspect-square flex items-center justify-center hover:opacity-90 transition-opacity"
+                >
+                  {p.imageUrl ? (
+                    <img src={p.imageUrl} alt={p.name} className="h-full w-full object-cover" />
+                  ) : (
+                    <span className="text-3xl font-bold text-black/15 select-none">
+                      {p.name.charAt(0)}
+                    </span>
+                  )}
+                </Link>
+              ))}
+            </div>
+          </div>
+        </section>
+      </div>
+
+      {/* ── For sellers — navy block ── */}
+      <div className="mx-auto mt-24 max-w-[1280px] px-6">
+        <section
+          className="w-full rounded-[24px] px-8 py-12 sm:px-12 sm:py-16 text-white"
+          style={{ background: "var(--block-navy)" }}
+        >
+          <div className="mb-4 inline-flex h-10 w-10 items-center justify-center rounded-full bg-white/15 text-white">
+            <StoreIcon size={18} />
+          </div>
+          <div className="t-eyebrow text-white/60 mb-3">Untuk penjual</div>
+          <h2 className="t-display-lg max-w-2xl text-white">
+            Buka toko dengan nama yang hanya milikmu.
+          </h2>
+          <p className="t-body-lg mt-4 max-w-xl text-white/75">
+            Nama toko unik, CRUD produk penuh, dan antrian pesanan masuk.
+            Proses pesanan dan jadikan siap untuk dijemput kurir.
+          </p>
+          <div className="mt-8 grid gap-4 sm:grid-cols-3">
+            {[
+              { t: "Identitas toko", d: "Satu nama unik, etalasemu di publik." },
+              { t: "Kelola produk", d: "Buat, edit, dan hapus listingmu sendiri." },
+              { t: "Proses pesanan", d: "Terima dan proses pesanan dari pembelimu." },
+            ].map((c) => (
+              <div key={c.t} className="rounded-[16px] bg-white/10 p-5">
+                <div className="t-card-title text-white">{c.t}</div>
+                <p className="mt-2 t-body-sm text-white/70">{c.d}</p>
+              </div>
+            ))}
+          </div>
+          <Link
+            href="/register"
+            className="mt-8 inline-flex items-center gap-2 rounded-[50px] border border-white/30 bg-transparent px-5 py-2.5 text-white hover:bg-white/10 transition-colors"
+            style={{ fontWeight: 480 }}
+          >
+            Jadi penjual
+          </Link>
+        </section>
+      </div>
+
+      {/* ── Reviews ── */}
       <ReviewsSection />
 
       {/* ── Closing CTA ── */}
-      <section className="container">
-        <div className="cta-band">
-          <h2 className="cta-title">Punya sesuatu untuk dijual?</h2>
-          <p className="cta-body">
-            Buka toko tanpa biaya, atur etalasemu, dan mulai terima pesanan hari ini.
-          </p>
-          <div className="cta-actions">
-            <Link href="/register" className="btn btn-on-brand btn-lg">
-              Buka toko sekarang
+      <section className="mx-auto max-w-[1280px] px-6 pb-28">
+        <div className="rounded-[32px] border border-[var(--hairline)] px-8 py-16 text-center">
+          <div className="t-eyebrow text-black/55 mb-4 flex justify-center">
+            Empat peran, satu akun
+          </div>
+          <h2 className="t-display-lg mx-auto max-w-2xl">
+            Siap melihat seluruh marketplace bergerak?
+          </h2>
+          <div className="mt-7 flex flex-wrap justify-center gap-3">
+            <Link
+              href="/products"
+              className="inline-flex items-center gap-2 rounded-[50px] bg-black px-5 py-2.5 text-white hover:bg-neutral-800 transition-colors"
+              style={{ fontWeight: 480 }}
+            >
+              Jelajahi sebagai tamu
             </Link>
-            <Link href="/products" className="btn btn-on-brand-outline btn-lg">
-              Lihat semua produk
+            <Link
+              href="/login"
+              className="inline-flex items-center gap-2 rounded-[50px] border border-[var(--hairline)] bg-white px-5 py-2.5 text-black hover:border-black transition-colors"
+              style={{ fontWeight: 480 }}
+            >
+              Masuk ke akun demo
             </Link>
+          </div>
+          <div className="mt-6 flex flex-wrap justify-center gap-x-6 gap-y-1 t-caption text-black/40">
+            <span>buyer / Buyer#123 — pembeli</span>
+            <span>seller / Seller#123 — penjual</span>
+            <span>multi / Multi#123 — pembeli + penjual</span>
           </div>
         </div>
       </section>
-
     </main>
   );
 }

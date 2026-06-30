@@ -1,284 +1,158 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { api } from "../lib/api";
 import { formatDate } from "../lib/format";
 import { useToast } from "./toast";
+import { Stars, Field, TextInput, TextArea, Pill, ColorBlock } from "./primitives";
 
 type Review = {
-    id: string;
-    reviewerName: string;
-    rating: number;
-    comment: string;
-    createdAt: string;
+  id: string;
+  reviewerName: string;
+  rating: number;
+  comment: string;
+  createdAt: string;
 };
 
 type ReviewList = {
-    data: Review[];
-    total: number;
-    averageRating: number;
+  data: Review[];
+  total: number;
+  averageRating: number;
 };
 
-function Stars({ value }: { value: number }) {
-    return (
-        <span className="stars" aria-label={`${value} dari 5 bintang`}>
-            {[1, 2, 3, 4, 5].map((n) => (
-                <span key={n} className={`star ${n <= value ? "" : "is-empty"}`} aria-hidden>
-                    ★
-                </span>
-            ))}
-        </span>
-    );
-}
-
-const ChevronLeft = () => (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-        <path d="m15 18-6-6 6-6" />
-    </svg>
-);
-const ChevronRight = () => (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-        <path d="m9 18 6-6-6-6" />
-    </svg>
-);
+const BLOCK_COLORS = ["lime", "lilac", "cream", "pink"] as const;
 
 export function ReviewsSection() {
-    const toast = useToast();
-    const [list, setList] = useState<ReviewList | null>(null);
-    const [loading, setLoading] = useState(true);
-    const [loadError, setLoadError] = useState<string | null>(null);
+  const toast = useToast();
+  const [list, setList] = useState<ReviewList | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState<string | null>(null);
 
-    // Form state
-    const [name, setName] = useState("");
-    const [rating, setRating] = useState(5);
-    const [comment, setComment] = useState("");
-    const [submitting, setSubmitting] = useState(false);
+  const [name, setName] = useState("");
+  const [rating, setRating] = useState(5);
+  const [comment, setComment] = useState("");
+  const [submitting, setSubmitting] = useState(false);
 
-    // Carousel
-    const trackRef = useRef<HTMLDivElement>(null);
-    const [atStart, setAtStart] = useState(true);
-    const [atEnd, setAtEnd] = useState(false);
-
-    const syncEdges = useCallback(() => {
-        const el = trackRef.current;
-        if (!el) return;
-        setAtStart(el.scrollLeft <= 4);
-        setAtEnd(el.scrollLeft + el.clientWidth >= el.scrollWidth - 4);
-    }, []);
-
-    function scrollByCards(dir: 1 | -1) {
-        const el = trackRef.current;
-        if (!el) return;
-        const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-        const amount = Math.max(280, el.clientWidth * 0.85);
-        el.scrollBy({ left: dir * amount, behavior: reduce ? "auto" : "smooth" });
+  async function load() {
+    setLoading(true);
+    setLoadError(null);
+    try {
+      const res = await api<ReviewList>("/reviews?limit=12", { auth: false });
+      setList(res);
+    } catch {
+      setLoadError("Gagal memuat ulasan.");
+    } finally {
+      setLoading(false);
     }
+  }
 
-    async function load() {
-        setLoading(true);
-        setLoadError(null);
-        try {
-            const res = await api<ReviewList>("/reviews?limit=12", { auth: false });
-            setList(res);
-        } catch {
-            setLoadError("Gagal memuat ulasan. Coba muat ulang halaman.");
-        } finally {
-            setLoading(false);
-        }
+  useEffect(() => {
+    load();
+  }, []);
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    if (!name.trim()) { toast.warning("Nama tidak boleh kosong."); return; }
+    if (!comment.trim()) { toast.warning("Komentar tidak boleh kosong."); return; }
+    setSubmitting(true);
+    try {
+      await api("/reviews", {
+        method: "POST",
+        auth: false,
+        body: { reviewerName: name.trim(), rating, comment: comment.trim() },
+      });
+      setName(""); setComment(""); setRating(5);
+      toast.success("Terima kasih! Ulasanmu sudah tampil.");
+      await load();
+    } catch (err: any) {
+      toast.error(err?.message ?? "Gagal mengirim ulasan.");
+    } finally {
+      setSubmitting(false);
     }
+  }
 
-    useEffect(() => {
-        load();
-    }, []);
+  const avg = list?.averageRating ?? 0;
+  const hasReviews = !!list && list.data.length > 0;
 
-    useEffect(() => {
-        syncEdges();
-    }, [list, syncEdges]);
+  return (
+    <section className="mx-auto max-w-[1280px] px-6 py-24">
+      <div className="mb-8 flex flex-wrap items-end justify-between gap-4">
+        <div>
+          <div className="t-eyebrow text-black/55 mb-3">Apa kata pengguna</div>
+          <h2 className="t-display-lg">Ulasan pengalaman</h2>
+        </div>
+        {hasReviews && (
+          <div className="t-body-sm text-black/50">
+            {avg.toFixed(1)} dari {list!.total} ulasan
+          </div>
+        )}
+      </div>
 
-    async function handleSubmit(e: React.FormEvent) {
-        e.preventDefault();
-        if (!name.trim()) {
-            toast.warning("Nama tidak boleh kosong.");
-            return;
-        }
-        if (!comment.trim()) {
-            toast.warning("Komentar tidak boleh kosong.");
-            return;
-        }
-        setSubmitting(true);
-        try {
-            await api("/reviews", {
-                method: "POST",
-                auth: false,
-                body: { reviewerName: name.trim(), rating, comment: comment.trim() },
-            });
-            setName("");
-            setComment("");
-            setRating(5);
-            toast.success("Terima kasih! Ulasanmu sudah tampil.");
-            await load();
-        } catch (err: any) {
-            toast.error(err?.message ?? "Gagal mengirim ulasan.");
-        } finally {
-            setSubmitting(false);
-        }
-    }
+      {loading ? (
+        <div className="flex items-center gap-3 py-10 text-black/50">
+          <span className="spinner" aria-hidden /> Memuat ulasan…
+        </div>
+      ) : loadError ? (
+        <div className="rounded-[16px] border border-red-200 bg-red-50 px-6 py-5 t-body-sm text-red-700">
+          {loadError}
+        </div>
+      ) : hasReviews ? (
+        <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+          {list!.data.map((r, i) => (
+            <article
+              key={r.id}
+              className="rounded-[24px] px-6 py-6"
+              style={{ background: `var(--block-${BLOCK_COLORS[i % BLOCK_COLORS.length]})` }}
+            >
+              <Stars value={r.rating} size={15} />
+              <p className="mt-3 t-body">{r.comment}</p>
+              <div className="mt-4 t-caption text-black/50">
+                {r.reviewerName} · {formatDate(r.createdAt)}
+              </div>
+            </article>
+          ))}
+        </div>
+      ) : (
+        <div className="rounded-[24px] border border-[var(--hairline)] bg-white px-6 py-12 text-center">
+          <div className="mb-4 text-4xl">💬</div>
+          <p className="t-body text-black/50">Belum ada ulasan. Jadilah yang pertama.</p>
+        </div>
+      )}
 
-    const avg = list?.averageRating ?? 0;
-    const hasReviews = !!list && list.data.length > 0;
-
-    return (
-        <section id="ulasan" className="container section">
-            <div className="section-header">
-                <h2 className="section-title">Apa kata pengguna Seapedia</h2>
-                <p className="section-desc">
-                    Ceritakan pengalamanmu memakai Seapedia. Tanpa perlu belanja
-                    dulu, siapa pun boleh memberi ulasan.
-                </p>
+      <div className="mt-8 rounded-[24px] border border-[var(--hairline)] bg-white p-6 sm:p-8">
+        <div className="t-card-title mb-1">Tulis ulasan</div>
+        <p className="t-body-sm mb-5 text-black/55">
+          Bagikan pendapatmu tentang Seapedia.
+        </p>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <Field label="Nama">
+            <TextInput
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              placeholder="Nama kamu…"
+              maxLength={60}
+              autoComplete="name"
+            />
+          </Field>
+          <Field label="Rating">
+            <div className="mt-1">
+              <Stars value={rating} size={24} onChange={setRating} />
             </div>
-
-            <div className="reviews-layout">
-                {/* Left: summary + carousel */}
-                <div className="reviews-main">
-                    <div className="reviews-bar">
-                        {hasReviews ? (
-                            <div className="rating-summary">
-                                <span className="rating-number">{avg.toFixed(1)}</span>
-                                <div>
-                                    <Stars value={Math.round(avg)} />
-                                    <p className="muted" style={{ fontSize: "0.84rem", marginTop: 2 }}>
-                                        dari {list!.total.toLocaleString("id-ID")} ulasan
-                                    </p>
-                                </div>
-                            </div>
-                        ) : (
-                            <span />
-                        )}
-
-                        {hasReviews && (
-                            <div className="carousel-controls">
-                                <button
-                                    type="button"
-                                    className="btn-icon"
-                                    onClick={() => scrollByCards(-1)}
-                                    disabled={atStart}
-                                    aria-label="Ulasan sebelumnya"
-                                >
-                                    <ChevronLeft />
-                                </button>
-                                <button
-                                    type="button"
-                                    className="btn-icon"
-                                    onClick={() => scrollByCards(1)}
-                                    disabled={atEnd}
-                                    aria-label="Ulasan berikutnya"
-                                >
-                                    <ChevronRight />
-                                </button>
-                            </div>
-                        )}
-                    </div>
-
-                    {loading ? (
-                        <div className="loading-row">
-                            <span className="spinner" aria-hidden /> Memuat ulasan…
-                        </div>
-                    ) : loadError ? (
-                        <div className="notice notice-danger">{loadError}</div>
-                    ) : hasReviews ? (
-                        <div
-                            className="carousel-track"
-                            ref={trackRef}
-                            onScroll={syncEdges}
-                            tabIndex={0}
-                            role="group"
-                            aria-label="Galeri ulasan, gulir untuk melihat lainnya"
-                        >
-                            {list!.data.map((r) => (
-                                <article key={r.id} className="carousel-card review-card">
-                                    <Stars value={r.rating} />
-                                    {/* Rendered as plain text; React escapes by default (XSS-safe) */}
-                                    <p className="review-comment">{r.comment}</p>
-                                    <div className="review-meta">
-                                        <strong>{r.reviewerName}</strong>
-                                        <span> · {formatDate(r.createdAt)}</span>
-                                    </div>
-                                </article>
-                            ))}
-                        </div>
-                    ) : (
-                        <div className="empty-state">
-                            <div className="empty-state-icon">💬</div>
-                            <div>
-                                <h3 className="empty-state-title">Belum ada ulasan</h3>
-                                <p className="empty-state-body">
-                                    Jadilah yang pertama berbagi pengalaman tentang Seapedia.
-                                </p>
-                            </div>
-                        </div>
-                    )}
-                </div>
-
-                {/* Right: submit form */}
-                <form className="panel reviews-form" onSubmit={handleSubmit}>
-                    <p className="panel-title">Tulis ulasan</p>
-                    <p className="muted" style={{ fontSize: "0.86rem" }}>
-                        Bagikan pendapatmu tentang aplikasi Seapedia.
-                    </p>
-
-                    <div className="field">
-                        <label htmlFor="rev-name">Nama</label>
-                        <input
-                            id="rev-name"
-                            className="input"
-                            value={name}
-                            onChange={(e) => setName(e.target.value)}
-                            placeholder="Nama kamu…"
-                            maxLength={60}
-                            autoComplete="name"
-                        />
-                    </div>
-
-                    <div className="field">
-                        <label>Rating</label>
-                        <div className="stars" role="radiogroup" aria-label="Rating">
-                            {[1, 2, 3, 4, 5].map((n) => (
-                                <button
-                                    key={n}
-                                    type="button"
-                                    className={`star-input ${n <= rating ? "is-on" : ""}`}
-                                    onClick={() => setRating(n)}
-                                    role="radio"
-                                    aria-checked={n === rating}
-                                    aria-label={`${n} bintang`}
-                                >
-                                    ★
-                                </button>
-                            ))}
-                        </div>
-                    </div>
-
-                    <div className="field">
-                        <label htmlFor="rev-comment">Komentar</label>
-                        <textarea
-                            id="rev-comment"
-                            className="textarea"
-                            value={comment}
-                            onChange={(e) => setComment(e.target.value)}
-                            placeholder="Ceritakan pengalamanmu…"
-                            maxLength={500}
-                        />
-                    </div>
-
-                    <button
-                        className="btn btn-primary btn-md btn-full"
-                        type="submit"
-                        disabled={submitting}
-                    >
-                        {submitting ? "Mengirim…" : "Kirim ulasan"}
-                    </button>
-                </form>
-            </div>
-        </section>
-    );
+          </Field>
+          <Field label="Komentar">
+            <TextArea
+              value={comment}
+              onChange={(e) => setComment(e.target.value)}
+              placeholder="Ceritakan pengalamanmu…"
+              maxLength={500}
+              rows={3}
+            />
+          </Field>
+          <Pill type="submit" className="w-full" disabled={submitting}>
+            {submitting ? "Mengirim…" : "Kirim ulasan"}
+          </Pill>
+        </form>
+      </div>
+    </section>
+  );
 }

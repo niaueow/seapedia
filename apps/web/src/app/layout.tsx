@@ -1,17 +1,15 @@
 import type { Metadata } from "next";
-import { Manrope, JetBrains_Mono } from "next/font/google";
+import { Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { AuthProvider } from "../auth/auth-context";
 import { Navbar } from "../components/Navbar";
 import { Footer } from "../components/Footer";
 import { ToastProvider } from "../components/toast";
 
-const manrope = Manrope({
+const inter = Inter({
   subsets: ["latin"],
-  variable: "--font-manrope",
   display: "swap",
-  weight: ["400", "500", "600", "700", "800"],
-  fallback: ["Inter", "system-ui", "sans-serif"],
+  variable: "--font-inter",
 });
 
 const jetbrainsMono = JetBrains_Mono({
@@ -27,21 +25,15 @@ export const metadata: Metadata = {
   description: "Belanja dari banyak toko lokal dalam satu marketplace.",
 };
 
-// Sets the theme before first paint so there is no flash of the wrong theme.
-const themeScript = `(function(){try{var k='seapedia_theme';var t=localStorage.getItem(k);if(t!=='light'&&t!=='dark'){t=(window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches)?'dark':'light';}document.documentElement.setAttribute('data-theme',t);}catch(e){}})();`;
-
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html
       lang="id"
-      className={`${manrope.variable} ${jetbrainsMono.variable}`}
-      suppressHydrationWarning
+      className={`${inter.variable} ${jetbrainsMono.variable}`}
+      style={{ "--font-sans": "var(--font-inter)", "--font-mono": "var(--font-jetbrains)" } as React.CSSProperties}
     >
-      <head>
-        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
-      </head>
       <body>
         <ToastProvider>
           <AuthProvider>
