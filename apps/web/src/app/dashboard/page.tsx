@@ -93,9 +93,6 @@ function DashboardInner() {
     <main className="mx-auto max-w-[1280px] px-6 py-10">
       {/* Header */}
       <div className="mb-8">
-        <div className="t-eyebrow text-black/55 mb-3">
-          {activeRole ? ROLE_LABELS[activeRole as RoleName] : "Dasbor"}
-        </div>
         <h1 className="t-display-lg">Halo, {user.username}</h1>
         <p className="t-body-lg mt-2 text-black/65">
           Kelola aktivitasmu di Seapedia sesuai peran yang sedang aktif.
@@ -156,7 +153,6 @@ function DashboardInner() {
               <div className="grid h-10 w-10 place-items-center rounded-full bg-[var(--block-lime)]">
                 <Wallet size={18} />
               </div>
-              <div className="t-eyebrow text-black/55">Saldo dompet</div>
             </div>
             <div className="t-display-lg">{balance === null ? "Rp0" : formatIDR(balance)}</div>
             <p className="mt-2 t-body-sm text-black/50">Saldo untuk membayar pesanan.</p>
@@ -183,7 +179,6 @@ function DashboardInner() {
               <div className="grid h-10 w-10 place-items-center rounded-full bg-[var(--surface-soft)]">
                 <ShoppingBag size={18} />
               </div>
-              <div className="t-eyebrow text-black/55">Aksi cepat</div>
             </div>
             <div className="space-y-1">
               {[
@@ -213,7 +208,6 @@ function DashboardInner() {
               <div className="grid h-10 w-10 place-items-center rounded-full bg-[var(--block-lilac)]">
                 <StoreIcon size={18} />
               </div>
-              <div className="t-eyebrow text-black/55">Tokomu</div>
             </div>
             {!storeLoaded ? (
               <div className="flex items-center gap-3 text-black/50">
@@ -263,7 +257,6 @@ function DashboardInner() {
               <div className="grid h-10 w-10 place-items-center rounded-full bg-[var(--surface-soft)]">
                 <Package size={18} />
               </div>
-              <div className="t-eyebrow text-black/55">Aksi cepat</div>
             </div>
             <div className="space-y-1">
               {[

@@ -155,7 +155,6 @@ export default function CartPage() {
 
   return (
     <main className="mx-auto max-w-[1280px] px-6 py-12">
-      <div className="t-eyebrow text-black/55 mb-3">Checkout</div>
       <h1 className="t-display-lg">Keranjangmu</h1>
       {cart!.store && (
         <p className="mt-2 t-body-lg text-black/65">
@@ -243,7 +242,6 @@ export default function CartPage() {
 
           {/* Delivery method */}
           <Card>
-            <div className="t-eyebrow text-black/55 mb-4">Metode pengiriman</div>
             <div className="grid gap-3 sm:grid-cols-3">
               {DELIVERY_OPTIONS.map((opt) => (
                 <button
@@ -267,7 +265,6 @@ export default function CartPage() {
         {/* Summary */}
         <div className="lg:sticky lg:top-20 lg:self-start">
           <ColorBlock color="lime" className="!py-7 !px-7">
-            <div className="t-eyebrow text-black/60 mb-4">Ringkasan pesanan</div>
             <div className="space-y-2.5 t-body">
               <div className="flex items-center justify-between text-black/75">
                 <span>Subtotal ({cart!.itemCount} item)</span>

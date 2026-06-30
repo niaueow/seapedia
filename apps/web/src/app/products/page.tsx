@@ -108,7 +108,6 @@ function CatalogInner() {
 
   return (
     <main className="mx-auto max-w-[1280px] px-6 py-12">
-      <div className="t-eyebrow text-black/55 mb-3">Marketplace</div>
       <h1 className="t-display-lg">Jelajahi setiap toko</h1>
       <p className="t-body-lg mt-3 max-w-xl text-black/65">
         Produk dari penjual independen SEAPEDIA. Siapa pun bisa melihat — checkout butuh akun Pembeli.
@@ -166,7 +165,6 @@ function CatalogInner() {
         </div>
       ) : !res || res.data.length === 0 ? (
         <div className="mt-24 text-center">
-          <div className="text-5xl mb-5">🔍</div>
           <h3 className="t-headline">Produk tidak ditemukan</h3>
           <p className="mt-2 t-body-lg text-black/55">
             {q

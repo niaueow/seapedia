@@ -55,7 +55,6 @@ export default function SellerOrdersPage() {
     <main className="mx-auto max-w-[1280px] px-6 py-10">
       <div className="flex items-end justify-between mb-8 gap-4 flex-wrap">
         <div>
-          <div className="t-eyebrow text-black/55 mb-3">Manajemen toko</div>
           <h1 className="t-display-lg">Pesanan masuk</h1>
           <p className="t-body-lg mt-2 text-black/65">Pesanan dari pembeli untuk produk tokomu.</p>
         </div>
@@ -82,7 +81,6 @@ export default function SellerOrdersPage() {
         </div>
       ) : !list || list.data.length === 0 ? (
         <div className="mt-24 text-center">
-          <div className="text-5xl mb-5">📥</div>
           <h3 className="t-headline">Belum ada pesanan</h3>
           <p className="mt-2 t-body-lg text-black/55">
             {status ? "Tidak ada pesanan dengan status ini." : "Pesanan dari pembeli akan muncul di sini."}

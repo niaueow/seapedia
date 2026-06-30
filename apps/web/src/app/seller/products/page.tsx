@@ -133,7 +133,6 @@ export default function SellerProductsPage() {
     <main className="mx-auto max-w-[1280px] px-6 py-10">
       <div className="flex items-start justify-between mb-8 gap-4">
         <div>
-          <div className="t-eyebrow text-black/55 mb-3">Manajemen toko</div>
           <h1 className="t-display-lg">Produk saya</h1>
           <p className="t-body-lg mt-2 text-black/65">Kelola produk yang dijual di tokomu.</p>
         </div>
@@ -163,7 +162,6 @@ export default function SellerProductsPage() {
       ) : !list || list.data.length === 0 ? (
         hasStore !== false && (
           <div className="mt-24 text-center">
-            <div className="text-5xl mb-5">📦</div>
             <h3 className="t-headline">Belum ada produk</h3>
             <p className="mt-2 t-body-lg text-black/55">Tambahkan produk pertamamu agar muncul di katalog publik.</p>
             <button
@@ -272,7 +270,6 @@ export default function SellerProductsPage() {
             onClick={(e) => e.stopPropagation()}
             onSubmit={handleSubmit}
           >
-            <div className="t-eyebrow text-black/55 mb-3">{editId ? "Edit" : "Tambah"} produk</div>
             <h2 className="t-headline mb-5">{editId ? "Perbarui produk" : "Produk baru"}</h2>
 
             <div className="space-y-4">

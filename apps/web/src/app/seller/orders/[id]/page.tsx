@@ -48,7 +48,6 @@ export default function SellerOrderDetailPage() {
         </div>
       ) : error || !order ? (
         <div className="mt-24 text-center">
-          <div className="text-5xl mb-5">🚫</div>
           <h3 className="t-headline">{error ?? "Tidak ditemukan"}</h3>
           <p className="mt-2 t-body-lg text-black/55">Pesanan ini bukan milik tokomu atau tidak tersedia.</p>
           <Link
@@ -62,7 +61,6 @@ export default function SellerOrderDetailPage() {
       ) : (
         <>
           <div className="mb-6">
-            <div className="t-eyebrow text-black/55 mb-2">Detail pesanan masuk</div>
             <h1 className="t-display-lg">#{order.id.slice(-8).toUpperCase()}</h1>
           </div>
           <OrderDetail order={order} />

@@ -85,7 +85,6 @@ export default function WalletPage() {
 
   return (
     <main className="mx-auto max-w-[1280px] px-6 py-10">
-      <div className="t-eyebrow text-black/55 mb-3">Keuangan</div>
       <h1 className="t-display-lg">Dompet saya</h1>
       <p className="t-body-lg mt-2 text-black/65">
         Isi saldo untuk membayar pesanan. Top-up bersifat simulasi.
@@ -106,7 +105,6 @@ export default function WalletPage() {
               <div className="grid h-10 w-10 place-items-center rounded-full bg-black/10">
                 <Wallet size={18} />
               </div>
-              <div className="t-eyebrow text-black/60">Saldo aktif</div>
             </div>
             <div className="t-display-lg">
               {balance === null ? "Rp0" : formatIDR(balance)}
@@ -115,7 +113,6 @@ export default function WalletPage() {
 
           {/* Quick top-up */}
           <Card>
-            <div className="t-eyebrow text-black/55 mb-4">Isi saldo</div>
             <div className="grid grid-cols-2 gap-2 mb-4">
               {QUICK.map((q) => (
                 <button
@@ -145,14 +142,12 @@ export default function WalletPage() {
 
         {/* Right: history */}
         <Card className="h-fit">
-          <div className="t-eyebrow text-black/55 mb-5">Riwayat transaksi</div>
           {loading ? (
             <div className="flex items-center gap-3 text-black/50 py-6">
               <span className="spinner" aria-hidden /> Memuat…
             </div>
           ) : !history || history.data.length === 0 ? (
             <div className="py-12 text-center">
-              <div className="text-4xl mb-4">💸</div>
               <p className="t-body text-black/50">Belum ada transaksi. Mulai dengan isi saldo.</p>
             </div>
           ) : (

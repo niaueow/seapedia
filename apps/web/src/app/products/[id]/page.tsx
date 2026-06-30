@@ -91,7 +91,6 @@ export default function ProductDetailPage() {
   if (notFound || !product) {
     return (
       <main className="mx-auto max-w-[700px] px-6 py-24 text-center">
-        <div className="text-5xl mb-5">🚫</div>
         <h3 className="t-headline">Produk tidak ditemukan</h3>
         <p className="mt-2 t-body-lg text-black/55">Produk ini mungkin sudah tidak tersedia atau dihapus penjual.</p>
         <Link
@@ -135,7 +134,6 @@ export default function ProductDetailPage() {
           </div>
           {product.description && (
             <div className="p-6 border-t border-[var(--hairline-soft)]">
-              <div className="t-eyebrow text-black/55 mb-2">Deskripsi</div>
               <p className="t-body text-black/70" style={{ overflowWrap: "anywhere" }}>
                 {product.description}
               </p>
@@ -224,7 +222,6 @@ export default function ProductDetailPage() {
 
           {/* Store card */}
           <Card>
-            <div className="t-eyebrow text-black/55 mb-2">Dijual oleh</div>
             <div className="t-headline">{product.store.name}</div>
             <Link
               href={`/products?storeId=${product.store.id}`}

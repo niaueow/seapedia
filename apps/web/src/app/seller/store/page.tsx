@@ -69,7 +69,6 @@ export default function SellerStorePage() {
   return (
     <main className="mx-auto max-w-[1280px] px-6 py-10">
       <div className="mb-8">
-        <div className="t-eyebrow text-black/55 mb-3">Manajemen toko</div>
         <h1 className="t-display-lg">{store ? "Profil toko" : "Buat toko"}</h1>
         <p className="t-body-lg mt-2 text-black/65">
           {store ? "Perbarui identitas tokomu di Seapedia." : "Buat toko untuk mulai berjualan. Nama toko harus unik."}
@@ -89,7 +88,6 @@ export default function SellerStorePage() {
           {/* Form */}
           <form onSubmit={handleSubmit}>
             <Card>
-              <div className="t-eyebrow text-black/55 mb-4">{store ? "Edit informasi" : "Informasi toko"}</div>
               <div className="space-y-4">
                 <Field label="Nama toko">
                   <TextInput
@@ -130,7 +128,6 @@ export default function SellerStorePage() {
                 <div className="grid h-12 w-12 place-items-center rounded-full bg-black/10">
                   <StoreIcon size={20} />
                 </div>
-                <div className="t-eyebrow text-black/60">Toko aktif</div>
               </div>
               <div className="t-headline mb-2">{store.name}</div>
               <p className="t-body-sm text-black/65 mb-6">
@@ -156,7 +153,6 @@ export default function SellerStorePage() {
           ) : (
             <div className="rounded-[24px] border border-dashed border-[var(--hairline)] flex items-center justify-center p-10">
               <div className="text-center">
-                <div className="text-4xl mb-4">🏪</div>
                 <p className="t-body-sm text-black/45">
                   Isi formulir di samping untuk membuat tokomu. Setelah toko dibuat, kamu bisa menambahkan produk.
                 </p>

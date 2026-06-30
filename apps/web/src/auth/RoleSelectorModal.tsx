@@ -42,7 +42,6 @@ export function RoleSelectorModal({
   return (
     <div className="fixed inset-0 z-50 grid place-items-center bg-black/60 p-4">
       <div className="w-full max-w-sm rounded-[24px] bg-white p-6">
-        <div className="t-eyebrow text-black/55 mb-2">Multi-peran</div>
         <h2 className="t-headline mb-2">Masuk sebagai</h2>
         <p className="t-body-sm text-black/55 mb-5">
           Akunmu punya lebih dari satu peran. Pilih peran yang ingin kamu gunakan sekarang.

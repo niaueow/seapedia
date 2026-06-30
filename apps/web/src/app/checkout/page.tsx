@@ -113,7 +113,6 @@ export default function CheckoutPage() {
 
   return (
     <main className="mx-auto max-w-[1280px] px-6 py-10">
-      <div className="t-eyebrow text-black/55 mb-3">Checkout</div>
       <h1 className="t-display-lg">Selesaikan pesanan</h1>
       <p className="t-body-lg mt-2 text-black/65">
         Periksa alamat, pilih pengiriman, lalu bayar dengan saldo dompet.
@@ -131,7 +130,6 @@ export default function CheckoutPage() {
         </div>
       ) : empty ? (
         <div className="mt-24 text-center">
-          <div className="text-5xl mb-5">🛒</div>
           <h3 className="t-headline">Keranjang kosong</h3>
           <p className="mt-2 t-body-lg text-black/55">Tambahkan produk dulu sebelum checkout.</p>
           <Link
@@ -152,7 +150,6 @@ export default function CheckoutPage() {
                   <div className="grid h-10 w-10 place-items-center rounded-full bg-[var(--surface-soft)]">
                     <MapPin size={18} />
                   </div>
-                  <div className="t-eyebrow text-black/55">Alamat pengiriman</div>
                 </div>
                 <Link href="/addresses" className="t-body-sm text-black/50 hover:text-black">
                   Kelola
@@ -201,7 +198,6 @@ export default function CheckoutPage() {
             </Card>
 
             <Card>
-              <div className="t-eyebrow text-black/55 mb-4">Metode pengiriman</div>
               <div className="space-y-3">
                 {METHODS.map((m) => (
                   <label
@@ -236,7 +232,6 @@ export default function CheckoutPage() {
           {/* Right: summary */}
           <div className="lg:sticky lg:top-20 lg:self-start">
             <ColorBlock color="lime" className="!py-7 !px-7">
-              <div className="t-eyebrow text-black/60 mb-4">Ringkasan pesanan</div>
               <p className="t-body-sm text-black/60 mb-4">
                 Toko: {cart!.store?.name} · {cart!.itemCount} item
               </p>

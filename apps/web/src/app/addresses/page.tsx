@@ -131,7 +131,6 @@ export default function AddressesPage() {
     <main className="mx-auto max-w-[1280px] px-6 py-10">
       <div className="flex items-start justify-between mb-8">
         <div>
-          <div className="t-eyebrow text-black/55 mb-3">Profil pengiriman</div>
           <h1 className="t-display-lg">Alamat pengiriman</h1>
           <p className="t-body-lg mt-2 text-black/65">Kelola alamat untuk pengiriman pesananmu.</p>
         </div>
@@ -150,7 +149,6 @@ export default function AddressesPage() {
         </div>
       ) : items.length === 0 ? (
         <div className="mt-24 text-center">
-          <div className="text-5xl mb-5">📍</div>
           <h3 className="t-headline">Belum ada alamat</h3>
           <p className="mt-2 t-body-lg text-black/55">Tambahkan alamat pengiriman agar bisa checkout.</p>
           <button
@@ -224,7 +222,6 @@ export default function AddressesPage() {
             onClick={(e) => e.stopPropagation()}
             onSubmit={handleSubmit}
           >
-            <div className="t-eyebrow text-black/55 mb-3">{editId ? "Edit" : "Tambah"} alamat</div>
             <h2 className="t-headline mb-5">{editId ? "Perbarui alamat" : "Alamat baru"}</h2>
 
             <div className="space-y-4">

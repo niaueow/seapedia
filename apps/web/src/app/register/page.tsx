@@ -89,7 +89,6 @@ export default function RegisterPage() {
     <div className="mx-auto grid max-w-[1280px] gap-10 px-6 py-16 lg:grid-cols-2">
       {/* Left: form */}
       <div>
-        <div className="t-eyebrow text-black/60 mb-3">Bergabung dengan SEAPEDIA</div>
         <h1 className="t-display-lg mt-3">Buat akunmu</h1>
         <p className="t-body-lg mt-3 max-w-md text-black/65">
           Pilih satu atau lebih peran. Satu akun bisa membeli, menjual, dan mengirim — kamu yang pilih perannya setiap sesi.
@@ -151,7 +150,6 @@ export default function RegisterPage() {
 
       {/* Right: role picker */}
       <div>
-        <div className="t-eyebrow text-black/60 mb-5">Pilih peranmu</div>
         <div className="space-y-3">
           {SELECTABLE_ROLES.map((m) => {
             const on = roles.includes(m.value);

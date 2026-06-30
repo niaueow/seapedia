@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { api } from "../lib/api";
 import { formatDate } from "../lib/format";
 import { useToast } from "./toast";
-import { Stars, Field, TextInput, TextArea, Pill, ColorBlock } from "./primitives";
+import { Stars, Field, TextInput, TextArea, Pill } from "./primitives";
 
 type Review = {
   id: string;
@@ -78,7 +78,6 @@ export function ReviewsSection() {
     <section className="mx-auto max-w-[1280px] px-6 py-24">
       <div className="mb-8 flex flex-wrap items-end justify-between gap-4">
         <div>
-          <div className="t-eyebrow text-black/55 mb-3">Apa kata pengguna</div>
           <h2 className="t-display-lg">Ulasan pengalaman</h2>
         </div>
         {hasReviews && (
@@ -114,7 +113,6 @@ export function ReviewsSection() {
         </div>
       ) : (
         <div className="rounded-[24px] border border-[var(--hairline)] bg-white px-6 py-12 text-center">
-          <div className="mb-4 text-4xl">💬</div>
           <p className="t-body text-black/50">Belum ada ulasan. Jadilah yang pertama.</p>
         </div>
       )}

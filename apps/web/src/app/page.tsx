@@ -122,13 +122,11 @@ export default async function HomePage() {
     <main>
       {/* ── Hero ── */}
       <section className="mx-auto max-w-[1280px] px-6 pb-12 pt-16 sm:pt-24">
-        <div className="t-eyebrow text-black/60 mb-5">Marketplace multi-peran</div>
         <h1 className="t-display-xl max-w-4xl">
-          Beli, jual, dan kirim. Semua dalam satu login.
+          Lebih Banyak Pelanggan Dimulai dari Satu Langkah.
         </h1>
         <p className="t-body-lg mt-6 max-w-2xl text-black/70">
-          SEAPEDIA menghubungkan pembeli, penjual, dan kurir dalam satu marketplace.
-          Jelajahi sebagai tamu, atau masuk dan pilih peran yang ingin kamu jalankan.
+          Mulai perjalanan bisnis di SEAPEDIA dan hadirkan produk kepada lebih banyak pembeli melalui marketplace yang dirancang untuk mendukung pertumbuhan UMKM.
         </p>
 
         <div className="mt-8 flex flex-wrap items-center gap-3">
@@ -194,7 +192,6 @@ export default async function HomePage() {
       <section className="mx-auto max-w-[1280px] px-6 py-24">
         <div className="mb-8 flex items-end justify-between">
           <div>
-            <div className="t-eyebrow text-black/55 mb-3">Baru di SEAPEDIA</div>
             <h2 className="t-display-lg">Dari toko lokal independen</h2>
           </div>
           <Link
@@ -238,7 +235,6 @@ export default async function HomePage() {
               <div className="mb-4 inline-flex h-10 w-10 items-center justify-center rounded-full bg-black text-white">
                 <ShoppingBag size={18} />
               </div>
-              <div className="t-eyebrow text-black/60 mb-3">Untuk pembeli</div>
               <h2 className="t-display-lg">Dompet, keranjang, checkout bersih.</h2>
               <p className="t-body-lg mt-4 max-w-md text-black/75">
                 Isi saldo dompetmu, tambahkan produk dari satu toko, pilih kecepatan pengiriman,
@@ -294,7 +290,6 @@ export default async function HomePage() {
           <div className="mb-4 inline-flex h-10 w-10 items-center justify-center rounded-full bg-white/15 text-white">
             <StoreIcon size={18} />
           </div>
-          <div className="t-eyebrow text-white/60 mb-3">Untuk penjual</div>
           <h2 className="t-display-lg max-w-2xl text-white">
             Buka toko dengan nama yang hanya milikmu.
           </h2>
@@ -330,9 +325,6 @@ export default async function HomePage() {
       {/* ── Closing CTA ── */}
       <section className="mx-auto max-w-[1280px] px-6 pb-28">
         <div className="rounded-[32px] border border-[var(--hairline)] px-8 py-16 text-center">
-          <div className="t-eyebrow text-black/55 mb-4 flex justify-center">
-            Empat peran, satu akun
-          </div>
           <h2 className="t-display-lg mx-auto max-w-2xl">
             Siap melihat seluruh marketplace bergerak?
           </h2>
@@ -345,17 +337,12 @@ export default async function HomePage() {
               Jelajahi sebagai tamu
             </Link>
             <Link
-              href="/login"
+              href="/register"
               className="inline-flex items-center gap-2 rounded-[50px] border border-[var(--hairline)] bg-white px-5 py-2.5 text-black hover:border-black transition-colors"
               style={{ fontWeight: 480 }}
             >
-              Masuk ke akun demo
+              Buat akun
             </Link>
-          </div>
-          <div className="mt-6 flex flex-wrap justify-center gap-x-6 gap-y-1 t-caption text-black/40">
-            <span>buyer / Buyer#123 — pembeli</span>
-            <span>seller / Seller#123 — penjual</span>
-            <span>multi / Multi#123 — pembeli + penjual</span>
           </div>
         </div>
       </section>

@@ -84,13 +84,6 @@ export function Card({ children, className }: { children: ReactNode; className?:
   );
 }
 
-/* ── Eyebrow ────────────────────────────────────────────────────────── */
-export function Eyebrow({ children, className }: { children: ReactNode; className?: string }) {
-  return (
-    <div className={cx("t-eyebrow text-black/60", className)}>{children}</div>
-  );
-}
-
 /* ── Stars ──────────────────────────────────────────────────────────── */
 export function Stars({
   value,

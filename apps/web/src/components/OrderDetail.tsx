@@ -66,7 +66,6 @@ export function OrderDetail({ order }: { order: OrderFull }) {
         <Card>
           <div className="flex items-start justify-between gap-3 flex-wrap">
             <div>
-              <div className="t-eyebrow text-black/55 mb-1">Nomor pesanan</div>
               <div className="t-headline">#{order.id.slice(-8).toUpperCase()}</div>
               <div className="t-caption text-black/40 mt-1">
                 {formatDateTime(order.createdAt)}{order.store ? ` · ${order.store.name}` : ""}
@@ -78,7 +77,6 @@ export function OrderDetail({ order }: { order: OrderFull }) {
 
         {/* Items */}
         <Card>
-          <div className="t-eyebrow text-black/55 mb-4">Produk yang dipesan</div>
           <div className="divide-y divide-[var(--hairline-soft)]">
             {order.items.map((it) => (
               <div key={it.id} className="flex items-center justify-between py-3 gap-3">
@@ -98,7 +96,6 @@ export function OrderDetail({ order }: { order: OrderFull }) {
 
         {/* Shipping */}
         <Card>
-          <div className="t-eyebrow text-black/55 mb-4">Pengiriman</div>
           <div className="flex justify-between t-body-sm mb-3">
             <span className="text-black/55">Metode</span>
             <span style={{ fontWeight: 540 }}>{DELIVERY_LABELS[order.deliveryMethod] ?? order.deliveryMethod}</span>
@@ -117,7 +114,6 @@ export function OrderDetail({ order }: { order: OrderFull }) {
       <div className="space-y-5">
         {/* Cost breakdown */}
         <ColorBlock color="lime" className="!py-7 !px-7">
-          <div className="t-eyebrow text-black/60 mb-4">Rincian biaya</div>
           <div className="space-y-2.5 t-body">
             <div className="flex justify-between text-black/75">
               <span>Subtotal</span>
@@ -143,7 +139,6 @@ export function OrderDetail({ order }: { order: OrderFull }) {
 
         {/* Status timeline */}
         <Card>
-          <div className="t-eyebrow text-black/55 mb-4">Status pesanan</div>
           <div className="space-y-0">
             {history.map((h, i) => (
               <div key={h.id} className="flex gap-3">
