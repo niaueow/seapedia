@@ -232,13 +232,9 @@ export default async function HomePage() {
         >
           <div className="grid items-center gap-10 md:grid-cols-2">
             <div>
-              <div className="mb-4 inline-flex h-10 w-10 items-center justify-center rounded-full bg-black text-white">
-                <ShoppingBag size={18} />
-              </div>
-              <h2 className="t-display-lg">Dompet, keranjang, checkout bersih.</h2>
+              <h2 className="t-display-lg">Semua Kebutuhan Belanja dalam Satu Tempat.</h2>
               <p className="t-body-lg mt-4 max-w-md text-black/75">
-                Isi saldo dompetmu, tambahkan produk dari satu toko, pilih kecepatan pengiriman,
-                lalu bayar. Kami tampilkan subtotal, ongkir, dan PPN 12% sebelum kamu konfirmasi.
+   Nikmati proses belanja yang lebih praktis, mulai dari memilih produk hingga pembayaran, semuanya dalam satu pengalaman yang mulus.
               </p>
               <ul className="mt-6 space-y-2">
                 {[
@@ -287,9 +283,6 @@ export default async function HomePage() {
           className="w-full rounded-[24px] px-8 py-12 sm:px-12 sm:py-16 text-white"
           style={{ background: "var(--block-navy)" }}
         >
-          <div className="mb-4 inline-flex h-10 w-10 items-center justify-center rounded-full bg-white/15 text-white">
-            <StoreIcon size={18} />
-          </div>
           <h2 className="t-display-lg max-w-2xl text-white">
             Buka toko dengan nama yang hanya milikmu.
           </h2>
